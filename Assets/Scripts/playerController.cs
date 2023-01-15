@@ -19,7 +19,8 @@ public class playerController : MonoBehaviour
     int currentBlockIndex = 0;
     public float blockMoveStep;
     private bool droppedBlock = false;
-
+    [Space]
+    public Color normalColor;
     private float currentBlockAngle;
     private float startMinTimeBtwBlockDrops = 0.5f;
     private float timeBtwBlockDrops = 0.5f;
@@ -42,6 +43,8 @@ public class playerController : MonoBehaviour
 
     public InputAction mouseClick;
 
+    private Vector3 mousePos;
+    private Camera cam;
 
     private void OnEnable()
     {
@@ -55,11 +58,12 @@ public class playerController : MonoBehaviour
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         groundChecker = gameObject.GetComponent<BoxCollider2D>();
+        cam = Camera.main;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && isGrounded())
         {
             shiftPressed = !shiftPressed;
         }
@@ -123,6 +127,7 @@ public class playerController : MonoBehaviour
 
     private void EditBlock()
     {
+        
         if (currentBlockIndex != playerBlocksManager.m_currentlySelectedTile)
         {
             if (currentBlock != null)
@@ -138,6 +143,8 @@ public class playerController : MonoBehaviour
         SpriteRenderer currentBlockSpriteRenderer = currentBlock.GetComponent<SpriteRenderer>();
         currentBlockSpriteRenderer.color = new Color(currentBlockSpriteRenderer.color.r, currentBlockSpriteRenderer.color.g,currentBlockSpriteRenderer.color.b, 0.2f);
         currentBlock.transform.position += new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * blockMoveStep;
+        mousePos = Input.mousePosition;
+        currentBlock.transform.position = cam.ScreenToWorldPoint(mousePos) + new Vector3(0f,0f,10f);
         if (animateToRed)
         {
             IndicateWrongSpawnPos();
@@ -166,7 +173,7 @@ public class playerController : MonoBehaviour
         {
             if (Physics2D.OverlapBox(currentBlock.transform.position, new Vector2(currentBlockCollider.size.x* currentBlock.transform.lossyScale.x, currentBlockCollider.size.y*currentBlock.transform.lossyScale.y), 0f) == null)
             {
-                currentBlockSpriteRenderer.color = new Color(currentBlockSpriteRenderer.color.r, currentBlockSpriteRenderer.color.g, currentBlockSpriteRenderer.color.b, 1f);
+                currentBlockSpriteRenderer.color = normalColor;
                 currentBlockCollider.enabled = true;
                 playerBlocksManager.blockList[currentBlockIndex].Remove(currentBlock);
                 currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];

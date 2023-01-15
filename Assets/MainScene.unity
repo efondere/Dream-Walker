@@ -393,7 +393,7 @@ MonoBehaviour:
   smoothTime: 0.5
   offset: {x: 0, y: 0, z: -10}
   distFromCamToStopFollow: 2
-  distFromCamToStartFollow: 10
+  distFromCamToStartFollow: 6
 --- !u!1 &1767162790
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,7 +447,7 @@ GameObject:
   - component: {fileID: 1791768802}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -469,10 +469,12 @@ MonoBehaviour:
   gravityScale: 9.8
   playerBlocksManager: {fileID: 862850918}
   blockMoveStep: 0.05
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
   selectedTransparency: 0.2
   wrongSpawnPosColor: {r: 1, g: 0.8118372, b: 0, a: 0}
   animateToRedSpeed: 12
   blockSpawnBound: {fileID: 1767162791}
+  Lives: 3
   mouseClick:
     m_Name: Mouse Click
     m_Type: 0
