@@ -67,6 +67,7 @@ public class playerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftShift) && isGrounded())
         {
             shiftPressed = !shiftPressed;
+            playerBlocksManager.setDreaming(shiftPressed);
         }
         if (shiftPressed)
         {
@@ -151,8 +152,8 @@ public class playerController : MonoBehaviour
         }
         currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];
         currentBlock.SetActive(true);
-        BoxCollider2D currentBlockCollider = currentBlock.GetComponent<BoxCollider2D>();
-        currentBlockCollider.enabled = false;
+        Collider2D currentBlockCollider = currentBlock.GetComponent<Collider2D>();
+        currentBlockCollider.isTrigger = true;
         SpriteRenderer currentBlockSpriteRenderer = currentBlock.GetComponent<SpriteRenderer>();
         currentBlockSpriteRenderer.color = new Color(currentBlockSpriteRenderer.color.r, currentBlockSpriteRenderer.color.g,currentBlockSpriteRenderer.color.b, 0.2f);
         currentBlock.transform.position += new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * blockMoveStep;
@@ -185,11 +186,11 @@ public class playerController : MonoBehaviour
 
         if (mouseClick.WasPressedThisFrame())
         {
-            Collider2D otherCollider = Physics2D.OverlapBox(currentBlock.transform.position, new Vector2(currentBlockCollider.size.x * currentBlock.transform.lossyScale.x, currentBlockCollider.size.y * currentBlock.transform.lossyScale.y), 0f);
-            if (otherCollider == null)
+            //Collider2D otherCollider = currentBlockCollider.OverlapBox(currentBlock.transform.position, new Vector2(currentBlockCollider.size.x * currentBlock.transform.lossyScale.x, currentBlockCollider.size.y * currentBlock.transform.lossyScale.y), 0f);
+            if (!currentBlockCollider.IsTouchingLayers(-1))
             {
                 currentBlockSpriteRenderer.color = normalColor;
-                currentBlockCollider.enabled = true;
+                currentBlockCollider.isTrigger = false;
                 playerBlocksManager.blockList[currentBlockIndex].Remove(currentBlock);
                 currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];
                // droppedBlock = true;

@@ -12,12 +12,17 @@ public class playerBlocksManager : MonoBehaviour
     public GameObject[] blocks;
     public int[] nbBlocksAvailable;
 
+    [HideInInspector]
+    public bool isInDreamMode;
+
     [HideInInspector]public List<GameObject>[] blockList;
     private void Start()
     {
         CreatePool();
 
         m_currentlySelectedTile = tilesUI.Length / 2;
+
+        setDreaming(false);
     }
     // Update is called once per frame
 
@@ -32,13 +37,28 @@ public class playerBlocksManager : MonoBehaviour
                 GameObject block = Instantiate(blocks[a], transform.position, Quaternion.identity);
                 blockList[a].Add(block);
                 block.SetActive(false);
-                Debug.Log(i);
             }
         }
     }
 
+    public void setDreaming(bool isDreaming)
+    {
+        tileSelectorUI.SetActive(isDreaming);
+        foreach (GameObject tileUI in tilesUI)
+        {
+            tileUI.SetActive(isDreaming);
+        }
+
+        isInDreamMode = isDreaming;
+    }
+
     private void Update()
     {
+        if (!isInDreamMode)
+        {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.Z))
         {
             m_currentlySelectedTile--;
