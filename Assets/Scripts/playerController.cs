@@ -36,8 +36,9 @@ public class playerController : MonoBehaviour
     [Space]
     private bool animateToRed;
     public RectTransform blockSpawnBound;
-
-
+    [Space]
+    public int Lives;
+    private bool  shiftPressed = false;
 
     public InputAction mouseClick;
 
@@ -59,7 +60,20 @@ public class playerController : MonoBehaviour
     {
         moveDir = new Vector2(Input.GetAxis("Horizontal"), 0);
 
-        if (!Input.GetButton("Fire3") || droppedBlock)
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            Debug.Log("Left Shift Pressed");
+        }
+        if (Input.GetKeyDown(KeyCode.LeftShift) && shiftPressed == false)
+        {
+            shiftPressed = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftShift) && shiftPressed == true)
+        {
+            shiftPressed = false;
+
+        }
+        if (!shiftPressed || droppedBlock)
         {
             animateToRed = false;
             if (droppedBlock)
@@ -123,6 +137,8 @@ public class playerController : MonoBehaviour
         }
         currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];
         currentBlock.SetActive(true);
+        BoxCollider2D currentBlockCollider = currentBlock.GetComponent<BoxCollider2D>();
+        currentBlockCollider.enabled = false;
         SpriteRenderer currentBlockSpriteRenderer = currentBlock.GetComponent<SpriteRenderer>();
         currentBlockSpriteRenderer.color = new Color(currentBlockSpriteRenderer.color.r, currentBlockSpriteRenderer.color.g,currentBlockSpriteRenderer.color.b, 0.2f);
         currentBlock.transform.position += new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * blockMoveStep;
@@ -152,9 +168,10 @@ public class playerController : MonoBehaviour
 
         if (mouseClick.IsPressed())
         {
-            if (!currentBlock.GetComponent<BoxCollider2D>().IsTouchingLayers(-1))
+            if (Physics2D.OverlapBox(currentBlock.transform.position, new Vector2(currentBlockCollider.size.x* currentBlock.transform.lossyScale.x, currentBlockCollider.size.y*currentBlock.transform.lossyScale.y), 0f) == null)
             {
                 currentBlockSpriteRenderer.color = new Color(currentBlockSpriteRenderer.color.r, currentBlockSpriteRenderer.color.g, currentBlockSpriteRenderer.color.b, 1f);
+                currentBlockCollider.enabled = true;
                 playerBlocksManager.blockList[currentBlockIndex].Remove(currentBlock);
                 currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];
                 droppedBlock = true;

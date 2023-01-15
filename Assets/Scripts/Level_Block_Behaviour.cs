@@ -17,15 +17,20 @@ public class Level_Block_Behaviour : MonoBehaviour
     private float nbSecondsLeftAtTarget;
     private int targetIndex = 0;
 
+    public bool canDamage;
+    public float startTimeBtwDamages;
+    private float timeBtwDamages;
+
     public Rigidbody2D rb;
-
-
+    private playerController playerController;
+    private float gameTimeStamp;
 
     // Start is called before the first frame update
     void Start()
     {
         timeBeforeDisap = startTimeBeforeDisap;
         nbSecondsLeftAtTarget = nbSecondsAtTarget;
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<playerController>();
     }
 
     private void FixedUpdate()
@@ -33,7 +38,7 @@ public class Level_Block_Behaviour : MonoBehaviour
         if (canMove)
         {
             Move();
-        }
+        }  
     }
 
     public void Move()
@@ -73,6 +78,14 @@ public class Level_Block_Behaviour : MonoBehaviour
        
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.otherCollider.CompareTag("Player"))
+        {
+            targets[targetIndex].position = transform.position;
+        }
+    }
+
     public void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player")) {
@@ -86,7 +99,27 @@ public class Level_Block_Behaviour : MonoBehaviour
                 {
                     timeBeforeDisap -= Time.deltaTime;
                 }
-        }
+            }
+
+            if (canDamage)
+            {
+
+                if (gameTimeStamp != Time.fixedTime)
+                {
+                    timeBtwDamages = startTimeBtwDamages;
+                }
+                if (timeBtwDamages <= 0f)
+                {
+                    playerController.Lives--;
+                    timeBtwDamages = startTimeBtwDamages;
+                }
+                else
+                {
+                    timeBtwDamages -= Time.deltaTime;
+                    gameTimeStamp = Time.fixedTime;
+                }
+
+            }
         }
     }
 
