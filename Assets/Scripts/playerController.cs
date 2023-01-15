@@ -26,6 +26,15 @@ public class playerController : MonoBehaviour
 
     private float startTimerBtwKeyPress = 0.2f;
     private float timeBtwKeyPress = 0.2f;
+
+    private float startTime_WrongSpawnPosAnimation = 1f;
+    private float timeLeft_WrongSpawnPosAnimation = 1f;
+    [Space]
+    public float selectedTransparency;
+    public Color wrongSpawnPosColor;
+    public float animateToRedSpeed;
+    [Space]
+    private bool animateToRed;
     public RectTransform blockSpawnBound;
 
 
@@ -50,22 +59,9 @@ public class playerController : MonoBehaviour
     {
         moveDir = new Vector2(Input.GetAxis("Horizontal"), 0);
 
-        if (!isGrounded())
-        {
-            yVelocity -= Time.fixedDeltaTime * gravityScale;
-        }
-        else if (!isJumping)
-        {
-            yVelocity = 0f;
-        }
-        else if (isJumping)
-        {
-            isJumping = false;
-
-        }
-
         if (!Input.GetButton("Fire3") || droppedBlock)
         {
+            animateToRed = false;
             if (droppedBlock)
             {
                 if (timeBtwBlockDrops <= 0f) {
@@ -76,6 +72,20 @@ public class playerController : MonoBehaviour
                 {
                     timeBtwBlockDrops -= Time.deltaTime;
                 }
+
+            }
+
+            if (!isGrounded())
+            {
+                yVelocity -= Time.fixedDeltaTime * gravityScale;
+            }
+            else if (!isJumping)
+            {
+                yVelocity = 0f;
+            }
+            else if (isJumping)
+            {
+                isJumping = false;
 
             }
 
@@ -113,8 +123,13 @@ public class playerController : MonoBehaviour
         }
         currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];
         currentBlock.SetActive(true);
+        SpriteRenderer currentBlockSpriteRenderer = currentBlock.GetComponent<SpriteRenderer>();
+        currentBlockSpriteRenderer.color = new Color(currentBlockSpriteRenderer.color.r, currentBlockSpriteRenderer.color.g,currentBlockSpriteRenderer.color.b, 0.2f);
         currentBlock.transform.position += new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * blockMoveStep;
-
+        if (animateToRed)
+        {
+            IndicateWrongSpawnPos();
+        }
         if (timeBtwKeyPress <= 0f)
         {
             if (Input.GetKey(KeyCode.Q))
@@ -134,21 +149,26 @@ public class playerController : MonoBehaviour
         {
             timeBtwKeyPress -= Time.deltaTime;
         }
+
         if (mouseClick.IsPressed())
         {
-            if (!currentBlock.GetComponent<Collider2D>().IsTouchingLayers(-1))
+            if (!currentBlock.GetComponent<BoxCollider2D>().IsTouchingLayers(-1))
             {
+                currentBlockSpriteRenderer.color = new Color(currentBlockSpriteRenderer.color.r, currentBlockSpriteRenderer.color.g, currentBlockSpriteRenderer.color.b, 1f);
                 playerBlocksManager.blockList[currentBlockIndex].Remove(currentBlock);
                 currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];
                 droppedBlock = true;
             }
             else
             {
-                print("Cannot Spawn Here");
+                animateToRed = true;
+                Debug.Log("Animate");
             }
 
 
         }
+
+    
 
         if (currentBlock.transform.position.x - currentBlock.transform.lossyScale.x * 0.5f < blockSpawnBound.position.x - blockSpawnBound.rect.width * 0.5f)
         {
@@ -169,6 +189,27 @@ public class playerController : MonoBehaviour
         }
 
         
+    }
+
+   private void IndicateWrongSpawnPos()
+    {
+        Debug.Log("");
+        SpriteRenderer currentBlockSpriteRenderer = currentBlock.GetComponent<SpriteRenderer>();
+        if (timeLeft_WrongSpawnPosAnimation >= 0.5f*startTime_WrongSpawnPosAnimation)
+        {
+            currentBlockSpriteRenderer.color = Color.Lerp(currentBlockSpriteRenderer.color, wrongSpawnPosColor, Time.deltaTime * animateToRedSpeed);
+            timeLeft_WrongSpawnPosAnimation -= Time.deltaTime;
+        }
+        else if (timeLeft_WrongSpawnPosAnimation <= 0.5f*startTime_WrongSpawnPosAnimation && timeLeft_WrongSpawnPosAnimation >= 0f)
+        {
+            currentBlockSpriteRenderer.color = Color.Lerp(currentBlockSpriteRenderer.color, new Color(1f,1f,1f,selectedTransparency), Time.deltaTime * animateToRedSpeed);
+            timeLeft_WrongSpawnPosAnimation -= Time.deltaTime;
+        }
+        else if (timeLeft_WrongSpawnPosAnimation <= 0f) {
+            timeLeft_WrongSpawnPosAnimation = startTime_WrongSpawnPosAnimation;
+            animateToRed = false;
+
+        }
     }
     private bool isGrounded()
     {
