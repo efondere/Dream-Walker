@@ -15,6 +15,7 @@ public class playerController : MonoBehaviour
     Vector2 moveDir;
     float yVelocity = 0;
     private GameObject currentBlock;
+    private GameObject lastCurrentBlock;
     public playerBlocksManager playerBlocksManager;
     int currentBlockIndex = 0;
     public float blockMoveStep;
@@ -67,6 +68,11 @@ public class playerController : MonoBehaviour
         {
             shiftPressed = !shiftPressed;
         }
+        if (shiftPressed)
+        {
+            EditBlock();
+        }
+
     }
     private void FixedUpdate()
     {
@@ -103,6 +109,16 @@ public class playerController : MonoBehaviour
 
             }
 
+      //   if (!isGrounded())
+      //   {
+      //       gameObject.GetComponent<PolygonCollider2D>().enabled = false;
+      //   }
+      //   else
+      //   {
+      //       gameObject.GetComponent<PolygonCollider2D>().enabled = true;
+      //
+      //    }
+
             if (currentBlock != null)
             {
                 currentBlock.SetActive(false);
@@ -118,10 +134,7 @@ public class playerController : MonoBehaviour
             }
             rb.MovePosition(rb.position + moveDir * moveSpeed * Time.fixedDeltaTime + Vector2.down * gravityScale * 0.5f * Mathf.Pow(Time.fixedDeltaTime, 2) + Vector2.up * yVelocity * Time.fixedDeltaTime);
         }
-        else
-        {
-            EditBlock();
-        }
+
     }
 
 
@@ -169,9 +182,11 @@ public class playerController : MonoBehaviour
             timeBtwKeyPress -= Time.deltaTime;
         }
 
-        if (mouseClick.IsPressed())
+
+        if (mouseClick.WasPressedThisFrame())
         {
-            if (Physics2D.OverlapBox(currentBlock.transform.position, new Vector2(currentBlockCollider.size.x* currentBlock.transform.lossyScale.x, currentBlockCollider.size.y*currentBlock.transform.lossyScale.y), 0f) == null)
+            Collider2D otherCollider = Physics2D.OverlapBox(currentBlock.transform.position, new Vector2(currentBlockCollider.size.x * currentBlock.transform.lossyScale.x, currentBlockCollider.size.y * currentBlock.transform.lossyScale.y), 0f);
+            if (otherCollider == null)
             {
                 currentBlockSpriteRenderer.color = normalColor;
                 currentBlockCollider.enabled = true;
