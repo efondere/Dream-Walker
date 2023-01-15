@@ -56,23 +56,19 @@ public class playerController : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody2D>();
         groundChecker = gameObject.GetComponent<BoxCollider2D>();
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            shiftPressed = !shiftPressed;
+        }
+    }
     private void FixedUpdate()
     {
         moveDir = new Vector2(Input.GetAxis("Horizontal"), 0);
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            Debug.Log("Left Shift Pressed");
-        }
-        if (Input.GetKeyDown(KeyCode.LeftShift) && shiftPressed == false)
-        {
-            shiftPressed = true;
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftShift) && shiftPressed == true)
-        {
-            shiftPressed = false;
-
-        }
+        
         if (!shiftPressed || droppedBlock)
         {
             animateToRed = false;
