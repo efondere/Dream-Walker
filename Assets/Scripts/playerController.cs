@@ -73,21 +73,21 @@ public class playerController : MonoBehaviour
         moveDir = new Vector2(Input.GetAxis("Horizontal"), 0);
 
         
-        if (!shiftPressed || droppedBlock)
+        if (!shiftPressed)
         {
             animateToRed = false;
-            if (droppedBlock)
-            {
-                if (timeBtwBlockDrops <= 0f) {
-                    droppedBlock = false;
-                    timeBtwBlockDrops = startMinTimeBtwBlockDrops;
-                }
-                else
-                {
-                    timeBtwBlockDrops -= Time.deltaTime;
-                }
+         //   if (droppedBlock)
+         //   {
+         //       if (timeBtwBlockDrops <= 0f) {
+         //           droppedBlock = false;
+         //           timeBtwBlockDrops = startMinTimeBtwBlockDrops;
+         //       }
+         //       else
+         //       {
+         //           timeBtwBlockDrops -= Time.deltaTime;
+         //       }
 
-            }
+          //  }
 
             if (!isGrounded())
             {
@@ -177,7 +177,7 @@ public class playerController : MonoBehaviour
                 currentBlockCollider.enabled = true;
                 playerBlocksManager.blockList[currentBlockIndex].Remove(currentBlock);
                 currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];
-                droppedBlock = true;
+               // droppedBlock = true;
             }
             else
             {
