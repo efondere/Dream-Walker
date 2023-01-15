@@ -10,7 +10,7 @@ public class playerController : MonoBehaviour
     public float moveSpeed;
     public float jumpVelocity;
     public float gravityScale;
-    private bool isJumping; 
+    private bool isJumping;
 
     Vector2 moveDir;
     float yVelocity = 0;
@@ -19,9 +19,19 @@ public class playerController : MonoBehaviour
     int currentBlockIndex = 0;
     public float blockMoveStep;
     private bool droppedBlock = false;
-    private float startTimeBtwClicks;
-    private float timeBtwClicks;
+
+    private float currentBlockAngle;
+    private float startMinTimeBtwBlockDrops = 0.5f;
+    private float timeBtwBlockDrops = 0.5f;
+
+    private float startTimerBtwKeyPress = 0.2f;
+    private float timeBtwKeyPress = 0.2f;
+    public RectTransform blockSpawnBound;
+
+
+
     public InputAction mouseClick;
+
 
     private void OnEnable()
     {
@@ -56,7 +66,19 @@ public class playerController : MonoBehaviour
 
         if (!Input.GetButton("Fire3") || droppedBlock)
         {
-            droppedBlock = false;
+            if (droppedBlock)
+            {
+                if (timeBtwBlockDrops <= 0f) {
+                    droppedBlock = false;
+                    timeBtwBlockDrops = startMinTimeBtwBlockDrops;
+                }
+                else
+                {
+                    timeBtwBlockDrops -= Time.deltaTime;
+                }
+
+            }
+
             if (currentBlock != null)
             {
                 currentBlock.SetActive(false);
@@ -81,29 +103,72 @@ public class playerController : MonoBehaviour
 
     private void EditBlock()
     {
+        if (currentBlockIndex != playerBlocksManager.m_currentlySelectedTile)
+        {
+            if (currentBlock != null)
+            {
+                currentBlock.SetActive(false);
+            }
+            currentBlockIndex = playerBlocksManager.m_currentlySelectedTile;
+        }
         currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];
         currentBlock.SetActive(true);
         currentBlock.transform.position += new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * blockMoveStep;
 
+        if (timeBtwKeyPress <= 0f)
+        {
+            if (Input.GetKey(KeyCode.Q))
+            {
+                currentBlockAngle += 90f;
+                currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
+            }
+            else if (Input.GetKey(KeyCode.E))
+            {
+
+                currentBlockAngle -= 90f;
+                currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
+            }
+            timeBtwKeyPress = startTimerBtwKeyPress;
+        }
+        else
+        {
+            timeBtwKeyPress -= Time.deltaTime;
+        }
         if (mouseClick.IsPressed())
         {
-          playerBlocksManager.blockList[currentBlockIndex].Remove(currentBlock);
-          currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];
-          droppedBlock = true;
-           
-        }
-        if (Input.GetKey(KeyCode.Z))
-        {
-            if (currentBlockIndex == playerBlocksManager.blocks.Length - 1)
+            if (!currentBlock.GetComponent<Collider2D>().IsTouchingLayers(-1))
             {
-                currentBlockIndex = 0;
+                playerBlocksManager.blockList[currentBlockIndex].Remove(currentBlock);
+                currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];
+                droppedBlock = true;
             }
             else
             {
-                currentBlockIndex++;
-                currentBlock.SetActive(false);
+                print("Cannot Spawn Here");
             }
+
+
         }
+
+        if (currentBlock.transform.position.x - currentBlock.transform.lossyScale.x * 0.5f < blockSpawnBound.position.x - blockSpawnBound.rect.width * 0.5f)
+        {
+            currentBlock.transform.position = new Vector3(blockSpawnBound.position.x - blockSpawnBound.rect.width * 0.5f + currentBlock.transform.lossyScale.x * 0.5f, 0f, 0f);
+        }
+        if (currentBlock.transform.position.x + currentBlock.transform.lossyScale.x * 0.5f > blockSpawnBound.position.x + blockSpawnBound.rect.width * 0.5f)
+        {
+            currentBlock.transform.position = new Vector3(blockSpawnBound.position.x + blockSpawnBound.rect.width * 0.5f - currentBlock.transform.lossyScale.x * 0.5f, 0f, 0f);
+
+        }
+        if (currentBlock.transform.position.y - currentBlock.transform.lossyScale.y * 0.5f < blockSpawnBound.position.y - blockSpawnBound.rect.height * 0.5f)
+        {
+            currentBlock.transform.position = new Vector3(blockSpawnBound.position.y - blockSpawnBound.rect.height * 0.5f + currentBlock.transform.lossyScale.x * 0.5f, 0f, 0f);
+        }
+        if (currentBlock.transform.position.y + currentBlock.transform.lossyScale.y * 0.5f > blockSpawnBound.position.y + blockSpawnBound.rect.height * 0.5f)
+        {
+            currentBlock.transform.position = new Vector3(blockSpawnBound.position.y + blockSpawnBound.rect.height * 0.5f - currentBlock.transform.lossyScale.y*0.5f,0f,0f);
+        }
+
+        
     }
     private bool isGrounded()
     {

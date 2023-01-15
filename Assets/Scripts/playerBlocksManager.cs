@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class playerBlocksManager : MonoBehaviour
 {
-    public Tile[] tiles;
     public GameObject[] tilesUI;
     public GameObject tileSelectorUI;
 
-    private int m_currentlySelectedTile = -1;
+    [HideInInspector]public int m_currentlySelectedTile = -1;
 
     public GameObject[] blocks;
     public int[] nbBlocksAvailable;
@@ -16,7 +15,7 @@ public class playerBlocksManager : MonoBehaviour
     [HideInInspector]public List<GameObject>[] blockList;
     private void Start()
     {
-        //CreatePool();
+        CreatePool();
 
         m_currentlySelectedTile = tilesUI.Length / 2;
     }
@@ -40,11 +39,11 @@ public class playerBlocksManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.Z))
         {
             m_currentlySelectedTile--;
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.X))
         {
             m_currentlySelectedTile++;
         }
