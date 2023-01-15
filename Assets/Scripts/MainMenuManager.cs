@@ -31,4 +31,9 @@ public class MainMenuManager : MonoBehaviour
     {
         SceneManager.LoadScene("Level Select");
     }
+
+    public void OpenCreditsScene()
+    {
+        SceneManager.LoadScene("Credits");
+    }
 }
