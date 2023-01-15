@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class playerController : MonoBehaviour
 {
@@ -17,17 +18,23 @@ public class playerController : MonoBehaviour
     public playerBlocksManager playerBlocksManager;
     int currentBlockIndex = 0;
     public float blockMoveStep;
+    private bool droppedBlock = false;
+    private float startTimeBtwClicks;
+    private float timeBtwClicks;
+    public InputAction mouseClick;
 
-
+    private void OnEnable()
+    {
+        mouseClick.Enable();
+    }
+    private void OnDisable()
+    {
+        mouseClick.Disable();
+    }
     private void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         groundChecker = gameObject.GetComponent<BoxCollider2D>();
-    }
-
-    private void Update()
-    {
-   
     }
     private void FixedUpdate()
     {
@@ -47,8 +54,13 @@ public class playerController : MonoBehaviour
 
         }
 
-        if (!Input.GetButton("Fire3"))
+        if (!Input.GetButton("Fire3") || droppedBlock)
         {
+            droppedBlock = false;
+            if (currentBlock != null)
+            {
+                currentBlock.SetActive(false);
+            }
             if (Input.GetButton("Jump"))
             {
                 if (isGrounded())
@@ -69,10 +81,19 @@ public class playerController : MonoBehaviour
 
     private void EditBlock()
     {
-        Debug.Log("Edit Block");
-        if (Input.GetButtonDown("Z"))
+        currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];
+        currentBlock.SetActive(true);
+        currentBlock.transform.position += new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * blockMoveStep;
+
+        if (mouseClick.IsPressed())
         {
-            Debug.Log("ZZ");
+          playerBlocksManager.blockList[currentBlockIndex].Remove(currentBlock);
+          currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];
+          droppedBlock = true;
+           
+        }
+        if (Input.GetKey(KeyCode.Z))
+        {
             if (currentBlockIndex == playerBlocksManager.blocks.Length - 1)
             {
                 currentBlockIndex = 0;
@@ -83,9 +104,6 @@ public class playerController : MonoBehaviour
                 currentBlock.SetActive(false);
             }
         }
-        currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];
-        currentBlock.SetActive(true);
-        currentBlock.transform.position += new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * blockMoveStep;
     }
     private bool isGrounded()
     {
