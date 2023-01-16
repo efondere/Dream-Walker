@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class playerBlocksManager : MonoBehaviour
 {
@@ -16,13 +17,20 @@ public class playerBlocksManager : MonoBehaviour
     public bool isInDreamMode;
 
     [HideInInspector]public List<GameObject>[] blockList;
+
+    private int[] m_blockUsage;
+
+
     private void Start()
     {
+        m_blockUsage = new int[blocks.Length];
+        
         CreatePool();
 
         m_currentlySelectedTile = tilesUI.Length / 2;
 
         setDreaming(false);
+
     }
     // Update is called once per frame
 
@@ -38,6 +46,9 @@ public class playerBlocksManager : MonoBehaviour
                 blockList[a].Add(block);
                 block.SetActive(false);
             }
+
+            tilesUI[a].GetComponentInChildren<Text>().text = "x" + nbBlocksAvailable[a];
+            m_blockUsage[a] = 0;
         }
     }
 
@@ -50,6 +61,12 @@ public class playerBlocksManager : MonoBehaviour
         }
 
         isInDreamMode = isDreaming;
+    }
+
+    public void useBlock(int ID)
+    {
+        m_blockUsage[ID] += 1;
+        tilesUI[ID].GetComponentInChildren<Text>().text = "x" + (nbBlocksAvailable[ID] - m_blockUsage[ID]);
     }
 
     private void Update()
