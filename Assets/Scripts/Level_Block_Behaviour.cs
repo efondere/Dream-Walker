@@ -18,6 +18,7 @@ public class Level_Block_Behaviour : MonoBehaviour
     private int targetIndex = 0;
 
     public bool canDamage;
+    public int damage; // -1 for insta kill
     public float startTimeBtwDamages;
     private float timeBtwDamages;
 
@@ -80,13 +81,32 @@ public class Level_Block_Behaviour : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            if (canDamage)
+            {
+                if (damage == -1)
+                {
+                    playerController.Lives = 0;
+                }
+                else
+                {
+                    playerController.Lives -= damage;
+                }
+
+                timeBtwDamages = startTimeBtwDamages;
+            }
+        }
+
         if (collision.otherCollider.CompareTag("Player"))
         {
             targets[targetIndex].position = transform.position;
+
+            
         }
     }
 
-    public void OnCollisionStay(Collision collision)
+    public void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player")) {
             if (canDisappear)
@@ -103,20 +123,26 @@ public class Level_Block_Behaviour : MonoBehaviour
 
             if (canDamage)
             {
-
-                if (gameTimeStamp != Time.fixedTime)
+                if (gameTimeStamp != Time.fixedDeltaTime)
                 {
                     timeBtwDamages = startTimeBtwDamages;
                 }
                 if (timeBtwDamages <= 0f)
                 {
-                    playerController.Lives--;
+                    if (damage == -1)
+                    {
+                        playerController.Lives = 0;
+                    }
+                    else
+                    {
+                        playerController.Lives -= damage;
+                    }
                     timeBtwDamages = startTimeBtwDamages;
                 }
                 else
                 {
                     timeBtwDamages -= Time.deltaTime;
-                    gameTimeStamp = Time.fixedTime;
+                    gameTimeStamp = Time.fixedDeltaTime;
                 }
 
             }

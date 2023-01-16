@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class playerController : MonoBehaviour
 {
@@ -37,6 +38,8 @@ public class playerController : MonoBehaviour
     public RectTransform blockSpawnBound;
     [Space]
     public int Lives;
+    public GameObject[] healthUI;
+
     private bool  shiftPressed = false;
 
     public InputAction mouseClick;
@@ -57,44 +60,70 @@ public class playerController : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody2D>();
         groundChecker = gameObject.GetComponent<BoxCollider2D>();
         cam = Camera.main;
+
+        foreach (GameObject health in healthUI)
+        {
+            health.SetActive(true);
+        }
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && isGrounded())
+        if (!PauseMenu.isPaused)
         {
-            shiftPressed = !shiftPressed;
-            playerBlocksManager.setDreaming(shiftPressed);
-        }
-        if (shiftPressed)
-        {
-            EditBlock();
-        }
-
-
-        if (currentBlock != null)
-        {
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.LeftShift) && isGrounded())
             {
-                currentBlockAngle += 90f;
-                currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
+                shiftPressed = !shiftPressed;
+                playerBlocksManager.setDreaming(shiftPressed);
             }
-            else if (Input.GetKeyDown(KeyCode.E))
+            if (shiftPressed)
             {
+                EditBlock();
+            }
 
-                currentBlockAngle -= 90f;
-                currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
+
+            if (currentBlock != null)
+            {
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    currentBlockAngle += 90f;
+                    currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
+                }
+                else if (Input.GetKeyDown(KeyCode.E))
+                {
+
+                    currentBlockAngle -= 90f;
+                    currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
+                }
             }
         }
+        
 
 
 
     }
     private void FixedUpdate()
     {
-        moveDir = new Vector2(Input.GetAxis("Horizontal"), 0);
+        for (int i = 0; i < healthUI.Length; i++)
+        {
+            healthUI[i].SetActive(i < Lives);
+        }
+        if (Lives <= 0)
+        {
+            // die here
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
 
-        
+        if (!PauseMenu.isPaused)
+        {
+
+        moveDir = new Vector2(Input.GetAxis("Horizontal"), 0);
+        }
+        else
+        {
+            moveDir = Vector2.zero;
+        }
+
         if (!shiftPressed)
         {
             animateToRed = false;
@@ -182,16 +211,19 @@ public class playerController : MonoBehaviour
             currentBlockCollider.isTrigger = true;
             SpriteRenderer currentBlockSpriteRenderer = currentBlock.GetComponent<SpriteRenderer>();
             currentBlockSpriteRenderer.color = new Color(currentBlockSpriteRenderer.color.r, currentBlockSpriteRenderer.color.g,currentBlockSpriteRenderer.color.b, 0.2f);
-            currentBlock.transform.position += new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * blockMoveStep;
+            //currentBlock.transform.position += new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * blockMoveStep;
             mousePos = Input.mousePosition;
-            currentBlock.transform.position = cam.ScreenToWorldPoint(mousePos) + new Vector3(0f,0f,10f);
+            if (!PauseMenu.isPaused)
+            {
+                currentBlock.transform.position = cam.ScreenToWorldPoint(mousePos) + new Vector3(0f,0f,10f);
+            }
 
             if (animateToRed)
             {
                 IndicateWrongSpawnPos();
             }
 
-            if (mouseClick.WasPressedThisFrame())
+            if (mouseClick.WasPressedThisFrame() && !PauseMenu.isPaused)
             {
                 //Collider2D otherCollider = currentBlockCollider.OverlapBox(currentBlock.transform.position, new Vector2(currentBlockCollider.size.x * currentBlock.transform.lossyScale.x, currentBlockCollider.size.y * currentBlock.transform.lossyScale.y), 0f);
                 if (!currentBlockCollider.IsTouchingLayers(-1))
