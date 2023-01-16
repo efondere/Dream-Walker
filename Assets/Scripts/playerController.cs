@@ -26,9 +26,6 @@ public class playerController : MonoBehaviour
     //private float startMinTimeBtwBlockDrops = 0.5f;
     //private float timeBtwBlockDrops = 0.5f;
 
-    private float startTimerBtwKeyPress = 0.2f;
-    private float timeBtwKeyPress = 0.2f;
-
     private float startTime_WrongSpawnPosAnimation = 1f;
     private float timeLeft_WrongSpawnPosAnimation = 1f;
     [Space]
@@ -73,6 +70,24 @@ public class playerController : MonoBehaviour
         {
             EditBlock();
         }
+
+
+        if (currentBlock != null)
+        {
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                currentBlockAngle += 90f;
+                currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
+            }
+            else if (Input.GetKeyDown(KeyCode.E))
+            {
+
+                currentBlockAngle -= 90f;
+                currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
+            }
+        }
+
+
 
     }
     private void FixedUpdate()
@@ -175,31 +190,11 @@ public class playerController : MonoBehaviour
             {
                 IndicateWrongSpawnPos();
             }
-            if (timeBtwKeyPress <= 0f)
-            {
-                if (Input.GetKey(KeyCode.Q))
-                {
-                    currentBlockAngle += 90f;
-                    currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
-                }
-                else if (Input.GetKey(KeyCode.E))
-                {
-
-                    currentBlockAngle -= 90f;
-                    currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
-                }
-                timeBtwKeyPress = startTimerBtwKeyPress;
-            }
-            else
-            {
-                timeBtwKeyPress -= Time.deltaTime;
-            }
-
 
             if (mouseClick.WasPressedThisFrame())
             {
                 //Collider2D otherCollider = currentBlockCollider.OverlapBox(currentBlock.transform.position, new Vector2(currentBlockCollider.size.x * currentBlock.transform.lossyScale.x, currentBlockCollider.size.y * currentBlock.transform.lossyScale.y), 0f);
-                if (!currentBlockCollider.IsTouchingLayers())
+                if (!currentBlockCollider.IsTouchingLayers(-1))
                 {
                     currentBlockSpriteRenderer.color = normalColor;
                     currentBlockCollider.isTrigger = false;
