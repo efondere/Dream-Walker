@@ -8,7 +8,9 @@ public class Level_Block_Behaviour : MonoBehaviour
     public bool canDisappear;
     public float startTimeBeforeDisap;
     private float timeBeforeDisap;
-
+    public bool disappearPermanently;
+    public float startTimeBeforeAppear;
+    private float timeBeforeAppear;
     public bool canMove;
     public Transform[] targets;
     public bool lerping;
@@ -30,11 +32,15 @@ public class Level_Block_Behaviour : MonoBehaviour
     private playerController playerController;
     private float gameTimeStamp;
 
+    private bool isCollisionStay;
+
     // Start is called before the first frame update
     void Start()
     {
         timeBeforeDisap = startTimeBeforeDisap;
         nbSecondsLeftAtTarget = nbSecondsAtTarget;
+        timeBeforeAppear = startTimeBeforeAppear;
+
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<playerController>();
     }
 
@@ -43,7 +49,30 @@ public class Level_Block_Behaviour : MonoBehaviour
         if (canMove && !PauseMenu.isPaused)
         {
             Move();
-        }  
+        }
+
+
+        if (canDisappear)
+        {
+            if (!disappearPermanently && !gameObject.GetComponent<Collider2D>().enabled)
+            {
+
+
+                if (timeBeforeAppear <= 0f)
+                {
+                    gameObject.GetComponent<Collider2D>().enabled = true;
+                    gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+                    timeBeforeAppear = startTimeBeforeAppear;
+                }
+                else
+                {
+                    timeBeforeAppear -= Time.deltaTime;
+                }
+            }
+        }
+
+
+
     }
 
     public void Move()
@@ -112,6 +141,19 @@ public class Level_Block_Behaviour : MonoBehaviour
         }
     }
 
+    public void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.otherCollider.CompareTag("Player"))
+        {
+            if (canDisappear)
+            {
+                if (timeBeforeDisap != 0 && gameObject.GetComponent<Collider2D>().enabled)
+                {
+                    gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+                }
+            }
+        }
+    }
     public void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player")) {
@@ -121,11 +163,12 @@ public class Level_Block_Behaviour : MonoBehaviour
                 {
                     gameObject.GetComponent<Collider2D>().enabled = false;
                     gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.05f);
+                    timeBeforeDisap = startTimeBeforeDisap;
                 }
                 else
                 {
 
-                    PlayAnim();
+                    WillDisappearPlayAnim();
 
                     timeBeforeDisap -= Time.deltaTime;
                 }
@@ -158,14 +201,10 @@ public class Level_Block_Behaviour : MonoBehaviour
             }
         }
 
-        void PlayAnim()
+        void WillDisappearPlayAnim()
         {
             float animateSpeed = 7f;
-            if (timeBeforeDisap <= 0)
-            {
-                gameObject.GetComponent<Collider2D>().enabled = true;
-                gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
-            }
+            
             SpriteRenderer thisSprite = gameObject.GetComponent<SpriteRenderer>();
             if (timeLeft_WrongSpawnPosAnimation >= 0.5f * startTime_WrongSpawnPosAnimation)
             {
