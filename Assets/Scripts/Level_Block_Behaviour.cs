@@ -36,7 +36,7 @@ public class Level_Block_Behaviour : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (canMove)
+        if (canMove && !PauseMenu.isPaused)
         {
             Move();
         }  
@@ -81,24 +81,26 @@ public class Level_Block_Behaviour : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (PauseMenu.isPaused)
         {
-            if (canDamage)
+            if (collision.gameObject.CompareTag("Player"))
             {
-                if (damage == -1)
+                if (canDamage)
                 {
-                    playerController.Lives = 0;
-                }
-                else
-                {
-                    playerController.Lives -= damage;
-                }
+                    if (damage == -1)
+                    {
+                        playerController.Lives = 0;
+                    }
+                    else
+                    {
+                        playerController.Lives -= damage;
+                    }
 
-                timeBtwDamages = startTimeBtwDamages;
+                    timeBtwDamages = startTimeBtwDamages;
+                }
             }
         }
-
-        if (collision.otherCollider.CompareTag("Player"))
+        if (collision.otherCollider.CompareTag("PlayerBlock"))
         {
             targets[targetIndex].position = transform.position;
 

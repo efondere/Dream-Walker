@@ -14,10 +14,13 @@ public class CameraFollow : MonoBehaviour
     public float distFromCamToStopFollow;
     public float distFromCamToStartFollow;
 
+    public AudioClip mainClip;
+    public AudioSource audioSource;
+
+
 
     void Update()
     {
-
         if (shouldCameraFollow == true)
         {
          //   if (moveSpeedIsSaved == false)

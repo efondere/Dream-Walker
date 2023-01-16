@@ -47,6 +47,11 @@ public class playerController : MonoBehaviour
     private Vector3 mousePos;
     private Camera cam;
 
+
+    private float startDeathTime = 1f;
+    private float deathTime;
+    public Animator animator;
+
     private void OnEnable()
     {
         mouseClick.Enable();
@@ -57,6 +62,7 @@ public class playerController : MonoBehaviour
     }
     private void Start()
     {
+        deathTime = startDeathTime;
         rb = gameObject.GetComponent<Rigidbody2D>();
         groundChecker = gameObject.GetComponent<BoxCollider2D>();
         cam = Camera.main;
@@ -97,13 +103,13 @@ public class playerController : MonoBehaviour
                 }
             }
         }
-        
-
 
 
     }
     private void FixedUpdate()
     {
+        
+
         for (int i = 0; i < healthUI.Length; i++)
         {
             healthUI[i].SetActive(i < Lives);
@@ -111,7 +117,17 @@ public class playerController : MonoBehaviour
         if (Lives <= 0)
         {
             // die here
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            if (deathTime <= 0f)
+            {
+                animator.SetBool("IsDead", false);
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+            else
+            {
+                animator.SetBool("IsDead", true);
+                deathTime -= Time.deltaTime;
+                
+            }
         }
 
         if (!PauseMenu.isPaused)
@@ -123,6 +139,8 @@ public class playerController : MonoBehaviour
         {
             moveDir = Vector2.zero;
         }
+
+
 
         if (!shiftPressed)
         {
@@ -151,8 +169,9 @@ public class playerController : MonoBehaviour
             else if (isJumping)
             {
                 isJumping = false;
-
             }
+            
+            
 
       //   if (!isGrounded())
       //   {
@@ -163,7 +182,7 @@ public class playerController : MonoBehaviour
       //       gameObject.GetComponent<PolygonCollider2D>().enabled = true;
       //
       //    }
-
+            
             if (currentBlock != null)
             {
                 currentBlock.SetActive(false);
@@ -188,6 +207,19 @@ public class playerController : MonoBehaviour
                 GetComponent<SpriteRenderer>().flipX = false;
             }
         }
+
+        animator.SetFloat("xSpeed", Mathf.Abs(Input.GetAxis("Horizontal")));
+        if (yVelocity == 0f)
+        {
+            animator.SetBool("IsGrounded", true);
+        }
+        else
+        {
+            animator.SetBool("IsGrounded", false);
+
+        }
+        animator.SetFloat("yVelocity", yVelocity);
+        animator.SetBool("IsEditing", shiftPressed);
 
     }
 

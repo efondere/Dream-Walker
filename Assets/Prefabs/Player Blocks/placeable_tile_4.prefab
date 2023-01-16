@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7536624936036559836}
   m_Layer: 3
   m_Name: placeable_tile_4
-  m_TagString: Untagged
+  m_TagString: PlayerBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
