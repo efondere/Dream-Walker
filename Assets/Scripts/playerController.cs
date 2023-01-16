@@ -48,7 +48,7 @@ public class playerController : MonoBehaviour
     private Camera cam;
 
 
-    private float startDeathTime = 1f;
+    private float startDeathTime = 5f;
     private float deathTime;
     public Animator animator;
 
@@ -124,7 +124,11 @@ public class playerController : MonoBehaviour
             }
             else
             {
-                animator.SetBool("IsDead", true);
+                if (!animator.GetBool("IsDead"))
+                {
+                    animator.SetBool("IsDead", true);
+                    GetComponent<AudioSource>().Play();
+                }
                 deathTime -= Time.deltaTime;
                 
             }
