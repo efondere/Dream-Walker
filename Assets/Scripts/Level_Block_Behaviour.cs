@@ -119,8 +119,8 @@ public class Level_Block_Behaviour : MonoBehaviour
             {
                 if (timeBeforeDisap <= 0)
                 {
-
                     gameObject.GetComponent<Collider2D>().enabled = false;
+                    gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.05f);
                 }
                 else
                 {
@@ -161,6 +161,11 @@ public class Level_Block_Behaviour : MonoBehaviour
         void PlayAnim()
         {
             float animateSpeed = 7f;
+            if (timeBeforeDisap <= 0)
+            {
+                gameObject.GetComponent<Collider2D>().enabled = true;
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+            }
             SpriteRenderer thisSprite = gameObject.GetComponent<SpriteRenderer>();
             if (timeLeft_WrongSpawnPosAnimation >= 0.5f * startTime_WrongSpawnPosAnimation)
             {
@@ -169,7 +174,7 @@ public class Level_Block_Behaviour : MonoBehaviour
             }
             else if (timeLeft_WrongSpawnPosAnimation <= 0.5f * startTime_WrongSpawnPosAnimation && timeLeft_WrongSpawnPosAnimation >= 0f)
             {
-                thisSprite.color = Color.Lerp(thisSprite.color, new Color(1f, 1f, 1f, 0.2f), Time.deltaTime * animateSpeed);
+                thisSprite.color = Color.Lerp(thisSprite.color, new Color(1f, 1f, 1f, 1f), Time.deltaTime * animateSpeed);
                 timeLeft_WrongSpawnPosAnimation -= Time.deltaTime;
             }
             else if (timeLeft_WrongSpawnPosAnimation <= 0f)
