@@ -196,7 +196,7 @@ MonoBehaviour:
     m_LineSpacing: 1.4
   m_Text: "A game by\nVlad and Estra Studios\nSofian Martinais: programming and design
     \nEliot Fondere: programming and art\n\n~ With the Help of ~\nPaolo Scaini: sound
-    design\nSabrina Vu: feedback, ideas and art\n\nFont by: Yuji Oshimoto. https://www.dafont.com/04b-30.font"
+    design\nSabrina Vu: feedback and ideas\n\nFont by: Yuji Oshimoto. https://www.dafont.com/04b-30.font"
 --- !u!222 &146677779
 CanvasRenderer:
   m_ObjectHideFlags: 0
