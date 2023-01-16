@@ -22,6 +22,10 @@ public class Level_Block_Behaviour : MonoBehaviour
     public float startTimeBtwDamages;
     private float timeBtwDamages;
 
+    private float timeLeft_WrongSpawnPosAnimation = 0.7f;
+    private float startTime_WrongSpawnPosAnimation = 0.7f;
+
+
     public Rigidbody2D rb;
     private playerController playerController;
     private float gameTimeStamp;
@@ -115,10 +119,14 @@ public class Level_Block_Behaviour : MonoBehaviour
             {
                 if (timeBeforeDisap <= 0)
                 {
+
                     gameObject.GetComponent<Collider2D>().enabled = false;
                 }
                 else
                 {
+
+                    PlayAnim();
+
                     timeBeforeDisap -= Time.deltaTime;
                 }
             }
@@ -146,6 +154,27 @@ public class Level_Block_Behaviour : MonoBehaviour
                     timeBtwDamages -= Time.deltaTime;
                     gameTimeStamp = Time.fixedDeltaTime;
                 }
+
+            }
+        }
+
+        void PlayAnim()
+        {
+            float animateSpeed = 7f;
+            SpriteRenderer thisSprite = gameObject.GetComponent<SpriteRenderer>();
+            if (timeLeft_WrongSpawnPosAnimation >= 0.5f * startTime_WrongSpawnPosAnimation)
+            {
+                thisSprite.color = Color.Lerp(thisSprite.color, new Color(thisSprite.color.r, thisSprite.color.g, thisSprite.color.b, 0.2f), Time.deltaTime * animateSpeed);
+                timeLeft_WrongSpawnPosAnimation -= Time.deltaTime;
+            }
+            else if (timeLeft_WrongSpawnPosAnimation <= 0.5f * startTime_WrongSpawnPosAnimation && timeLeft_WrongSpawnPosAnimation >= 0f)
+            {
+                thisSprite.color = Color.Lerp(thisSprite.color, new Color(1f, 1f, 1f, 0.2f), Time.deltaTime * animateSpeed);
+                timeLeft_WrongSpawnPosAnimation -= Time.deltaTime;
+            }
+            else if (timeLeft_WrongSpawnPosAnimation <= 0f)
+            {
+                timeLeft_WrongSpawnPosAnimation = startTime_WrongSpawnPosAnimation;
 
             }
         }
