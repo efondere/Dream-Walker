@@ -246,7 +246,7 @@ MonoBehaviour:
       m_Action: Mouse Click
       m_Flags: 0
     m_Flags: 0
-  animator: {fileID: 0}
+  animator: {fileID: 4387357259025278902}
 --- !u!114 &6491724029237431056
 MonoBehaviour:
   m_ObjectHideFlags: 0

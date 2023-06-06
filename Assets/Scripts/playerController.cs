@@ -48,7 +48,7 @@ public class playerController : MonoBehaviour
     private Camera cam;
 
 
-    private float startDeathTime = 0.31f;
+    private float startDeathTime = 0.5f;
     private float deathTime;
     public Animator animator;
 
