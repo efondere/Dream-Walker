@@ -26,10 +26,11 @@ public class Level_Block_Behaviour : MonoBehaviour
 
     private float timeLeft_WrongSpawnPosAnimation = 0.7f;
     private float startTime_WrongSpawnPosAnimation = 0.7f;
-
+    
 
     public Rigidbody2D rb;
     private playerController playerController;
+    private Collider2D thisCollider;
     private float gameTimeStamp;
 
     private bool isCollisionStay;
@@ -40,12 +41,26 @@ public class Level_Block_Behaviour : MonoBehaviour
         timeBeforeDisap = startTimeBeforeDisap;
         nbSecondsLeftAtTarget = nbSecondsAtTarget;
         timeBeforeAppear = startTimeBeforeAppear;
-
+        thisCollider = gameObject.GetComponent<Collider2D>();
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<playerController>();
     }
 
     private void FixedUpdate()
     {
+  //     if (playerController.gameObject.transform.GetChild(1).position.y > rb.position.y + 0.5f * thisCollider.bounds.size.y + thisCollider.offset.y )
+  //     {
+  //         Debug.Log("player is above");
+  //         Debug.Log(transform.lossyScale.y);
+  //
+  //         thisCollider.isTrigger = false;
+  //     }
+  //     else
+  //     {
+  //         thisCollider.isTrigger = true;
+  //     }
+
+
+        
         if (canMove && !PauseMenu.isPaused)
         {
             Move();

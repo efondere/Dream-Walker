@@ -6,7 +6,7 @@ public class LevelManager : MonoBehaviour
 {
     public static int CurrentLevel = 1;
     public static int LevelCount = 2;
-
+    
     // Start is called before the first frame update
     void Start()
     {

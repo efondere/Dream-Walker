@@ -85,23 +85,15 @@ public class playerController : MonoBehaviour
             if (shiftPressed)
             {
                 EditBlock();
+                animator.SetBool("IsEditing", shiftPressed);
             }
-
-
-            if (currentBlock != null)
+            else
             {
-                if (Input.GetKeyDown(KeyCode.Q))
-                {
-                    currentBlockAngle += 90f;
-                    currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
-                }
-                else if (Input.GetKeyDown(KeyCode.E))
-                {
+                animator.SetBool("IsEditing", shiftPressed);
 
-                    currentBlockAngle -= 90f;
-                    currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
-                }
             }
+
+
         }
 
 
@@ -109,107 +101,91 @@ public class playerController : MonoBehaviour
     private void FixedUpdate()
     {
         
-
+        //Health ui + death
         for (int i = 0; i < healthUI.Length; i++)
         {
             healthUI[i].SetActive(i < Lives);
         }
+
         if (Lives <= 0)
         {
-            // die here
-            if (deathTime <= 0f)
-            {
-                animator.SetBool("IsDead", false);
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            }
-            else
-            {
-                if (!animator.GetBool("IsDead"))
-                {
-                    animator.SetBool("IsDead", true);
-                    GetComponent<AudioSource>().Play();
-                }
-                deathTime -= Time.deltaTime;
-                
-            }
+            Die();
         }
 
-        if (!PauseMenu.isPaused)
+        //Locomotion
+        ApplyGravity();
+        if (!PauseMenu.isPaused && !shiftPressed)
         {
+            Move();
 
-        moveDir = new Vector2(Input.GetAxis("Horizontal"), 0);
+            if (currentBlock != null)
+            {
+                currentBlock.SetActive(false);
+                animateToRed = false;
+            }
         }
         else
         {
             moveDir = Vector2.zero;
         }
+    }
 
 
 
-        if (!shiftPressed)
+    private void Move()
+    {
+
+        moveDir = new Vector2(Input.GetAxis("Horizontal"), 0);    
+
+        if (!isJumping && isGrounded())
         {
-            animateToRed = false;
-         //   if (droppedBlock)
-         //   {
-         //       if (timeBtwBlockDrops <= 0f) {
-         //           droppedBlock = false;
-         //           timeBtwBlockDrops = startMinTimeBtwBlockDrops;
-         //       }
-         //       else
-         //       {
-         //           timeBtwBlockDrops -= Time.deltaTime;
-         //       }
-
-          //  }
-
-            if (!isGrounded())
-            {
-                yVelocity -= Time.fixedDeltaTime * gravityScale;
-            }
-            else if (!isJumping)
-            {
                 yVelocity = 0f;
-            }
-            else if (isJumping)
-            {
+        }
+        else if (isJumping)
+        {
                 isJumping = false;
-            }
-            
-            
+        }
 
-      //   if (!isGrounded())
-      //   {
-      //       gameObject.GetComponent<PolygonCollider2D>().enabled = false;
-      //   }
-      //   else
-      //   {
-      //       gameObject.GetComponent<PolygonCollider2D>().enabled = true;
-      //
-      //    }
-            
-            if (currentBlock != null)
+        if (Input.GetButton("Jump"))
+        {
+            if (isGrounded())
             {
-                currentBlock.SetActive(false);
+                isJumping = true;
+                yVelocity = jumpVelocity;
             }
 
-            if (Input.GetButton("Jump"))
-            {
-                if (isGrounded())
-                {
-                    isJumping = true;
-                    yVelocity = jumpVelocity;
-                }
+        }
 
-            }
-            rb.MovePosition(rb.position + moveDir * moveSpeed * Time.fixedDeltaTime + Vector2.down * gravityScale * 0.5f * Mathf.Pow(Time.fixedDeltaTime, 2) + Vector2.up * yVelocity * Time.fixedDeltaTime);
-            if (moveDir.x < 0.0f)
-            {
-                GetComponent<SpriteRenderer>().flipX = true;
-            }
-            else if (moveDir.x > 0.0f) // prevent flipping when the player stops moving
-            {
-                GetComponent<SpriteRenderer>().flipX = false;
-            }
+
+        rb.MovePosition(rb.position + moveDir * moveSpeed * Time.fixedDeltaTime + Vector2.up * yVelocity * Time.fixedDeltaTime);
+
+
+
+        AnimateMovement();
+
+
+    }
+
+    private void ApplyGravity()
+    {
+        if (!isGrounded())
+        {         
+            yVelocity -= Time.fixedDeltaTime * gravityScale;
+            rb.MovePosition(rb.position + Vector2.down * gravityScale * 0.5f * Mathf.Pow(Time.fixedDeltaTime, 2) + Vector2.up * yVelocity * Time.fixedDeltaTime);
+
+        }
+    }
+
+
+    void AnimateMovement()
+    {
+        if (moveDir.x < 0.0f)
+        {
+            GetComponent<SpriteRenderer>().flipX = true;
+        }
+        else if (moveDir.x > 0.0f) // prevent flipping when the player stops moving
+        {
+            GetComponent<SpriteRenderer>().flipX = false;
         }
 
         animator.SetFloat("xSpeed", Mathf.Abs(Input.GetAxis("Horizontal")));
@@ -223,14 +199,13 @@ public class playerController : MonoBehaviour
 
         }
         animator.SetFloat("yVelocity", yVelocity);
-        animator.SetBool("IsEditing", shiftPressed);
 
     }
 
-
     private void EditBlock()
     {
-        
+
+        // Change selection
         if (currentBlockIndex != playerBlocksManager.m_currentlySelectedTile)
         {
             if (currentBlock != null)
@@ -239,26 +214,55 @@ public class playerController : MonoBehaviour
             }
             currentBlockIndex = playerBlocksManager.m_currentlySelectedTile;
         }
+
+
+        
         if (playerBlocksManager.blockList[currentBlockIndex].Count != 0)
         {
+            //Get and activate block
             currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];
             currentBlock.SetActive(true);
+
+            //Get block components
             Collider2D currentBlockCollider = currentBlock.GetComponent<Collider2D>();
             currentBlockCollider.isTrigger = true;
             SpriteRenderer currentBlockSpriteRenderer = currentBlock.GetComponent<SpriteRenderer>();
+
+            //Set block transparency for editing
             currentBlockSpriteRenderer.color = new Color(currentBlockSpriteRenderer.color.r, currentBlockSpriteRenderer.color.g,currentBlockSpriteRenderer.color.b, 0.2f);
+
+
             //currentBlock.transform.position += new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * blockMoveStep;
+
+            // Block control
+
             mousePos = Input.mousePosition;
             if (!PauseMenu.isPaused)
             {
                 currentBlock.transform.position = cam.ScreenToWorldPoint(mousePos) + new Vector3(0f,0f,10f);
             }
 
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                currentBlockAngle += 90f;
+                currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
+            }
+            else if (Input.GetKeyDown(KeyCode.E))
+            {
+
+                currentBlockAngle -= 90f;
+                currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
+            }
+
+
+            // Indicating wrong spawn pos
             if (animateToRed)
             {
                 IndicateWrongSpawnPos();
             }
 
+
+            // Drop block
             if (mouseClick.WasPressedThisFrame() && !PauseMenu.isPaused)
             {
                 //Collider2D otherCollider = currentBlockCollider.OverlapBox(currentBlock.transform.position, new Vector2(currentBlockCollider.size.x * currentBlock.transform.lossyScale.x, currentBlockCollider.size.y * currentBlock.transform.lossyScale.y), 0f);
@@ -286,6 +290,8 @@ public class playerController : MonoBehaviour
 
             }
 
+
+            // Setting bounds for spawning
             if (currentBlock != null)
             {
                 if (currentBlock.transform.position.x - currentBlock.transform.lossyScale.x * 0.5f < blockSpawnBound.position.x - blockSpawnBound.rect.width * 0.5f)
@@ -313,6 +319,10 @@ public class playerController : MonoBehaviour
         }  
     }
 
+
+
+
+
    private void IndicateWrongSpawnPos()
     {
         SpriteRenderer currentBlockSpriteRenderer = currentBlock.GetComponent<SpriteRenderer>();
@@ -332,16 +342,37 @@ public class playerController : MonoBehaviour
 
         }
     }
+
+
+    private void Die()
+    {
+
+        if (deathTime <= 0f)
+        {
+            animator.SetBool("IsDead", false);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+        else
+        {
+            if (!animator.GetBool("IsDead"))
+            {
+                animator.SetBool("IsDead", true);
+                GetComponent<AudioSource>().Play();
+            }
+            deathTime -= Time.deltaTime;
+
+        }
+    }
     private bool isGrounded()
     {
         if (groundChecker.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
             return true;
-
         }
         else
         {
             return false;
+
         }
     }
 }
