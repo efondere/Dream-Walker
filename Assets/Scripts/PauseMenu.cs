@@ -24,7 +24,7 @@ public class PauseMenu : MonoBehaviour
             }
         }
     }
-
+    //replace time scale by smt else?? for animations to continue
     public void resume()
     {
         pauseMenuUI.SetActive(false);

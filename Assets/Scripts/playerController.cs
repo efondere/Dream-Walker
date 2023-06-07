@@ -13,8 +13,8 @@ public class playerController : MonoBehaviour
     public float gravityScale;
     private bool isJumping;
 
-    Vector2 moveDir;
-    float yVelocity = 0;
+    [HideInInspector] public Vector2 moveDir;
+    [HideInInspector] public float yVelocity = 0;
     private GameObject currentBlock;
     private GameObject lastCurrentBlock;
     public playerBlocksManager playerBlocksManager;
@@ -40,7 +40,7 @@ public class playerController : MonoBehaviour
     public int Lives;
     public GameObject[] healthUI;
 
-    private bool  shiftPressed = false;
+    [HideInInspector]public bool  shiftPressed = false;
 
     public InputAction mouseClick;
 
@@ -60,6 +60,7 @@ public class playerController : MonoBehaviour
     {
         mouseClick.Disable();
     }
+
     private void Start()
     {
         deathTime = startDeathTime;
@@ -114,6 +115,7 @@ public class playerController : MonoBehaviour
 
         //Locomotion
         ApplyGravity();
+        
         if (!PauseMenu.isPaused && !shiftPressed)
         {
             Move();
@@ -189,6 +191,8 @@ public class playerController : MonoBehaviour
         }
 
         animator.SetFloat("xSpeed", Mathf.Abs(Input.GetAxis("Horizontal")));
+
+
         if (yVelocity == 0f)
         {
             animator.SetBool("IsGrounded", true);
@@ -255,13 +259,6 @@ public class playerController : MonoBehaviour
             }
 
 
-            // Indicating wrong spawn pos
-            if (animateToRed)
-            {
-                IndicateWrongSpawnPos();
-            }
-
-
             // Drop block
             if (mouseClick.WasPressedThisFrame() && !PauseMenu.isPaused)
             {
@@ -272,6 +269,7 @@ public class playerController : MonoBehaviour
                     currentBlockCollider.isTrigger = false;
                     playerBlocksManager.blockList[currentBlockIndex].Remove(currentBlock);
                     playerBlocksManager.useBlock(currentBlockIndex);
+
                     if (playerBlocksManager.blockList[currentBlockIndex].Count != 0)
                     {
                         currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];
@@ -288,6 +286,14 @@ public class playerController : MonoBehaviour
                 }
 
 
+
+            }
+
+
+            // Indicating wrong spawn pos
+            if (animateToRed)
+            {
+                IndicateWrongSpawnPos();
             }
 
 
