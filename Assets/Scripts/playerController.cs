@@ -42,7 +42,7 @@ public class playerController : MonoBehaviour
 
     [HideInInspector]public bool  shiftPressed = false;
 
-    public InputAction mouseClick;
+    private Inputs inputs;
 
     private Vector3 mousePos;
     private Camera cam;
@@ -52,17 +52,13 @@ public class playerController : MonoBehaviour
     private float deathTime;
     public Animator animator;
 
-    private void OnEnable()
-    {
-        mouseClick.Enable();
-    }
-    private void OnDisable()
-    {
-        mouseClick.Disable();
-    }
 
     private void Start()
     {
+        inputs = new Inputs();
+        inputs.Enable();
+
+
         deathTime = startDeathTime;
         rb = gameObject.GetComponent<Rigidbody2D>();
         groundChecker = gameObject.GetComponent<BoxCollider2D>();
@@ -133,11 +129,10 @@ public class playerController : MonoBehaviour
     }
 
 
-
     private void Move()
     {
 
-        moveDir = new Vector2(Input.GetAxis("Horizontal"), 0);    
+        moveDir = new Vector2(inputs.Movement.Horizontal.ReadValue<float>(), 0);    
 
         if (!isJumping && isGrounded())
         {
@@ -148,7 +143,7 @@ public class playerController : MonoBehaviour
                 isJumping = false;
         }
 
-        if (Input.GetButton("Jump"))
+        if (inputs.Movement.Jump.IsPressed())
         {
             if (isGrounded())
             {
@@ -190,7 +185,7 @@ public class playerController : MonoBehaviour
             GetComponent<SpriteRenderer>().flipX = false;
         }
 
-        animator.SetFloat("xSpeed", Mathf.Abs(Input.GetAxis("Horizontal")));
+        animator.SetFloat("xSpeed", Mathf.Abs(inputs.Movement.Horizontal.ReadValue<float>()));
 
 
         if (yVelocity == 0f)
@@ -220,7 +215,7 @@ public class playerController : MonoBehaviour
         }
 
 
-        
+
         if (playerBlocksManager.blockList[currentBlockIndex].Count != 0)
         {
             //Get and activate block
@@ -233,25 +228,25 @@ public class playerController : MonoBehaviour
             SpriteRenderer currentBlockSpriteRenderer = currentBlock.GetComponent<SpriteRenderer>();
 
             //Set block transparency for editing
-            currentBlockSpriteRenderer.color = new Color(currentBlockSpriteRenderer.color.r, currentBlockSpriteRenderer.color.g,currentBlockSpriteRenderer.color.b, 0.2f);
+            currentBlockSpriteRenderer.color = new Color(currentBlockSpriteRenderer.color.r, currentBlockSpriteRenderer.color.g, currentBlockSpriteRenderer.color.b, 0.2f);
 
 
             //currentBlock.transform.position += new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * blockMoveStep;
 
             // Block control
 
-            mousePos = Input.mousePosition;
+            mousePos = inputs.Mouse.Pointer.ReadValue<Vector2>();
             if (!PauseMenu.isPaused)
             {
-                currentBlock.transform.position = cam.ScreenToWorldPoint(mousePos) + new Vector3(0f,0f,10f);
+                currentBlock.transform.position = cam.ScreenToWorldPoint(mousePos) + new Vector3(0f, 0f, 10f);
             }
 
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (inputs.Editing.Rotate.WasPressedThisFrame() && inputs.Editing.Rotate.ReadValue<float>() > 0f)
             {
                 currentBlockAngle += 90f;
                 currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
             }
-            else if (Input.GetKeyDown(KeyCode.E))
+            else if (inputs.Editing.Rotate.WasPressedThisFrame()&&inputs.Editing.Rotate.ReadValue<float>() < 0f)
             {
 
                 currentBlockAngle -= 90f;
@@ -260,7 +255,7 @@ public class playerController : MonoBehaviour
 
 
             // Drop block
-            if (mouseClick.WasPressedThisFrame() && !PauseMenu.isPaused)
+            if (inputs.Mouse.mouseClick.WasPressedThisFrame() && !PauseMenu.isPaused)
             {
                 //Collider2D otherCollider = currentBlockCollider.OverlapBox(currentBlock.transform.position, new Vector2(currentBlockCollider.size.x * currentBlock.transform.lossyScale.x, currentBlockCollider.size.y * currentBlock.transform.lossyScale.y), 0f);
                 if (!currentBlockCollider.IsTouchingLayers(-1))

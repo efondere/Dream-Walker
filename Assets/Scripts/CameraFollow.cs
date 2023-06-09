@@ -34,21 +34,27 @@ public class CameraFollow : MonoBehaviour
     void Update()
     {
         // camera follow
-        if (shouldCameraFollow == true)
-        {
-            transform.position = Vector3.SmoothDamp(transform.position, target.position + offset, ref velocity, smoothTime);
-        }
 
-        if (Vector3.Distance(transform.position, target.position + offset) <= distFromCamToStopFollow)
-        {
-            shouldCameraFollow = false;
-        }
 
-        if (Vector3.Distance(transform.position, target.position + offset) >= distFromCamToStartFollow)
-        {
-            shouldCameraFollow = true;
 
-        }
+        transform.position = Vector3.SmoothDamp(transform.position, target.position + offset, ref velocity, smoothTime);
+
+
+        //     if (shouldCameraFollow == true)
+        //     {
+        //         transform.position = Vector3.SmoothDamp(transform.position, target.position + offset, ref velocity, smoothTime);
+        //     }
+        //
+        //     if (Vector3.Distance(transform.position, target.position + offset) <= distFromCamToStopFollow)
+        //     {
+        //         shouldCameraFollow = false;
+        //     }
+        //
+        //     if (Vector3.Distance(transform.position, target.position + offset) >= distFromCamToStartFollow)
+        //     {
+        //         shouldCameraFollow = true;
+        //
+        //     }
 
         Debug.Log("Axis Horizontal = " + Input.GetAxis("Horizontal"));
 

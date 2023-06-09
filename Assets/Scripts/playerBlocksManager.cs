@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.InputSystem;
 public class playerBlocksManager : MonoBehaviour
 {
     public GameObject[] tilesUI;
@@ -20,9 +20,14 @@ public class playerBlocksManager : MonoBehaviour
 
     private int[] m_blockUsage;
 
+    private Inputs _inputs;
+
 
     private void Start()
     {
+
+        _inputs = new Inputs();
+        _inputs.Editing.Select.Enable();
         m_blockUsage = new int[blocks.Length];
         
         CreatePool();
@@ -76,11 +81,11 @@ public class playerBlocksManager : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (_inputs.Editing.Select.ReadValue<float>() < 0f && _inputs.Editing.Select.WasPressedThisFrame())
         {
             m_currentlySelectedTile--;
         }
-        if (Input.GetKeyDown(KeyCode.X))
+        if (_inputs.Editing.Select.ReadValue<float>() > 0f && _inputs.Editing.Select.WasPressedThisFrame())
         {
             m_currentlySelectedTile++;
         }

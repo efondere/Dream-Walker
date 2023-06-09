@@ -1452,7 +1452,7 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: -10}
   cam: {fileID: 468859496}
   distFromCamToStopFollow: 2
-  distFromCamToStartFollow: 6
+  distFromCamToStartFollow: 5
   mainClip: {fileID: 0}
   audioSource: {fileID: 0}
   zoomVelocity: 2
@@ -2235,11 +2235,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6491724029237431058, guid: 921d0d324f032f748b8fd659a05bc4ee, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.33
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6491724029237431058, guid: 921d0d324f032f748b8fd659a05bc4ee, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.78
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6491724029237431058, guid: 921d0d324f032f748b8fd659a05bc4ee, type: 3}
       propertyPath: m_LocalPosition.z
