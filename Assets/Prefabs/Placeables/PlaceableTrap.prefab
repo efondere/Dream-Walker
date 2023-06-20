@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &487656690593299817
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 487656690593299822}
+  - component: {fileID: 487656690593299820}
+  - component: {fileID: 487656690593299823}
+  m_Layer: 0
+  m_Name: PlaceableTrap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &487656690593299822
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487656690593299817}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.9385502, y: 0.004350625, z: -4.1552486}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &487656690593299820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487656690593299817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 126794c823473404da147ec3afb0d09d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tiles:
+  - {fileID: 11400000, guid: d4348427e3ebf414983b55bb9b843952, type: 2}
+  - {fileID: 11400000, guid: d2bc3a9aa96d4a34bbbafe4f0fd46ee9, type: 2}
+  grid:
+    rows:
+    - row: ffffffffffffffffffffffffffffffffffffffff
+    - row: ffffffffffffffffffffffffffffffffffffffff
+    - row: ffffffffffffffff01000000ffffffffffffffff
+    - row: ffffffffffffffffffffffffffffffffffffffff
+    - row: ffffffffffffffffffffffffffffffffffffffff
+    - row: 
+    - row: 
+    - row: 
+    - row: 
+    - row: 
+--- !u!114 &487656690593299823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487656690593299817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cd3c77420b14f646b90cdf2c282b8db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilePreview: {fileID: 487656690593299820}
+  tileset: {fileID: 0}
+  prefab: {fileID: 7242384173730894156, guid: 37126f3eea984c14a94008c0c2442943, type: 3}
+  placeholder_tile: {fileID: 11400000, guid: d34aea5e9df8b6248b5dd79e76bdb3f4, type: 2}

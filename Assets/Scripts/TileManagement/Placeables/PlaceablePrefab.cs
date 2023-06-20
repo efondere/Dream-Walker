@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class PlaceableTile : Placeable
+public class PlaceablePrefab : Placeable
 {
     [SerializeField] public Tilemap tileset;
+    [SerializeField] public Tilemap placeholderPreview;
+    [SerializeField] public GameObject prefab;
+    [SerializeField] public AnimatedTile placeholder_tile;
 
     public override bool OnPlace(Vector3Int position, GridLayout grid)
     {
@@ -24,21 +27,28 @@ public class PlaceableTile : Placeable
             }
         }
 
-        for (int i = 0; i < 5;  i++)
+        for (int i = 0; i < 5; i++)
         {
             for (int j = 0; j < 5; j++)
             {
-                if (tilePreview.grid.At(i, j) == -1)
-                    continue;
-                if (tilePreview.grid.At(i, j) == 0)
+                if (tilePreview.grid.At(i, j) < 0)
                     continue;
 
-                var tile = tilePreview.tiles[tilePreview.grid.At(i, j)];
                 var pos = new Vector3Int(position.x - 2 + i, position.y - 2 + j, position.z);
-
-                tileset.SetTile(pos, tile);
+                
+                if (tilePreview.grid.At(i, j) == 0)
+                {
+                    placeholderPreview.SetTile(pos, placeholder_tile);
+                }
+                else
+                {
+                    var tile = tilePreview.tiles[tilePreview.grid.At(i, j)];
+                    placeholderPreview.SetTile(pos, tile);
+                }
             }
         }
+
+        Instantiate(prefab, grid.CellToWorld(position), Quaternion.identity);
 
         return true;
     }
