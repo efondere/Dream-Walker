@@ -263,7 +263,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 468064021}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 22c402ead2662864ab45ac3a94fc62b2, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -380,17 +380,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc495f4c986fa8445b198beeba820830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0
-  jumpForce: 0
-  slideSpeed: 0
-  climbSpeed: 0
-  jumpOffWallSpeed: 0
-  isFallingMultiplier: 0
-  lowJumpMultiplier: 0
-  rightOffset: {x: 0.5, y: 0}
-  leftOffset: {x: -0.5, y: 0}
-  bottomOffset: {x: 0, y: -0.5}
-  collisionRadius: 0
+  gravityScale: 1
+  moveSpeed: 3
+  jumpForce: 6
+  slideSpeed: 2
+  jumpOffWallSpeed: 4
+  isFallingMultiplier: 2.5
+  lowJumpMultiplier: 2
+  dashSpeed: 4.54
+  rightOffset: {x: 0.3, y: 0}
+  leftOffset: {x: -0.3, y: 0}
+  bottomOffset: {x: 0, y: -0.3}
+  collisionRadius: 0.22
 --- !u!1 &1937689014
 GameObject:
   m_ObjectHideFlags: 0
