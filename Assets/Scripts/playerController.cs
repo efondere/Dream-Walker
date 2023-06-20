@@ -12,9 +12,11 @@ public class playerController : MonoBehaviour
     public float jumpVelocity;
     public float gravityScale;
     private bool isJumping;
-
+    public float isFallingMultiplier = 2.5f;
+    public float lowJumpMultiplier = 2.0f;
     [HideInInspector] public Vector2 moveDir;
     [HideInInspector] public float yVelocity = 0;
+
     private GameObject currentBlock;
     private GameObject lastCurrentBlock;
     public playerBlocksManager playerBlocksManager;
@@ -110,8 +112,11 @@ public class playerController : MonoBehaviour
         }
 
         //Locomotion
-        ApplyGravity();
-        
+
+        if (!isJumping)
+        {
+            ApplyGravity(gravityScale);
+        }
         if (!PauseMenu.isPaused && !shiftPressed)
         {
             Move();
@@ -138,18 +143,42 @@ public class playerController : MonoBehaviour
         {
                 yVelocity = 0f;
         }
-        else if (isJumping)
-        {
-                isJumping = false;
-        }
 
         if (inputs.Movement.Jump.IsPressed())
         {
             if (isGrounded())
             {
-                isJumping = true;
                 yVelocity = jumpVelocity;
+                isJumping = true;
+
             }
+
+        }
+
+        if (isJumping)
+        {
+
+            if (yVelocity < 0f)
+            {
+                ApplyGravity(gravityScale * (isFallingMultiplier - 1f));
+
+                if (isGrounded())
+                {
+                    isJumping = false;
+                }
+            }
+            else if (yVelocity > 0f && inputs.Movement.Jump.IsPressed())
+            {
+                ApplyGravity(gravityScale * (lowJumpMultiplier - 1f));
+
+                Debug.Log("gravityScale : " + gravityScale * (lowJumpMultiplier - 1f));
+
+            }
+            else
+            {
+                ApplyGravity(gravityScale);
+            }
+
 
         }
 
@@ -163,12 +192,12 @@ public class playerController : MonoBehaviour
 
     }
 
-    private void ApplyGravity()
+    private void ApplyGravity(float gravity)
     {
         if (!isGrounded())
         {         
-            yVelocity -= Time.fixedDeltaTime * gravityScale;
-            rb.MovePosition(rb.position + Vector2.down * gravityScale * 0.5f * Mathf.Pow(Time.fixedDeltaTime, 2) + Vector2.up * yVelocity * Time.fixedDeltaTime);
+            yVelocity -= Time.fixedDeltaTime * gravity;
+            rb.MovePosition(rb.position + Vector2.down * gravity * 0.5f * Mathf.Pow(Time.fixedDeltaTime, 2) + Vector2.up * yVelocity * Time.fixedDeltaTime);
 
         }
     }
