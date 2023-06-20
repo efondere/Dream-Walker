@@ -26,6 +26,7 @@ public class Movement : MonoBehaviour
 
     private bool showGhost;
     private bool hasDashed;
+    private bool isDashing;
 
     private Vector2 moveDir = Vector2.zero;
     private Vector2 dashDir = Vector2.zero;
@@ -118,7 +119,7 @@ public class Movement : MonoBehaviour
         #endregion
 
         #region dash
-        if (inputs.Movement.Dash.WasPressedThisFrame())
+        if (inputs.Movement.Dash.WasPressedThisFrame() && !hasDashed && !isDashing)
         {
             Vector2 dashDir = new Vector2(inputs.Movement.Horizontal.ReadValue<float>(), inputs.Movement.Vertical.ReadValue<float>());
             
@@ -130,7 +131,7 @@ public class Movement : MonoBehaviour
                 StartCoroutine(Dash(rb.velocity.normalized));
             }
 
-            hasDashed = true;
+            isDashing = true;
 
         }
 
@@ -146,7 +147,7 @@ public class Movement : MonoBehaviour
             sr.DOColor(Color.white, 0.1f);
 
         }
-        else if (hasDashed)
+        else if (isDashing)
         {
             sr.DOColor(dashColor, 0.1f);
         }
@@ -172,6 +173,8 @@ public class Movement : MonoBehaviour
         Camera.main.transform.DOComplete();
         Camera.main.transform.DOShakePosition(.2f, .5f, 14, 90, false, true);
         yield return new WaitForSeconds(dashWait);
+        isDashing = false;
+        hasDashed = true;
         canMove = true;
         rb.gravityScale = gravityScale;
     }
