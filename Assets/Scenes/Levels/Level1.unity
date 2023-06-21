@@ -2307,11 +2307,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6491724029237431086, guid: 921d0d324f032f748b8fd659a05bc4ee, type: 3}
       propertyPath: gravityScale
-      value: 20
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 6491724029237431086, guid: 921d0d324f032f748b8fd659a05bc4ee, type: 3}
       propertyPath: jumpVelocity
-      value: 12.5
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6491724029237431086, guid: 921d0d324f032f748b8fd659a05bc4ee, type: 3}
+      propertyPath: lowJumpMultiplier
+      value: 1.71
       objectReference: {fileID: 0}
     - target: {fileID: 6491724029237431086, guid: 921d0d324f032f748b8fd659a05bc4ee, type: 3}
       propertyPath: healthUI.Array.size
