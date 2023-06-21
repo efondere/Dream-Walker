@@ -1,6 +1,8 @@
+using DG.Tweening.Plugins;
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -8,15 +10,30 @@ using UnityEngine.Tilemaps;
 public class TileGrid
 {
     [System.Serializable]
-    public struct rowData
+    public struct RowData
     {
         public int[] row;
     }
-    public rowData[] rows = new rowData[10];
+    public RowData[] rows;
 
     public int At(int i, int j)
     {
         return rows[j].row[i];
+    }
+}
+
+[System.Serializable]
+public struct TileGrid_
+{
+    [SerializeField]
+    public int[][] _data;
+
+    [SerializeField]
+    private int test;
+
+    public readonly int At(int i, int j)
+    {
+        return _data[i][j];
     }
 }
 
