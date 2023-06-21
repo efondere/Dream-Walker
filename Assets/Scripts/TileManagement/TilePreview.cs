@@ -22,6 +22,6 @@ public class TileGrid
 
 public class TilePreview : MonoBehaviour
 {
-    [SerializeField] public Tile[] tiles;
+    [SerializeField] public TileBase[] tiles;
     [SerializeField] public TileGrid grid;
 }
