@@ -7,44 +7,58 @@ using DG.Tweening.Plugins;
 [CustomPropertyDrawer(typeof(TileGrid))]
 public class TileGridEditor : PropertyDrawer
 {
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-    {
-        EditorGUI.PrefixLabel(position, label);
-
-        Debug.Log(property.hasChildren);
-    }
-
+    // allow to extend edges, not the full size of the grid (ie. extend by 0 is 1x1, 1 is 3x3, 2 is 5x5, etc.
+    // use Resizable grid to create a custom property drawer
     //public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     //{
     //    EditorGUI.PrefixLabel(position, label);
     //
-    //    Rect newPosition = position;
-    //    newPosition.y += 18f;
-    //    SerializedProperty rows = property.FindPropertyRelative("rows");
+    //    var data = property.FindPropertyRelative("_data.length");
+    //    Debug.Log(data);
     //
-    //    for (int i = 0; i < 5; i++)
-    //    {
-    //        SerializedProperty row = rows.GetArrayElementAtIndex(i).FindPropertyRelative("row");
-    //        newPosition.height = 20;
+    //    //var enumerator = property.GetEnumerator();
+    //    //while (enumerator.MoveNext())
+    //    //{
+    //    //    //Debug.Log((enumerator.Current as SerializedProperty).type);
+    //    //
+    //    //}
     //
-    //        if (row.arraySize != 5)
-    //            row.arraySize = 5;
+    //    //EditorGUILayout.PropertyField(data.FindPropertyRelative("size"));
     //
-    //        newPosition.width = 70;
-    //
-    //        for (int j = 0; j < 5; j++)
-    //        {
-    //            EditorGUI.PropertyField(newPosition, row.GetArrayElementAtIndex(j), GUIContent.none);
-    //            newPosition.x += newPosition.width;
-    //        }
-    //
-    //        newPosition.x = position.x;
-    //        newPosition.y += 20;
-    //    }
+    //    //Debug.Log(property.FindPropertyRelative("_data").arraySize);
     //}
 
-    //public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-    //{
-    //    return 20 * 12;
-    //}
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        EditorGUI.PrefixLabel(position, label);
+    
+        Rect newPosition = position;
+        newPosition.y += 18f;
+        SerializedProperty rows = property.FindPropertyRelative("rows");
+    
+        for (int i = 0; i < 5; i++)
+        {
+            SerializedProperty row = rows.GetArrayElementAtIndex(i).FindPropertyRelative("row");
+            newPosition.height = 20;
+    
+            if (row.arraySize != 5)
+                row.arraySize = 5;
+    
+            newPosition.width = 70;
+    
+            for (int j = 0; j < 5; j++)
+            {
+                EditorGUI.PropertyField(newPosition, row.GetArrayElementAtIndex(j), GUIContent.none);
+                newPosition.x += newPosition.width;
+            }
+    
+            newPosition.x = position.x;
+            newPosition.y += 20;
+        }
+    }
+    
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        return 20 * 12;
+    }
 }

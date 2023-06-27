@@ -18,7 +18,7 @@ public class TileGrid
 
     public int At(int i, int j)
     {
-        return rows[j].row[i];
+        return rows[4 - j].row[i];
     }
 }
 
@@ -26,14 +26,11 @@ public class TileGrid
 public struct TileGrid_
 {
     [SerializeField]
-    public int[][] _data;
-
-    [SerializeField]
-    private int test;
+    private int[] _data;
 
     public readonly int At(int i, int j)
     {
-        return _data[i][j];
+        return _data[i * 5 + j];
     }
 }
 
