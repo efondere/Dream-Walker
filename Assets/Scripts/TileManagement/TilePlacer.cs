@@ -3,20 +3,29 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.Timeline;
 
+/// <summary>
+    /// This script is used on the player object to place tiles.
+    /// </summary>
+    /// Change the _placeable object from another script to control which object is being placed.
+    /// TODO: manage placeable rotation in here (just call a function on the placeable script)
+    /// TODO: [EXTRA] the rotation function in the Placeable script can return a boolean and we can play an animation
+    /// TODO: [EXTRA, CONT'] when the tile placer receives false. (Shake the placeholderPreview tilemap grid?)
 public class TilePlacer : MonoBehaviour
 {
-    [SerializeField] private Tilemap _previewTilemap; // give ref to grid here instead
-    [SerializeField] private Tilemap _physicalTilemap;
-    [SerializeField] private Camera _camera;
-    [SerializeField] private Animator _animator; // get compoenent instead
+    [SerializeField] private Tilemap _previewTilemap;
+    private Camera _camera;
+    private Animator _animator;
 
-    [SerializeField] private Placeable _placeable;
+    public Placeable placeable; // TODO: add [HideInInspector]
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        // TODO: does this go in Awake() instead?
+        _animator = _previewTilemap.GetComponent<Animator>();
+        _camera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
     }
 
     // Update is called once per frame
@@ -25,15 +34,18 @@ public class TilePlacer : MonoBehaviour
         _previewTilemap.ClearAllTiles();
         var position = _previewTilemap.WorldToCell(_camera.ScreenToWorldPoint(Input.mousePosition));
 
-        for (int i = 0; i < 5; i++)
+        var gridExtension = placeable.tilePreview.grid.GetExtension();
+
+        for (int i = -(int)gridExtension; i < gridExtension; i++)
         {
-            for (int j = 0; j < 5; j++)
+            for (int j = -(int)gridExtension; j < gridExtension; j++)
             {
-                if (_placeable.tilePreview.grid.At(i, j) == -1)
+                // TODO: something is wrong in the way we index this array.
+                if (placeable.tilePreview.grid.GetTile(i, j) == -1)
                     continue;
 
-                var tile = _placeable.tilePreview.tiles[_placeable.tilePreview.grid.At(i, j)];
-                var pos = new Vector3Int(position.x - 2 + i, position.y - 2 + j, position.z);
+                var tile = placeable.tilePreview.tiles[placeable.tilePreview.grid.GetTile(i, j)];
+                var pos = new Vector3Int(position.x + i, position.y + j, position.z);
 
                 _previewTilemap.SetTile(pos, tile);
             }
@@ -47,7 +59,7 @@ public class TilePlacer : MonoBehaviour
 
     void PlaceTile(Vector3Int position)
     {
-        if (!_placeable.OnPlace(position, _previewTilemap as GridLayout))
+        if (!placeable.OnPlace(position, _previewTilemap as GridLayout))
         {
             _animator.SetTrigger("InvalidPlacement");
         }

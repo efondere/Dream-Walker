@@ -9,14 +9,16 @@ public class PlaceableTile : Placeable
 
     public override bool OnPlace(Vector3Int position, GridLayout grid)
     {
-        for (int i = 0; i < 5; i++)
+        var gridExtension = tilePreview.grid.GetExtension();
+
+        for (int i = -(int)gridExtension; i < gridExtension; i++)
         {
-            for (int j = 0; j < 5; j++)
+            for (int j = -(int)gridExtension; j < gridExtension; j++)
             {
-                if (tilePreview.grid.At(i, j) == -1) // -1 is no tile, 0 is air visualization
+                if (tilePreview.grid.GetTile(i, j) == -1) // -1 is no tile, 0 is air visualization
                     continue;
 
-                var pos = new Vector3Int(position.x - 2 + i, position.y - 2 + j, position.z);
+                var pos = new Vector3Int(position.x + i, position.y + j, position.z);
                 if (collisionManager.isColliding(pos))
                 {
                     return false;
@@ -24,17 +26,17 @@ public class PlaceableTile : Placeable
             }
         }
 
-        for (int i = 0; i < 5;  i++)
+        for (int i = -(int)gridExtension; i < gridExtension; i++)
         {
-            for (int j = 0; j < 5; j++)
+            for (int j = -(int)gridExtension; j < gridExtension; j++)
             {
-                if (tilePreview.grid.At(i, j) == -1)
+                if (tilePreview.grid.GetTile(i, j) == -1)
                     continue;
-                if (tilePreview.grid.At(i, j) == 0)
+                if (tilePreview.grid.GetTile(i, j) == 0)
                     continue;
 
-                var tile = tilePreview.tiles[tilePreview.grid.At(i, j)];
-                var pos = new Vector3Int(position.x - 2 + i, position.y - 2 + j, position.z);
+                var tile = tilePreview.tiles[tilePreview.grid.GetTile(i, j)];
+                var pos = new Vector3Int(position.x + i, position.y + j, position.z);
 
                 tileset.SetTile(pos, tile);
             }

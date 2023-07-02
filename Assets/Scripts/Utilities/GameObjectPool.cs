@@ -4,15 +4,33 @@ using UnityEngine;
 
 public class GameObjectPool : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private GameObject _prefab;
+    
+    private List<GameObject> _gameObjects = new List<GameObject>();
 
-    // Update is called once per frame
-    void Update()
+    void Instantiate(Vector3 position, Quaternion rotation)
     {
+        for (int i = 0; i < _gameObjects.Count; i++)
+        {
+            if (_gameObjects[i].activeInHierarchy)
+            {
+                continue;
+            }
+            else
+            {
+                _gameObjects[i].transform.position = position;
+                _gameObjects[i].transform.rotation = rotation;
+                _gameObjects[i].SetActive(true);
+
+                return;
+            }
+        }
         
+        // not enough game objects.
+        var obj = Instantiate(_prefab, transform); // create as child of GameObjectPool
+        obj.transform.position = position;
+        obj.transform.rotation = rotation;
+        
+        _gameObjects.Add(obj);
     }
 }

@@ -1429,6 +1429,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
+--- !u!114 &1328360388 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 487656690593299823, guid: 91bc06659b4a78b4d9096e1bb7ba4eb9, type: 3}
+  m_PrefabInstance: {fileID: 1792805839}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cd3c77420b14f646b90cdf2c282b8db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1453937063
 GameObject:
   m_ObjectHideFlags: 0
@@ -1747,17 +1758,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1636733184 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6500685643678933575, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
-  m_PrefabInstance: {fileID: 1193983519}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6959850fcf7100f4d93283cb72e2657b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1792805839
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1775,12 +1775,52 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 487656690593299820, guid: 91bc06659b4a78b4d9096e1bb7ba4eb9, type: 3}
+      propertyPath: grid._extension
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 487656690593299820, guid: 91bc06659b4a78b4d9096e1bb7ba4eb9, type: 3}
       propertyPath: tiles.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: d34aea5e9df8b6248b5dd79e76bdb3f4, type: 2}
     - target: {fileID: 487656690593299820, guid: 91bc06659b4a78b4d9096e1bb7ba4eb9, type: 3}
       propertyPath: grid._data.Array.size
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 487656690593299820, guid: 91bc06659b4a78b4d9096e1bb7ba4eb9, type: 3}
+      propertyPath: grid._tiles.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 487656690593299820, guid: 91bc06659b4a78b4d9096e1bb7ba4eb9, type: 3}
+      propertyPath: grid._tiles.Array.data[1]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 487656690593299820, guid: 91bc06659b4a78b4d9096e1bb7ba4eb9, type: 3}
+      propertyPath: grid._tiles.Array.data[2]
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 487656690593299820, guid: 91bc06659b4a78b4d9096e1bb7ba4eb9, type: 3}
+      propertyPath: grid._tiles.Array.data[3]
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 487656690593299820, guid: 91bc06659b4a78b4d9096e1bb7ba4eb9, type: 3}
+      propertyPath: grid._tiles.Array.data[4]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 487656690593299820, guid: 91bc06659b4a78b4d9096e1bb7ba4eb9, type: 3}
+      propertyPath: grid._tiles.Array.data[5]
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 487656690593299820, guid: 91bc06659b4a78b4d9096e1bb7ba4eb9, type: 3}
+      propertyPath: grid._tiles.Array.data[6]
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 487656690593299820, guid: 91bc06659b4a78b4d9096e1bb7ba4eb9, type: 3}
+      propertyPath: grid._tiles.Array.data[7]
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 487656690593299820, guid: 91bc06659b4a78b4d9096e1bb7ba4eb9, type: 3}
+      propertyPath: grid._tiles.Array.data[8]
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 487656690593299820, guid: 91bc06659b4a78b4d9096e1bb7ba4eb9, type: 3}
       propertyPath: grid.rows.Array.data[1].row.Array.data[2]
@@ -1877,10 +1917,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _previewTilemap: {fileID: 1570140871}
-  _physicalTilemap: {fileID: 842733170}
-  _camera: {fileID: 67458052}
-  _animator: {fileID: 1570140872}
-  _placeable: {fileID: 1636733184}
+  placeable: {fileID: 1328360388}
 --- !u!4 &2118867237
 Transform:
   m_ObjectHideFlags: 0
