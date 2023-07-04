@@ -10,7 +10,7 @@ using UnityEngine.Assertions;
 public class PlaceholderPreviewer : MonoBehaviour
 {
     // tmp: using SerializeField for testing here
-    private ResizableTilemap _tiles;
+    private ResizableTilemap _tiles = new ResizableTilemap();
     private Grid _grid;
     private GameObjectPool _particleSystems;
     private bool _isRendering;

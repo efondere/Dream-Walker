@@ -7,32 +7,30 @@ public class PlaceableTile : Placeable
 {
     [SerializeField] public Tilemap tileset;
 
-    public override bool OnPlace(Vector3Int position, GridLayout grid)
+    public override bool OnPlace(Vector3Int position)
     {
         var gridExtension = tilePreview.grid.GetExtension();
 
-        for (int i = -(int)gridExtension; i < gridExtension; i++)
+        for (int i = -(int)gridExtension; i <= gridExtension; i++)
         {
-            for (int j = -(int)gridExtension; j < gridExtension; j++)
+            for (int j = -(int)gridExtension; j <= gridExtension; j++)
             {
                 if (tilePreview.grid.GetTile(i, j) == -1) // -1 is no tile, 0 is air visualization
                     continue;
 
                 var pos = new Vector3Int(position.x + i, position.y + j, position.z);
-                if (collisionManager.isColliding(pos))
+                if (tilemapManager.IsColliding(pos))
                 {
                     return false;
                 }
             }
         }
 
-        for (int i = -(int)gridExtension; i < gridExtension; i++)
+        for (int i = -(int)gridExtension; i <= gridExtension; i++)
         {
-            for (int j = -(int)gridExtension; j < gridExtension; j++)
+            for (int j = -(int)gridExtension; j <= gridExtension; j++)
             {
-                if (tilePreview.grid.GetTile(i, j) == -1)
-                    continue;
-                if (tilePreview.grid.GetTile(i, j) == 0)
+                if (tilePreview.grid.GetTile(i, j) <= -1)
                     continue;
 
                 var tile = tilePreview.tiles[tilePreview.grid.GetTile(i, j)];

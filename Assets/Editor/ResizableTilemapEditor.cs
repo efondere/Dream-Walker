@@ -1,10 +1,5 @@
-using DG.DOTweenEditor.UI;
-using GluonGui.WorkspaceWindow.Views.WorkspaceExplorer.Search;
-using TMPro;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Animations;
-using UnityEngine.UIElements;
 
 [CustomPropertyDrawer(typeof(ResizableTilemap))]
 public class ResizableTilemapEditor : PropertyDrawer
@@ -41,8 +36,9 @@ public class ResizableTilemapEditor : PropertyDrawer
             {
                 for (int x = 0; x < sideLength; x++)
                 {
+                    // Unity defines +y as up and we'll store the data in a similar way (hence the sideLength - 1 - y).
                     EditorGUI.PropertyField(boxPosition, arrayProperty.GetArrayElementAtIndex(
-                        x + sideLength * y), GUIContent.none); // GUIContent.none => don't show name label
+                        x + sideLength * (sideLength - 1 - y)), GUIContent.none); // GUIContent.none => don't show name label
                     boxPosition.x += boxPosition.width;
                 }
 
@@ -57,7 +53,7 @@ public class ResizableTilemapEditor : PropertyDrawer
         
         //update array after so property height is changed before re-drawing the grid (hopefully) -> check if this is actually ok
         // TODO: to prevent losing data when modifying the value in the extension, we should check that "_extension" != 0
-        // TODO (Cont'): before getting rid of the old data.
+        // TODO (Cont'): before getting rid of the old data. + DOES THIS APPLY TO ANY DOWNSIZING?
         var extension = property.FindPropertyRelative("_extension").uintValue;
         var newSize = 2 * extension + 1;
         if (arrayProperty.arraySize != newSize * newSize)
@@ -73,9 +69,7 @@ public class ResizableTilemapEditor : PropertyDrawer
 
             arrayProperty.arraySize = (int)(newSize * newSize);
 
-            // unity has +y going up, so we need to invert the way the data is represented here by going from bottom
-            // (more negative) to top (more positive) as reflected by how signs are flipped between the for loops.
-            for (long y = extension - 1; y >= -extension; y--)
+            for (var y = -extension; y < extension; y++)
             {
                 for (var x = -extension; x < extension; x++)
                 {

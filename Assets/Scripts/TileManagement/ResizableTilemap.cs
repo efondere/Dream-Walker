@@ -34,6 +34,8 @@ public class ResizableTilemap
         if (Mathf.Abs(x) > _extension || Mathf.Abs(y) > _extension)
             return -1; // return -1 when outside of grid.
 
+        // TODO: unity has +y going up, so we need to invert the way the data is represented here by going from bottom
+        // (more negative) to top (more positive) as reflected by how signs are flipped between the for loops.
         var size = _extension * 2 + 1;
         return _tiles[(x + _extension) + size * (y + _extension)];
     }
