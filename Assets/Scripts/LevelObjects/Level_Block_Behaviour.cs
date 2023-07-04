@@ -29,7 +29,7 @@ public class Level_Block_Behaviour : MonoBehaviour
     
 
     public Rigidbody2D rb;
-    private playerController playerController;
+    private playerController1 playerController;
     private Collider2D thisCollider;
     private float gameTimeStamp;
 
@@ -42,7 +42,7 @@ public class Level_Block_Behaviour : MonoBehaviour
         nbSecondsLeftAtTarget = nbSecondsAtTarget;
         timeBeforeAppear = startTimeBeforeAppear;
         thisCollider = gameObject.GetComponent<Collider2D>();
-        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<playerController>();
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<playerController1>();
     }
 
     private void FixedUpdate()

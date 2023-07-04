@@ -13,22 +13,22 @@ public class CameraFollow : MonoBehaviour
     public static bool shouldCameraFollow = false;
     // private float savedMoveSpeed;
     // private bool moveSpeedIsSaved = false;
-    public float distFromCamToStopFollow;
-    public float distFromCamToStartFollow;
-    private playerController playerController;
-
-
+    // public float distFromCamToStopFollow;
+    // public float distFromCamToStartFollow;
+    private InputManager inputManager;
+    private Transform playerTransform;
     public AudioClip mainClip;
     public AudioSource audioSource;
 
     public float zoomVelocity;
     public float startTimeBeforeZoomOut;
     private float timeBeforeZoomOut;
-
+    private float playerYSpeed;
 
     private void Start()
     {
-        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<playerController>();
+        inputManager = GameObject.FindWithTag("Player").GetComponent<InputManager>();
+        playerTransform = GameObject.FindWithTag("Player").GetComponent<Transform>();
     }
 
     void Update()
@@ -59,7 +59,7 @@ public class CameraFollow : MonoBehaviour
         Debug.Log("Axis Horizontal = " + Input.GetAxis("Horizontal"));
 
         // camera zooming out (if player is editing, or is moving) or in
-        if (((Mathf.Abs(Input.GetAxis("Horizontal")) <= 0.01f && Mathf.Abs(playerController.yVelocity) <= 0.01f) || (playerController.shiftPressed && !PauseMenu.isPaused)) && timeBeforeZoomOut <= 0.01f)
+        if (Mathf.Abs(inputManager.HorizontalInput().x) <= 0.01f || Mathf.Abs(inputManager.JumpInput()) < 0 || (inputManager.IsEditing() && timeBeforeZoomOut <= 0.01f))
         {
             cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, 7f, ref zoomVelocity, 1f);
         }

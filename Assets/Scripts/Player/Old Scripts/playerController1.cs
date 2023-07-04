@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using DG.Tweening.Plugins;
 
-public class playerController : MonoBehaviour
+public class playerController1 : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Collider2D groundChecker;
@@ -97,6 +98,7 @@ public class playerController : MonoBehaviour
 
 
     }
+
     private void FixedUpdate()
     {
         
@@ -348,10 +350,6 @@ public class playerController : MonoBehaviour
             currentBlock = null;
         }  
     }
-
-
-
-
 
    private void IndicateWrongSpawnPos()
     {
