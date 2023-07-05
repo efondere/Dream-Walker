@@ -3,10 +3,7 @@ using UnityEngine.Tilemaps;
 
 public class PlaceablePrefab : Placeable
 {
-    [SerializeField] public Tilemap tileset;
-    [SerializeField] public Tilemap placeholderPreview;
     [SerializeField] public GameObject prefab;
-    [SerializeField] public AnimatedTile placeholderTile;
 
     public override bool OnPlace(Vector3Int position)
     {
@@ -16,11 +13,11 @@ public class PlaceablePrefab : Placeable
         {
             for (int j = -(int)gridExtension; j <= gridExtension; j++)
             {
-                if (tilePreview.grid.GetTile(i, j) == -1) // -1 is no tile, 0 is air visualization
+                if (tilePreview.grid.GetTile(i, j) == -1)
                     continue;
 
                 var pos = new Vector3Int(position.x + i, position.y + j, position.z);
-                if (tilemapManager.IsColliding(pos))
+                if (_tilemapManager.IsColliding(pos))
                 {
                     return false;
                 }
@@ -31,24 +28,25 @@ public class PlaceablePrefab : Placeable
         {
             for (int j = -(int)gridExtension; j <= gridExtension; j++)
             {
-                if (tilePreview.grid.GetTile(i, j) < 0)
+                var tileID = tilePreview.grid.GetTile(i, j);
+                
+                if (tileID == -1)
                     continue;
 
                 var pos = new Vector3Int(position.x + i, position.y + j, position.z);
                 
-                if (tilePreview.grid.GetTile(i, j) == 0)
+                if (tilePreview.grid.GetTile(i, j) < -1)
                 {
-                    placeholderPreview.SetTile(pos, placeholderTile);
+                    _tilemapManager.PlacePlaceholderTile(pos, tileID);
                 }
                 else
                 {
-                    var tile = tilePreview.tiles[tilePreview.grid.GetTile(i, j)];
-                    placeholderPreview.SetTile(pos, tile);
+                    _tilemapManager.PlaceSolidTile(pos, tilePreview.tiles[tileID]);
                 }
             }
         }
 
-        Instantiate(prefab, tilemapManager.CellToWorld(position), Quaternion.identity);
+        Instantiate(prefab, _tilemapManager.CellToWorld(position), Quaternion.identity);
 
         return true;
     }

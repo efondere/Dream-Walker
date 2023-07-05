@@ -29,7 +29,7 @@ public class ResizableTilemapEditor : PropertyDrawer
 
             position.y += EditorGUIUtility.singleLineHeight;
             var sideLength = Mathf.RoundToInt(Mathf.Sqrt(arrayProperty.arraySize));
-            var boxPosition = position; //TODO: check indent! (and fix here in `position` variable if needed)
+            var boxPosition = position;
             boxPosition.width /= sideLength;
             
             for (int y = 0; y < sideLength; y++)

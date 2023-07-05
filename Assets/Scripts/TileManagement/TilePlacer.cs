@@ -13,16 +13,17 @@ public class TilePlacer : MonoBehaviour
     private Tilemap _previewTilemap;
     private Camera _camera;
     private Animator _animator;
+    private PlacePreviewTileManager _placePreviewTileManager;
 
     public Placeable placeable; // TODO: add [HideInInspector]
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        // TODO: does this go in Awake() instead?
         var previewTilemapObject = transform.Find("PlacePreview");
         _previewTilemap = previewTilemapObject.GetComponent<Tilemap>();
         _animator = previewTilemapObject.GetComponent<Animator>();
+        _placePreviewTileManager = previewTilemapObject.GetComponent<PlacePreviewTileManager>();
         _camera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         _previewTilemap = transform.Find("PlacePreview").GetComponent<Tilemap>();
     }
@@ -39,11 +40,21 @@ public class TilePlacer : MonoBehaviour
         {
             for (int j = -(int)gridExtension; j <= gridExtension; j++)
             {
-                // TODO: we should also show -ve tiles
-                if (placeable.tilePreview.grid.GetTile(i, j) <= -1)
+                var tileID = placeable.tilePreview.grid.GetTile(i, j);
+                
+                if (tileID == -1)
                     continue;
+                
+                TileBase tile;
+                if (tileID < -1)
+                {
+                    tile = _placePreviewTileManager.GetTile((-tileID) - 2);
+                }
+                else
+                {
+                    tile = placeable.tilePreview.tiles[placeable.tilePreview.grid.GetTile(i, j)];
+                }
 
-                var tile = placeable.tilePreview.tiles[placeable.tilePreview.grid.GetTile(i, j)];
                 var pos = new Vector3Int(position.x + i, position.y + j, position.z);
 
                 _previewTilemap.SetTile(pos, tile);
