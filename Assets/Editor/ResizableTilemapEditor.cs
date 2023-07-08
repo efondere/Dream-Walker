@@ -11,7 +11,6 @@ public class ResizableTilemapEditor : PropertyDrawer
         EditorGUI.BeginProperty(position, label, property);
         position.height = EditorGUIUtility.singleLineHeight;
 
-            
         _showGrid = EditorGUI.BeginFoldoutHeaderGroup(position, _showGrid, label);
         
         var arrayProperty = property.FindPropertyRelative("_tiles");
