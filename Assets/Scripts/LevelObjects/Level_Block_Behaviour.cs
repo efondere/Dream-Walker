@@ -29,7 +29,7 @@ public class Level_Block_Behaviour : MonoBehaviour
     
 
     public Rigidbody2D rb;
-    private playerController1 playerController;
+    private LifeManager lifeManager;
     private Collider2D thisCollider;
     private float gameTimeStamp;
 
@@ -42,7 +42,7 @@ public class Level_Block_Behaviour : MonoBehaviour
         nbSecondsLeftAtTarget = nbSecondsAtTarget;
         timeBeforeAppear = startTimeBeforeAppear;
         thisCollider = gameObject.GetComponent<Collider2D>();
-        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<playerController1>();
+        lifeManager = GameObject.FindGameObjectWithTag("Player").GetComponent<LifeManager>();
     }
 
     private void FixedUpdate()
@@ -137,11 +137,11 @@ public class Level_Block_Behaviour : MonoBehaviour
                 {
                     if (damage == -1)
                     {
-                        playerController.Lives = 0;
+                        lifeManager.Lives = 0;
                     }
                     else
                     {
-                        playerController.Lives -= damage;
+                        lifeManager.Lives -= damage;
                     }
 
                     timeBtwDamages = startTimeBtwDamages;
@@ -199,11 +199,11 @@ public class Level_Block_Behaviour : MonoBehaviour
                 {
                     if (damage == -1)
                     {
-                        playerController.Lives = 0;
+                        lifeManager.Lives = 0;
                     }
                     else
                     {
-                        playerController.Lives -= damage;
+                        lifeManager.Lives -= damage;
                     }
                     timeBtwDamages = startTimeBtwDamages;
                 }
