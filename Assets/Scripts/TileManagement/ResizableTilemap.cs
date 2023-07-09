@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
+// TODO: enable modifications in Unity editor for the tiles we place.
 [Serializable]
 public class ResizableTilemap
 {

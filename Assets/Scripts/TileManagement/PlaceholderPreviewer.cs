@@ -1,12 +1,9 @@
-using DG.Tweening.Plugins;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.PlayerLoop;
 
+[RequireComponent(typeof(GameObjectPool))]
 public class PlaceholderPreviewer : MonoBehaviour
 {
     // tmp: using SerializeField for testing here
@@ -18,6 +15,8 @@ public class PlaceholderPreviewer : MonoBehaviour
     void Start()
     {
         _grid = GetComponentInParent<Grid>();
+        _particleSystems = GetComponent<GameObjectPool>();
+        SetRendering(true);
     }
 
     public int GetTile(int x, int y)
@@ -55,10 +54,29 @@ public class PlaceholderPreviewer : MonoBehaviour
         {
             UpdateRenderer();
         }
+        else
+        {
+            _particleSystems.ClearAll();
+        }
     }
 
     void UpdateRenderer()
     {
-        throw new NotImplementedException();
+        //TODO: fix the following line so that particles don't get reset on accident.
+        _particleSystems.ClearAll();
+        
+        var size = 1 + 2 * _tiles.GetExtension();
+
+        for (int y = -(int)_tiles.GetExtension(); y <= _tiles.GetExtension(); y++)
+        {
+            for (int x = -(int)_tiles.GetExtension(); x <= _tiles.GetExtension(); x++)
+            {
+                if (GetTile(x, y) != -1)
+                {
+                    var pos = _grid.CellToWorld(new Vector3Int(x, y, 0)) + new Vector3(0.5f, 0.5f, 0);
+                    _particleSystems.Instantiate(pos, Quaternion.identity);
+                }
+            }
+        }
     }
 }

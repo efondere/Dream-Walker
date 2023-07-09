@@ -8,7 +8,7 @@ public class GameObjectPool : MonoBehaviour
     
     private List<GameObject> _gameObjects = new List<GameObject>();
 
-    void Instantiate(Vector3 position, Quaternion rotation)
+    public void Instantiate(Vector3 position, Quaternion rotation)
     {
         for (int i = 0; i < _gameObjects.Count; i++)
         {
@@ -32,5 +32,13 @@ public class GameObjectPool : MonoBehaviour
         obj.transform.rotation = rotation;
         
         _gameObjects.Add(obj);
+    }
+
+    public void ClearAll()
+    {
+        for (int i = 0; i < _gameObjects.Count; i++)
+        {
+            _gameObjects[i].SetActive(false);
+        }
     }
 }

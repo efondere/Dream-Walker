@@ -15,6 +15,8 @@ public class TilePlacer : MonoBehaviour
     private Animator _animator;
     private PlacePreviewTileManager _placePreviewTileManager;
 
+    private int _invalidPlacementAnimatorHash;
+
     public Placeable placeable; // TODO: add [HideInInspector]
 
     // Start is called before the first frame update
@@ -26,6 +28,8 @@ public class TilePlacer : MonoBehaviour
         _placePreviewTileManager = previewTilemapObject.GetComponent<PlacePreviewTileManager>();
         _camera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         _previewTilemap = transform.Find("PlacePreview").GetComponent<Tilemap>();
+
+        _invalidPlacementAnimatorHash = Animator.StringToHash("InvalidPlacement");
     }
 
     // Update is called once per frame
@@ -71,8 +75,7 @@ public class TilePlacer : MonoBehaviour
     {
         if (!placeable.OnPlace(position))
         {
-            //TODO: Is there a better way to trigger the animation?
-            _animator.SetTrigger("InvalidPlacement");
+            _animator.SetTrigger(_invalidPlacementAnimatorHash);
         }
     }
 }
