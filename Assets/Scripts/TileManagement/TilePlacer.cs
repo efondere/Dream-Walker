@@ -1,12 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Xml.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
 
 /// <summary>
@@ -40,7 +32,6 @@ public class TilePlacer : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        
         inputManager = new Inputs();
         inputManager.Editing.Enable();
         var previewTilemapObject = transform.Find("PlacePreview");
@@ -97,8 +88,6 @@ public class TilePlacer : MonoBehaviour
         }
     }
 
-
-
     void PlaceTile(Vector3Int position)
     {
         if (!placeable.OnPlace(position))
@@ -119,8 +108,6 @@ public class TilePlacer : MonoBehaviour
             rotation--;
 
     }
-
-
 }
 
 // Top = (j * -1, i * 1)

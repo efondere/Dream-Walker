@@ -347,7 +347,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotation: 0
-  placeable: {fileID: 509468271}
+  placeable: {fileID: 1021769608}
 --- !u!1001 &725041514
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2169,7 +2169,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 487656690593299820, guid: 91bc06659b4a78b4d9096e1bb7ba4eb9, type: 3}
       propertyPath: grid._tiles.Array.data[4]
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 487656690593299820, guid: 91bc06659b4a78b4d9096e1bb7ba4eb9, type: 3}
       propertyPath: grid._tiles.Array.data[5]
@@ -2181,7 +2181,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 487656690593299820, guid: 91bc06659b4a78b4d9096e1bb7ba4eb9, type: 3}
       propertyPath: grid._tiles.Array.data[7]
-      value: -2
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 487656690593299820, guid: 91bc06659b4a78b4d9096e1bb7ba4eb9, type: 3}
       propertyPath: grid._tiles.Array.data[8]
