@@ -1,11 +1,12 @@
 using UnityEditor;
 using UnityEngine;
 
-// TODO: check for more bugs when resizing.
 [CustomPropertyDrawer(typeof(ResizableTilemap))]
 public class ResizableTilemapEditor : PropertyDrawer
 {
     private bool _showGrid = true; // this is recommended by unity, however it is reset whenever we enter play mode...
+    private int[] _tempData = { -1 }; // this array will be kept at the largest size ever used to prevent losing data when resizing
+    // however, it will be reset every time play mode is entered/exited (which is fine)
     
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
@@ -52,34 +53,62 @@ public class ResizableTilemapEditor : PropertyDrawer
         EditorGUI.EndFoldoutHeaderGroup();
         
         //update array after so property height is changed before re-drawing the grid (hopefully) -> check if this is actually ok
-        // TODO: to prevent losing data when modifying the value in the extension, we should check that "_extension" != 0
-        // TODO (Cont'): before getting rid of the old data. + DOES THIS APPLY TO ANY DOWNSIZING?
-        var extension = property.FindPropertyRelative("_extension").uintValue;
-        var newSize = 2 * extension + 1;
+        var newExtension = (int)property.FindPropertyRelative("_extension").uintValue;
+        var newSize = 2 * newExtension + 1;
         if (arrayProperty.arraySize != newSize * newSize)
         {
-            var oldSize = Mathf.RoundToInt(Mathf.Sqrt(arrayProperty.arraySize));
-            var oldExtension = (oldSize - 1) / 2;
+            int tempExtension;
             
-            int[] oldData = new int[arrayProperty.arraySize];
-            for (int i = 0; i < arrayProperty.arraySize; i++)
+            // 1. copy data into _tempData, saving all changes made to the array.
+            if (_tempData.Length <= arrayProperty.arraySize)
             {
-                oldData[i] = arrayProperty.GetArrayElementAtIndex(i).intValue; // copy old data;
+                // old data was smaller or of equal size, just resize it and override its data.
+                _tempData = new int[arrayProperty.arraySize];
+                for (var i = 0; i < _tempData.Length; i++)
+                {
+                    _tempData[i] = arrayProperty.GetArrayElementAtIndex(i).intValue;
+                }
+
+                tempExtension = (Mathf.RoundToInt(Mathf.Sqrt(_tempData.Length)) - 1) / 2;
+            }
+            else
+            {
+                // old data was of bigger size. Don't change the size, but update the contents of the overlapping region
+                var oldSize = Mathf.RoundToInt(Mathf.Sqrt(arrayProperty.arraySize));
+                var oldExtension = (oldSize - 1) / 2;
+
+                var tempSize = Mathf.RoundToInt(Mathf.Sqrt(_tempData.Length));
+                tempExtension = (tempSize - 1) / 2;
+                
+                for (var y = -oldExtension; y <= oldExtension; y++)
+                {
+                    for (var x = -oldExtension; x <= oldExtension; x++)
+                    {
+                        _tempData[(x + tempExtension) + tempSize * (y + tempExtension)] =
+                            arrayProperty.GetArrayElementAtIndex((x + oldExtension) + oldSize * (y + oldExtension))
+                                .intValue;
+                    }
+                }
             }
 
             arrayProperty.arraySize = (int)(newSize * newSize);
 
-            for (var y = -extension; y < extension; y++)
+            for (var y = -newExtension; y <= newExtension; y++)
             {
-                for (var x = -extension; x < extension; x++)
+                for (var x = -newExtension; x <= newExtension; x++)
                 {
-                    if (Mathf.Abs(y) > oldExtension || Mathf.Abs(x) > oldExtension)
+                    if (Mathf.Abs(y) > tempExtension || Mathf.Abs(x) > tempExtension)
+                    {
                         arrayProperty.GetArrayElementAtIndex(
-                            (int)((x + extension) + newSize * (y + extension))).intValue = -1;
+                            ((x + newExtension) + newSize * (y + newExtension))).intValue = -1;
+                    }
                     else
+                    {
+                        var tempSize = (tempExtension * 2) + 1;
                         arrayProperty.GetArrayElementAtIndex(
-                            (int)((x + extension) + newSize * (y + extension))).intValue =
-                            oldData[x + oldExtension + oldSize * (y + oldExtension)];
+                                ((x + newExtension) + newSize * (y + newExtension))).intValue =
+                            _tempData[x + tempExtension + tempSize * (y + tempExtension)];
+                    }
                 }
             }
         }
