@@ -346,7 +346,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70779f80253e342499a6c5870910b362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placeable: {fileID: 1021769608}
+  rotation: 0
+  placeable: {fileID: 509468271}
 --- !u!1001 &725041514
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1542,7 +1543,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._extension
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: tiles.Array.size
@@ -1562,7 +1563,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: bef04d7833984294a9433e732868bf3b, type: 2}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.size
-      value: 9
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.data[1]
@@ -1586,7 +1587,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.data[6]
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.data[7]
@@ -1594,7 +1595,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.data[8]
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.data[9]
@@ -1602,7 +1603,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.data[10]
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.data[11]
@@ -1614,7 +1615,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.data[13]
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.data[14]
@@ -1638,7 +1639,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.data[19]
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.data[20]

@@ -1,4 +1,12 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Xml.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
 
 /// <summary>
@@ -10,6 +18,15 @@ using UnityEngine.Tilemaps;
 /// TODO: [EXTRA, CONT'] when the tile placer receives false. (Shake the placeholderPreview tilemap grid?)
 public class TilePlacer : MonoBehaviour
 {
+    public enum Rotation
+    {
+        Right,
+        Bottom, 
+        Left, 
+        Top
+    }
+    public Rotation rotation;
+
     private Tilemap _previewTilemap;
     private Camera _camera;
     private Animator _animator;
@@ -19,9 +36,13 @@ public class TilePlacer : MonoBehaviour
 
     public Placeable placeable; // TODO: add [HideInInspector]
 
+    private Inputs inputManager;
     // Start is called before the first frame update
     void Awake()
     {
+        
+        inputManager = new Inputs();
+        inputManager.Editing.Enable();
         var previewTilemapObject = transform.Find("PlacePreview");
         _previewTilemap = previewTilemapObject.GetComponent<Tilemap>();
         _animator = previewTilemapObject.GetComponent<Animator>();
@@ -44,7 +65,7 @@ public class TilePlacer : MonoBehaviour
         {
             for (int j = -(int)gridExtension; j <= gridExtension; j++)
             {
-                var tileID = placeable.tilePreview.grid.GetTile(i, j);
+                var tileID = placeable.tilePreview.GetTile(i, j, (int)rotation);
                 
                 if (tileID == -1)
                     continue;
@@ -56,7 +77,7 @@ public class TilePlacer : MonoBehaviour
                 }
                 else
                 {
-                    tile = placeable.tilePreview.tiles[placeable.tilePreview.grid.GetTile(i, j)];
+                    tile = placeable.tilePreview.tiles[placeable.tilePreview.GetTile(i, j, (int)rotation)];
                 }
 
                 var pos = new Vector3Int(position.x + i, position.y + j, position.z);
@@ -69,7 +90,14 @@ public class TilePlacer : MonoBehaviour
         {
             PlaceTile(position);
         }
+
+        if (inputManager.Editing.Rotate.WasPressedThisFrame())
+        {
+            Rotate((int)inputManager.Editing.Rotate.ReadValue<float>());
+        }
     }
+
+
 
     void PlaceTile(Vector3Int position)
     {
@@ -78,4 +106,26 @@ public class TilePlacer : MonoBehaviour
             _animator.SetTrigger(_invalidPlacementAnimatorHash);
         }
     }
+
+    private void Rotate(int direction)
+    {
+        if (direction > 0 && rotation == Rotation.Top)
+            rotation = Rotation.Right;
+        else if (direction < 0 && rotation == Rotation.Right)
+            rotation = Rotation.Top;
+        else if (direction > 0)
+            rotation++;
+        else
+            rotation--;
+
+    }
+
+
 }
+
+// Top = (j * -1, i * 1)
+// Left = (-i, -j)
+// Bottom = (j, -i)
+// Right = (i, j)
+// 
+// sac : 22
