@@ -836,7 +836,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 184223507}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.21, y: -0.36, z: 0}
+  m_LocalPosition: {x: 4.05, y: -7.35, z: 0}
   m_LocalScale: {x: 1, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1678,8 +1678,6 @@ MonoBehaviour:
   smoothTime: 0.5
   offset: {x: 0, y: 0, z: -10}
   cam: {fileID: 468859496}
-  distFromCamToStopFollow: 0
-  distFromCamToStartFollow: 0
   mainClip: {fileID: 0}
   audioSource: {fileID: 0}
   zoomVelocity: 2
@@ -2494,11 +2492,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6491724029237431058, guid: 921d0d324f032f748b8fd659a05bc4ee, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.79
+      value: 1.21
       objectReference: {fileID: 0}
     - target: {fileID: 6491724029237431058, guid: 921d0d324f032f748b8fd659a05bc4ee, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.33
+      value: 1.44
       objectReference: {fileID: 0}
     - target: {fileID: 6491724029237431058, guid: 921d0d324f032f748b8fd659a05bc4ee, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2649,6 +2647,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6491724029237431081, guid: 921d0d324f032f748b8fd659a05bc4ee, type: 3}
       insertIndex: -1
       addedObject: {fileID: 860398309}
+    - targetCorrespondingSourceObject: {fileID: 6491724029237431081, guid: 921d0d324f032f748b8fd659a05bc4ee, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 860398315}
   m_SourcePrefab: {fileID: 100100000, guid: 921d0d324f032f748b8fd659a05bc4ee, type: 3}
 --- !u!1 &860398296 stripped
 GameObject:
@@ -2668,8 +2669,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ghostsParent: {fileID: 317845339}
-  trailColor: {r: 0.1882353, g: 0.4745098, b: 0.8509804, a: 1}
-  fadeColor: {r: 0.1882353, g: 0.4745098, b: 0.8509804, a: 0}
+  trailColor: {r: 1, g: 0.5882353, b: 0, a: 1}
+  fadeColor: {r: 1, g: 0.5882353, b: 0, a: 0}
   ghostInterval: 0.2
   fadeTime: 0.2
 --- !u!114 &860398298
@@ -2684,8 +2685,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 514169e3f3e38654facca228546d07af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
-  jump: {fileID: 0}
   moveSpeed: 4
   canHorizontalMove: 1
 --- !u!114 &860398299
@@ -2700,19 +2699,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a15a6995a89ab4245bda928056f9e9a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
-  jump: {fileID: 0}
-  dash: {fileID: 0}
-  collisionDetection: {fileID: 0}
-  slideSpeed: 3
-  wallSlideColor:
-    r: 0.9056604
-    g: 0.31100032
-    b: 0.57263434
-    a: 1
-  sr: {fileID: 0}
-  isWallSliding: 0
-  xVelocity: 0
+  slideSpeed: 2
+  wallSlideColor: {r: 1, g: 1, b: 1, a: 0}
 --- !u!114 &860398300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2725,22 +2713,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86961b19c956e494d8098f3233f68e86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionDetection: {fileID: 0}
-  sr: {fileID: 0}
-  ghostTrail: {fileID: 0}
   rb: {fileID: 0}
-  horizontalMove: {fileID: 0}
   dashSpeed: 5
-  dashWait: 0.3
-  showGhost: 0
+  dashWait: 0.2
   hasDashed: 0
   isDashing: 0
-  dashColor:
-    r: 0.18743323
-    g: 0.47348082
-    b: 0.8490566
-    a: 1
-  dashType: -1
+  dashColor: {r: 1, g: 0.5887934, b: 0, a: 1}
 --- !u!114 &860398301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2753,21 +2731,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 569085eeb480e4948aebcaebf51f00f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
-  collisionDetection: {fileID: 0}
-  horizontalMove: {fileID: 0}
-  jumpForce: 8.98
-  jumpOffWallSpeed: 4
+  jumpForce: 12
+  jumpOffWallSpeed: 10
   isFallingMultiplier: 2.5
   lowJumpMultiplier: 2
   coyoteTime: 0.1
   availableJumpType: 0
   jumpFromGroundWait: 0
   hasWallJumped: 0
-  isJumping: 0
   canAlterUpwardMvt: 0
   percentOflayerHeight: 0
-  canCoyoteJump: 0
 --- !u!114 &860398302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2780,10 +2753,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 728c2ef5f2b4e6249b236f2676d3bccd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rightOffset: {x: 0.25, y: -0.4}
-  leftOffset: {x: -0.25, y: -0.4}
-  bottomOffset: {x: 0, y: -1.1}
-  collisionRadius: 0.2
+  rightOffset: {x: 0.25, y: -0.5}
+  leftOffset: {x: -0.3, y: -0.5}
+  bottomOffset: {x: 0, y: -1.05}
+  collisionRadius: 0.1
 --- !u!114 &860398303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2796,14 +2769,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b7081ef8a9c7949a2b0ee90af9041d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionDetection: {fileID: 0}
   playerBlocksManager: {fileID: 1883038392}
-  editingController: {fileID: 0}
-  horizontalMove: {fileID: 0}
-  jump: {fileID: 0}
-  dash: {fileID: 0}
-  wallSlide: {fileID: 0}
-  shiftActive: 0
   canHorizontalMove: 1
 --- !u!114 &860398309
 MonoBehaviour:
@@ -2819,23 +2785,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentBlock: {fileID: 0}
   playerBlocksManager: {fileID: 1883038392}
-  inputManager: {fileID: 0}
-  currentBlockIndex: 0
-  blockMoveStep: 1
-  normalColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 0
-  currentBlockAngle: 0
-  wrongSpawnPosColor:
-    r: 0.9245283
-    g: 0.0034887171
-    b: 0.0034887171
-    a: 0.6666667
-  animateToRedSpeed: 1.38
-  animateToRed: 0
+  blockMoveStep: 1.53
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  wrongSpawnPosColor: {r: 1, g: 0, b: 0, a: 0.64705884}
+  animateToRedSpeed: 10
   blockSpawnBound: {fileID: 849413245}
+--- !u!114 &860398315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860398296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f94db907f66ae40b2a9fb86953d2dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Lives: 3
+  healthUI:
+  - {fileID: 2034912446}
+  - {fileID: 1513284833}
+  - {fileID: 338252890}
+  animator: {fileID: 449265025}
 --- !u!1 &882415838
 GameObject:
   m_ObjectHideFlags: 0
@@ -4416,7 +4388,7 @@ Transform:
   m_GameObject: {fileID: 1494199764}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 1}
+  m_LocalScale: {x: 7, y: 7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1791335948}

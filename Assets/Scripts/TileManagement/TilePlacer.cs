@@ -30,21 +30,21 @@ public class TilePlacer : MonoBehaviour
     private Tilemap _previewTilemap;
     private Camera _camera;
     private Animator _animator;
+    private PlacePreviewTileManager _placePreviewTileManager;
 
     public Placeable placeable; // TODO: add [HideInInspector]
 
     private Inputs inputManager;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         
         inputManager = new Inputs();
         inputManager.Editing.Enable();
-        
-        // TODO: does this go in Awake() instead?
         var previewTilemapObject = transform.Find("PlacePreview");
         _previewTilemap = previewTilemapObject.GetComponent<Tilemap>();
         _animator = previewTilemapObject.GetComponent<Animator>();
+        _placePreviewTileManager = previewTilemapObject.GetComponent<PlacePreviewTileManager>();
         _camera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         _previewTilemap = transform.Find("PlacePreview").GetComponent<Tilemap>();
     }
@@ -61,10 +61,21 @@ public class TilePlacer : MonoBehaviour
         {
             for (int j = -(int)gridExtension; j <= gridExtension; j++)
             {
-                // TODO: we should also show -ve tiles
-                if (placeable.tilePreview.GetTile(i, j, (int)rotation) <= -1)
+                var tileID = placeable.tilePreview.GetTile(i, j, (int)rotation);
+                
+                if (tileID == -1)
                     continue;
-                var tile = placeable.tilePreview.tiles[placeable.tilePreview.GetTile(i, j, (int)rotation)];
+                
+                TileBase tile;
+                if (tileID < -1)
+                {
+                    tile = _placePreviewTileManager.GetTile((-tileID) - 2);
+                }
+                else
+                {
+                    tile = placeable.tilePreview.tiles[placeable.tilePreview.GetTile(i, j, (int)rotation)];
+                }
+
                 var pos = new Vector3Int(position.x + i, position.y + j, position.z);
 
                 _previewTilemap.SetTile(pos, tile);
@@ -97,7 +108,7 @@ public class TilePlacer : MonoBehaviour
     {
         if (direction > 0 && rotation == Rotation.Top)
             rotation = Rotation.Right;
-        else if(direction < 0 && rotation == Rotation.Right)
+        else if (direction < 0 && rotation == Rotation.Right)
             rotation = Rotation.Top;
         else if (direction > 0)
             rotation++;

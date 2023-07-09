@@ -1,18 +1,18 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-//TODO: change this to `TilemapManager` and handle placing tiles in the different tilemaps from here.
 //We can then pass it to the `Placeable`s.
 public class TilemapManager : MonoBehaviour
 {
     private Tilemap _solidTilemap;
     private PlaceholderPreviewer _placeholderTilemap;
     
-    void Start() //TODO: or Awake() ?
+    void Awake()
     {
         // TODO: is this necessary since this is going to be a prefab?
         var solidObject = transform.Find("Solid");
         var placeholderObject = transform.Find("Placeholder");
+        
         placeholderObject.position = solidObject.position; // align both tilesets to be sure!
         
         _solidTilemap = solidObject.GetComponent<Tilemap>();
