@@ -241,5 +241,61 @@ public class Level_Block_Behaviour : MonoBehaviour
 
     
 
+
+
     
 }
+
+
+
+
+// block behaviors: 
+// - move (only smoothdamp)
+// - prevent collision with placed block
+// - collide with placed blocks
+//   - disappear with anim
+//   - explode and disappear
+//   - disappear and return to initial position
+//
+//
+// Zone behavior
+// - Movement
+//   - stationary
+//   - bounce
+//   - waypoints
+//   - random shape, etc.
+// - Event trigger (use color code or signs?)
+//   - falling block
+//   - moving block
+//   - rotate block
+//   - open new area
+//   - 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
