@@ -16,4 +16,9 @@ public class Placeable : MonoBehaviour
     {
         return false;
     }
+
+    public virtual bool Rotate(bool clockwise)
+    {
+        return false;
+    }
 }

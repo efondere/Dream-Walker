@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class PlaceablePrefab : Placeable
 {
@@ -35,11 +34,9 @@ public class PlaceablePrefab : Placeable
 
                 var pos = new Vector3Int(position.x + i, position.y + j, position.z);
                 
-                if (tilePreview.grid.GetTile(i, j) < -1)
-                {
-                    _tilemapManager.PlacePlaceholderTile(pos, tileID);
-                }
-                else
+                _tilemapManager.PlacePlaceholderTile(pos, tileID);
+                
+                if (tileID >= 0)
                 {
                     _tilemapManager.PlaceSolidTile(pos, tilePreview.tiles[tileID]);
                 }

@@ -21,7 +21,7 @@ public class TilemapManager : MonoBehaviour
     
     public bool IsColliding(Vector3Int pos)
     {
-        if (_solidTilemap.GetTile(pos) != null)
+        if (_solidTilemap.HasTile(pos)) // changed from GetTile() != null
         {
             return true;
         } 

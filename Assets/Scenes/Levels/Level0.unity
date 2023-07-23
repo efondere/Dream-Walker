@@ -215,6 +215,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &209635748 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6500685643678933575, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
+  m_PrefabInstance: {fileID: 1193983519}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6959850fcf7100f4d93283cb72e2657b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &413087651
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,8 +357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70779f80253e342499a6c5870910b362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotation: 0
-  placeable: {fileID: 1021769608}
+  placeable: {fileID: 209635748}
 --- !u!1001 &725041514
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1462,17 +1472,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!114 &1021769608 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4041949638266356046, guid: bf898b29b59bab447b0d62a3d2255dd4, type: 3}
-  m_PrefabInstance: {fileID: 725041514}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cd3c77420b14f646b90cdf2c282b8db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1193983519
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1607,11 +1606,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.data[11]
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.data[12]
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.data[13]

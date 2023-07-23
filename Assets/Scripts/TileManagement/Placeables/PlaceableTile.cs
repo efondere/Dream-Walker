@@ -10,7 +10,7 @@ public class PlaceableTile : Placeable
         {
             for (int j = -(int)gridExtension; j <= gridExtension; j++)
             {
-                if (tilePreview.grid.GetTile(i, j) == -1)
+                if (tilePreview.GetTile(i, j) == -1)
                     continue;
 
                 var pos = new Vector3Int(position.x + i, position.y + j, position.z);
@@ -25,7 +25,7 @@ public class PlaceableTile : Placeable
         {
             for (int j = -(int)gridExtension; j <= gridExtension; j++)
             {
-                var tileID = tilePreview.grid.GetTile(i, j);
+                var tileID = tilePreview.GetTile(i, j);
                 if (tileID == -1)
                     continue;
                 
@@ -42,6 +42,12 @@ public class PlaceableTile : Placeable
             }
         }
 
+        return true;
+    }
+
+    public override bool Rotate(bool clockwise)
+    {
+        tilePreview.direction = TilePreview.GetNextDirection(tilePreview.direction, clockwise);
         return true;
     }
 }
