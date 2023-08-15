@@ -1,54 +1,58 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class PlaceablePrefab : Placeable
 {
-    [SerializeField] public Tilemap tileset;
-    [SerializeField] public Tilemap placeholderPreview;
     [SerializeField] public GameObject prefab;
-    [SerializeField] public AnimatedTile placeholder_tile;
+    // useful for moving blocks
+    // if activated, it won't place any tiles from the place preview and instead puts them all to the
+    // placeholderpreviewer
+    [SerializeField] private bool _usePlaceholderTiles;
 
-    public override bool OnPlace(Vector3Int position, GridLayout grid)
+    public override bool OnPlace(Vector3Int position)
     {
-        for (int i = 0; i < 5; i++)
+        var gridExtension = tilePreview.grid.GetExtension();
+
+        for (int i = -(int)gridExtension; i <= gridExtension; i++)
         {
-            for (int j = 0; j < 5; j++)
+            for (int j = -(int)gridExtension; j <= gridExtension; j++)
             {
-                if (tilePreview.grid.At(i, j) == -1) // -1 is no tile, 0 is air visualization
+                if (tilePreview.grid.GetTile(i, j) == -1)
                     continue;
 
-                var pos = new Vector3Int(position.x - 2 + i, position.y - 2 + j, position.z);
-                if (collisionManager.isColliding(pos))
+                var pos = new Vector3Int(position.x + i, position.y + j, position.z);
+                if (_tilemapManager.IsColliding(pos))
                 {
                     return false;
                 }
             }
         }
 
-        for (int i = 0; i < 5; i++)
+        for (int i = -(int)gridExtension; i <= gridExtension; i++)
         {
-            for (int j = 0; j < 5; j++)
+            for (int j = -(int)gridExtension; j <= gridExtension; j++)
             {
-                if (tilePreview.grid.At(i, j) < 0)
+                var tileID = tilePreview.grid.GetTile(i, j);
+                
+                if (tileID == -1)
                     continue;
 
-                var pos = new Vector3Int(position.x - 2 + i, position.y - 2 + j, position.z);
-                
-                if (tilePreview.grid.At(i, j) == 0)
+                var pos = new Vector3Int(position.x + i, position.y + j, position.z);
+
+                if (tileID < -1)
                 {
-                    placeholderPreview.SetTile(pos, placeholder_tile);
+                    _tilemapManager.PlacePlaceholderTile(pos, tileID);
                 }
                 else
                 {
-                    var tile = tilePreview.tiles[tilePreview.grid.At(i, j)];
-                    placeholderPreview.SetTile(pos, tile);
+                    if (_usePlaceholderTiles)
+                        _tilemapManager.PlacePlaceholderTile(pos, -2);
+                    else
+                        _tilemapManager.PlaceSolidTile(pos, tilePreview.tiles[tileID]);
                 }
             }
         }
 
-        Instantiate(prefab, grid.CellToWorld(position), Quaternion.identity);
+        Instantiate(prefab, _tilemapManager.CellToWorld(position), Quaternion.identity);
 
         return true;
     }
