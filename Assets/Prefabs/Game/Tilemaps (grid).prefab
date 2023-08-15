@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5999791463180004497}
   - component: {fileID: 3092795423479529479}
-  - component: {fileID: 2541263975908493531}
   m_Layer: 0
   m_Name: Placeholder
   m_TagString: Untagged
@@ -45,19 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e517e8a5f557ae4ca53e31c32edc9d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2541263975908493531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2374236622439668487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0447e1bddd72da4aaa9f79d2540032e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _prefab: {fileID: 6323022531800647183, guid: 7b6593d4e8ed452219d3d1c10f480ec0, type: 3}
+  _particleSystemPrefabs: []
 --- !u!1 &2445478291246152949
 GameObject:
   m_ObjectHideFlags: 0
@@ -1010,7 +997,7 @@ Transform:
   - {fileID: 5999791463180004497}
   - {fileID: 3843582999818671787}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!156049354 &7312416419253702237
 Grid:

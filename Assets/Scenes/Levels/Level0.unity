@@ -385,6 +385,10 @@ PrefabInstance:
       propertyPath: placeholderPreview
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4041949638266356046, guid: bf898b29b59bab447b0d62a3d2255dd4, type: 3}
+      propertyPath: _usePlaceholderTiles
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4041949638266356047, guid: bf898b29b59bab447b0d62a3d2255dd4, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -629,11 +633,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.data[25]
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.data[26]
-      value: 12
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.data[27]
@@ -661,7 +665,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.data[33]
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6500685643678933593, guid: 44f5390e9b1e6ee499bb798e71dcc0c2, type: 3}
       propertyPath: grid._tiles.Array.data[34]
@@ -2765,6 +2769,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3092795423479529479, guid: 19a25d5181cce35bdad1c57155613444, type: 3}
+      propertyPath: _particleSystemPrefabs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3092795423479529479, guid: 19a25d5181cce35bdad1c57155613444, type: 3}
+      propertyPath: _particleSystemPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 6323022531800647183, guid: 7b6593d4e8ed452219d3d1c10f480ec0, type: 3}
     - target: {fileID: 4892006056608557257, guid: 19a25d5181cce35bdad1c57155613444, type: 3}
       propertyPath: m_Name
       value: Tilemaps (grid)

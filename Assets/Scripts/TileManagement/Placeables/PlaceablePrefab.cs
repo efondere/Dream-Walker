@@ -3,6 +3,10 @@ using UnityEngine;
 public class PlaceablePrefab : Placeable
 {
     [SerializeField] public GameObject prefab;
+    // useful for moving blocks
+    // if activated, it won't place any tiles from the place preview and instead puts them all to the
+    // placeholderpreviewer
+    [SerializeField] private bool _usePlaceholderTiles;
 
     public override bool OnPlace(Vector3Int position)
     {
@@ -33,12 +37,17 @@ public class PlaceablePrefab : Placeable
                     continue;
 
                 var pos = new Vector3Int(position.x + i, position.y + j, position.z);
-                
-                _tilemapManager.PlacePlaceholderTile(pos, tileID);
-                
-                if (tileID >= 0)
+
+                if (tileID < -1)
                 {
-                    _tilemapManager.PlaceSolidTile(pos, tilePreview.tiles[tileID]);
+                    _tilemapManager.PlacePlaceholderTile(pos, tileID);
+                }
+                else
+                {
+                    if (_usePlaceholderTiles)
+                        _tilemapManager.PlacePlaceholderTile(pos, -2);
+                    else
+                        _tilemapManager.PlaceSolidTile(pos, tilePreview.tiles[tileID]);
                 }
             }
         }
