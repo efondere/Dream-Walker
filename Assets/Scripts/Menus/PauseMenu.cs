@@ -3,58 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour
+public class PauseMenu : Pausable
 {
-    public static bool isPaused = false;
-
     public GameObject pauseMenuUI;
 
-
-
-    // Update is called once per frame
-    void Update()
-    {
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (isPaused)
-            {
-                resume();
-
-            }
-            else
-            {
-                pause();
-            }
-        }
-    }
-    //replace time scale by smt else?? for animations to continue
-    public void resume()
-    {
-        pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
-        isPaused = false;
-    }
-
-    void pause()
+    public override void OnPause()
     {
         pauseMenuUI.SetActive(true);
-        Time.timeScale = 0f;
-        isPaused = true;
     }
 
-    public void loadMainMenu()
+    public override void OnResume()
     {
-        Time.timeScale = 1f;
-        isPaused = false;
+        pauseMenuUI.SetActive(false);
+    }
+
+    public void LoadMainMenu()
+    {
+        // TODO: do we need to resume? i.e. should we just resume everytime a scene is loaded anyways?
+        PauseManager.Resume();
+        // TODO: change this to load by id instead
         SceneManager.LoadScene("Main Menu");
     }
 
-    public void restart()
+    public void Restart()
     {
-        isPaused = false;
-        pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
+        PauseManager.Resume();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
