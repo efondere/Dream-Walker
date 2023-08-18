@@ -62,7 +62,7 @@ public class EditingController : MonoBehaviour
 
             // Block control
 
-            if (!PauseMenu.isPaused)
+            if (!PauseManager.IsPaused())
             {
                 currentBlock.transform.position = Camera.main.ScreenToWorldPoint(inputManager.MousePosition()) + new Vector3(0f, 0f, 10f);
             }
@@ -81,7 +81,7 @@ public class EditingController : MonoBehaviour
 
 
             // Drop block
-            if (inputManager.MouseClick() && !PauseMenu.isPaused)
+            if (inputManager.MouseClick() && !PauseManager.IsPaused())
             {
                 //Collider2D otherCollider = currentBlockCollider.OverlapBox(currentBlock.transform.position, new Vector2(currentBlockCollider.size.x * currentBlock.transform.lossyScale.x, currentBlockCollider.size.y * currentBlock.transform.lossyScale.y), 0f);
                 if (!currentBlockCollider.IsTouchingLayers(-1))

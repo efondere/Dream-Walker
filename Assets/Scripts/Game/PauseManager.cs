@@ -21,6 +21,11 @@ public class PauseManager
         return _isPaused;
     }
 
+    public static bool IsPaused()
+    {
+        return _isPaused;
+    }
+
     public static void Pause()
     {
         if (_isPaused)
