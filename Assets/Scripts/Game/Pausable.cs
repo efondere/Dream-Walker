@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class Pausable: MonoBehaviour
 {
-    public bool isPaused;
+    [HideInInspector] public bool isPaused;
     
     protected Pausable()
     {
