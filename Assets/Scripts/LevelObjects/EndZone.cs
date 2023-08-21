@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class EndZone : MonoBehaviour
 {
-    public int LevelNumber;
+    public uint levelNumber;
 
     // Start is called before the first frame update
     void Start()
@@ -23,16 +23,16 @@ public class EndZone : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            LevelManager.CompleteLevel(LevelNumber);
+            LevelManager.CompleteLevel(levelNumber);
 
-            if (LevelNumber < LevelManager.LevelCount)
+            if (levelNumber < LevelManager.LevelCount)
             {
-                int nextLevel = LevelNumber + 1;
+                uint nextLevel = levelNumber + 1;
                 SceneManager.LoadScene("Level" + nextLevel);
             }
             else
             {
-                SceneManager.LoadScene("Main Menu");
+                SceneManager.LoadScene("MainMenu");
             }
         }
     }

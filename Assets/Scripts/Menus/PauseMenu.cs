@@ -21,8 +21,7 @@ public class PauseMenu : Pausable
     {
         // TODO: do we need to resume? i.e. should we just resume everytime a scene is loaded anyways?
         PauseManager.Resume();
-        // TODO: change this to load by id instead
-        SceneManager.LoadScene("Main Menu");
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void Restart()
