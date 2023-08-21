@@ -75,7 +75,7 @@ public class playerController1 : MonoBehaviour
 
     private void Update()
     {
-        if (!PauseMenu.isPaused)
+        if (!PauseManager.IsPaused())
         {
             if (Input.GetKeyDown(KeyCode.LeftShift) && isGrounded())
             {
@@ -119,7 +119,7 @@ public class playerController1 : MonoBehaviour
         {
             ApplyGravity(gravityScale);
         }
-        if (!PauseMenu.isPaused && !shiftPressed)
+        if (!PauseManager.IsPaused() && !shiftPressed)
         {
             Move();
 
@@ -267,7 +267,7 @@ public class playerController1 : MonoBehaviour
             // Block control
 
             mousePos = inputs.Mouse.Pointer.ReadValue<Vector2>();
-            if (!PauseMenu.isPaused)
+            if (!PauseManager.IsPaused())
             {
                 currentBlock.transform.position = cam.ScreenToWorldPoint(mousePos) + new Vector3(0f, 0f, 10f);
             }
@@ -286,7 +286,7 @@ public class playerController1 : MonoBehaviour
 
 
             // Drop block
-            if (inputs.Mouse.mouseClick.WasPressedThisFrame() && !PauseMenu.isPaused)
+            if (inputs.Mouse.mouseClick.WasPressedThisFrame() && !PauseManager.IsPaused())
             {
                 //Collider2D otherCollider = currentBlockCollider.OverlapBox(currentBlock.transform.position, new Vector2(currentBlockCollider.size.x * currentBlock.transform.lossyScale.x, currentBlockCollider.size.y * currentBlock.transform.lossyScale.y), 0f);
                 if (!currentBlockCollider.IsTouchingLayers(-1))

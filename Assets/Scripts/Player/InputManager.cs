@@ -88,7 +88,7 @@ public class InputManager : MonoBehaviour
 
     public bool IsEditing()
     {
-        if (!PauseMenu.isPaused && collisionDetection.isGrounded() && inputs.Editing.EditInit.WasPressedThisFrame())  
+        if (!PauseManager.IsPaused() && collisionDetection.isGrounded() && inputs.Editing.EditInit.WasPressedThisFrame())  
         {
             shiftActive = !shiftActive;
             playerBlocksManager.setDreaming(shiftActive);
