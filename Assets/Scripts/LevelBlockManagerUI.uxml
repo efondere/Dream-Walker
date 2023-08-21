@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:Label tabindex="-1" text="Custom Inspector" display-tooltip-when-elided="true" />
+    <uie:PropertyField binding-path="affectedByZone" focusable="false" />
+</ui:UXML>

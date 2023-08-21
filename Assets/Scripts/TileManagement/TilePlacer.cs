@@ -11,13 +11,16 @@ using UnityEngine.Tilemaps;
 public class TilePlacer : MonoBehaviour
 {
     public enum Rotation
-    {
+    {   
         Right,
         Bottom, 
         Left, 
         Top
     }
+
     public Rotation rotation;
+
+    public EditingController editingController;
 
     private Tilemap _previewTilemap;
     private Camera _camera;
@@ -26,7 +29,10 @@ public class TilePlacer : MonoBehaviour
 
     private int _invalidPlacementAnimatorHash;
 
-    public Placeable placeable; // TODO: add [HideInInspector]
+
+
+    // added HideInInspector
+    [HideInInspector]public Placeable placeable; // TODO: add [HideInInspector]
 
     private Inputs inputManager;
     // Start is called before the first frame update
@@ -45,7 +51,7 @@ public class TilePlacer : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void Edit()
     {
         _previewTilemap.ClearAllTiles();
         var position = _previewTilemap.WorldToCell(_camera.ScreenToWorldPoint(Input.mousePosition));
@@ -90,9 +96,15 @@ public class TilePlacer : MonoBehaviour
 
     void PlaceTile(Vector3Int position)
     {
-        if (!placeable.OnPlace(position))
+        // add rotation for testing
+        if (!placeable.OnPlace(position, (int)rotation))
         {
+
             _animator.SetTrigger(_invalidPlacementAnimatorHash);
+        }
+        else
+        {
+            editingController.useBlock();
         }
     }
 
@@ -110,9 +122,3 @@ public class TilePlacer : MonoBehaviour
     }
 }
 
-// Top = (j * -1, i * 1)
-// Left = (-i, -j)
-// Bottom = (j, -i)
-// Right = (i, j)
-// 
-// sac : 22

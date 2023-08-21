@@ -9,8 +9,13 @@ public class TilePreview : MonoBehaviour
 
     public int GetTile(int x, int y, int rotation)
     {
-        return grid.GetTile((float)rotation % 2 != 0 ? (y * (int)Mathf.Pow(-1, (float)(rotation / 2))) : (x * (int)Mathf.Pow(-1, (float)rotation/2)),
-            (float)rotation % 2 != 0 ? (x * (int)Mathf.Pow(-1, 1 + rotation/2)) : (y * (int)Mathf.Pow(-1, (float)rotation/2)));
+        // (3)Top = (j * -1, i * 1) => (j ,-i)
+        // (2)Left = (-i, -j) => (-i,-j)
+        // (1)Bottom = (j, -i) => (-j, i)
+        // (0)Right = (i, j)
+
+        return grid.GetTile((float)rotation % 2 != 0 ? (y * (int)Mathf.Pow(-1, (float)((rotation+1) / 2))) : (x * (int)Mathf.Pow(-1, (float)rotation/2)),
+            (float)rotation % 2 != 0 ? (x * (int)Mathf.Pow(-1, rotation/2)) : (y * (int)Mathf.Pow(-1, (float)rotation/2)));
 
     }
 

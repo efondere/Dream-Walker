@@ -4,8 +4,10 @@ using UnityEngine.Tilemaps;
 public class PlaceablePrefab : Placeable
 {
     [SerializeField] public GameObject prefab;
-
-    public override bool OnPlace(Vector3Int position)
+    public delegate void onPlace(GameObject tile);
+    public static event onPlace onPlaceEvent;
+    // added rotation
+    public override bool OnPlace(Vector3Int position, int rotation = 0)
     {
         var gridExtension = tilePreview.grid.GetExtension();
 
@@ -28,7 +30,8 @@ public class PlaceablePrefab : Placeable
         {
             for (int j = -(int)gridExtension; j <= gridExtension; j++)
             {
-                var tileID = tilePreview.grid.GetTile(i, j);
+                // add rotation for testing
+                var tileID = tilePreview.GetTile(i, j, rotation);
                 
                 if (tileID == -1)
                     continue;
@@ -46,7 +49,13 @@ public class PlaceablePrefab : Placeable
             }
         }
 
-        Instantiate(prefab, _tilemapManager.CellToWorld(position), Quaternion.identity);
+        // add rotation for testing
+        GameObject instance = Instantiate(prefab, _tilemapManager.CellToWorld(position), Quaternion.identity);
+        instance.transform.GetChild(0).rotation = Quaternion.Euler(0, 0, rotation * -90f);
+        onPlaceEvent?.Invoke(instance);
+
+
+
 
         return true;
     }

@@ -11,8 +11,10 @@ public class TilePrefabEditor : Editor
     string fileName = ""; 
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI();  
+        base.OnInspectorGUI();
         TilemapToTexture tmToTx = (TilemapToTexture)target;
+
+
        if (tmToTx.tx == null)
        {
            if (GUILayout.Button("Generate Texture"))

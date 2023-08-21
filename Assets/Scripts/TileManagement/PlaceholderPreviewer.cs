@@ -23,7 +23,7 @@ public class PlaceholderPreviewer : MonoBehaviour
     {
         return _tiles.GetTile(x, y);
     }
-    
+
     public void SetTile(int x, int y, int tileID)
     {
         Assert.IsTrue((tileID >= 0), "Expected a positive TileID for placeholder.");

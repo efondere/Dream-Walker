@@ -12,7 +12,7 @@ public class Placeable : MonoBehaviour
         _tilemapManager = GameObject.FindWithTag("TilemapManager").GetComponent<TilemapManager>();
     }
 
-    public virtual bool OnPlace(Vector3Int position)
+    public virtual bool OnPlace(Vector3Int position, int rotation = 0)
     {
         return false;
     }

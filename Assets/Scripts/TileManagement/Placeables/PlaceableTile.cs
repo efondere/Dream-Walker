@@ -1,8 +1,13 @@
 using UnityEngine;
+using UnityEngine.WSA;
 
 public class PlaceableTile : Placeable
 {
-    public override bool OnPlace(Vector3Int position)
+    public delegate void onPlace(Vector2Int position);
+    public static event onPlace onPlaceEvent;
+
+
+    public override bool OnPlace(Vector3Int position, int rotation = 0)
     {
         var gridExtension = tilePreview.grid.GetExtension();
 
@@ -41,6 +46,8 @@ public class PlaceableTile : Placeable
                 }
             }
         }
+
+        onPlaceEvent?.Invoke((Vector2Int)position);
 
         return true;
     }
