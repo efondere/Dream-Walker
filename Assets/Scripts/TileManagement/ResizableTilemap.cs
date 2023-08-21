@@ -9,6 +9,11 @@ public class ResizableTilemap
     [SerializeField] int[] _tiles = { -1 };
     [SerializeField] private uint _extension;
 
+    public ResizableTilemap()
+    {
+        Resize(_extension);
+    }
+
     private void Resize(uint newExtension)
     {
         var newSize = newExtension * 2 + 1;

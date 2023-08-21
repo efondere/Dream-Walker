@@ -21,8 +21,7 @@ public class TilemapManager : MonoBehaviour
     
     public bool IsColliding(Vector3Int pos)
     {
-        // added condition to include prefabs
-        if (_solidTilemap.GetTile(pos) != null || Physics2D.OverlapPoint(new Vector3(pos.x +0.5f, pos.y+0.5f)))
+        if (_solidTilemap.HasTile(pos)) // changed from GetTile() != null
         {
             return true;
         } 

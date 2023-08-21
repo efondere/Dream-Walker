@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public class GhostTrail : MonoBehaviour
 {
-    private Movement move;
+    private Dash dash;
     private SpriteRenderer sr;
     public Transform ghostsParent;
     public Color trailColor;
@@ -15,8 +15,7 @@ public class GhostTrail : MonoBehaviour
 
     private void Start()
     {
-        move = FindObjectOfType<Movement>();
-        Debug.Log(move.gameObject.name);
+        dash = FindObjectOfType<Dash>();
         sr = this.gameObject.GetComponent<SpriteRenderer>();
     }
 
@@ -27,7 +26,7 @@ public class GhostTrail : MonoBehaviour
         for (int i = 0; i < ghostsParent.childCount; i++)
         {
             Transform currentGhost = ghostsParent.GetChild(i);
-            s.AppendCallback(() => currentGhost.position = move.transform.position);
+            s.AppendCallback(() => currentGhost.position = dash.transform.position);
             //s.AppendCallback(() => currentGhost.GetComponent<SpriteRenderer>().flipX = anim.sr.flipX);
             s.AppendCallback(() => currentGhost.GetComponent<SpriteRenderer>().sprite = sr.sprite);
             s.Append(currentGhost.GetComponent<SpriteRenderer>().material.DOColor(trailColor, 0));

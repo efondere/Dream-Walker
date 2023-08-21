@@ -224,6 +224,15 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EditInit"",
+                    ""type"": ""Button"",
+                    ""id"": ""51721013-2e5c-4726-bbfa-e454cb3f908a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -292,6 +301,17 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""10edbd1c-3273-4c25-8db9-12ff14ecb258"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EditInit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -312,6 +332,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         m_Editing = asset.FindActionMap("Editing", throwIfNotFound: true);
         m_Editing_Select = m_Editing.FindAction("Select", throwIfNotFound: true);
         m_Editing_Rotate = m_Editing.FindAction("Rotate", throwIfNotFound: true);
+        m_Editing_EditInit = m_Editing.FindAction("EditInit", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -499,12 +520,14 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     private List<IEditingActions> m_EditingActionsCallbackInterfaces = new List<IEditingActions>();
     private readonly InputAction m_Editing_Select;
     private readonly InputAction m_Editing_Rotate;
+    private readonly InputAction m_Editing_EditInit;
     public struct EditingActions
     {
         private @Inputs m_Wrapper;
         public EditingActions(@Inputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Select => m_Wrapper.m_Editing_Select;
         public InputAction @Rotate => m_Wrapper.m_Editing_Rotate;
+        public InputAction @EditInit => m_Wrapper.m_Editing_EditInit;
         public InputActionMap Get() { return m_Wrapper.m_Editing; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -520,6 +543,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Rotate.started += instance.OnRotate;
             @Rotate.performed += instance.OnRotate;
             @Rotate.canceled += instance.OnRotate;
+            @EditInit.started += instance.OnEditInit;
+            @EditInit.performed += instance.OnEditInit;
+            @EditInit.canceled += instance.OnEditInit;
         }
 
         private void UnregisterCallbacks(IEditingActions instance)
@@ -530,6 +556,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Rotate.started -= instance.OnRotate;
             @Rotate.performed -= instance.OnRotate;
             @Rotate.canceled -= instance.OnRotate;
+            @EditInit.started -= instance.OnEditInit;
+            @EditInit.performed -= instance.OnEditInit;
+            @EditInit.canceled -= instance.OnEditInit;
         }
 
         public void RemoveCallbacks(IEditingActions instance)
@@ -563,5 +592,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     {
         void OnSelect(InputAction.CallbackContext context);
         void OnRotate(InputAction.CallbackContext context);
+        void OnEditInit(InputAction.CallbackContext context);
     }
 }
