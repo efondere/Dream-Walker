@@ -1,13 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(TilePreview))]
 public class Placeable : MonoBehaviour
 {
-    public TilePreview tilePreview;
-    public TilemapCollisionManager collisionManager;
+    [HideInInspector] public TilePreview tilePreview;
+    protected TilemapManager _tilemapManager;
 
-    public virtual bool OnPlace(Vector3Int position, GridLayout grid)
+    private void Awake()
+    {
+        tilePreview = GetComponent<TilePreview>();
+        _tilemapManager = GameObject.FindWithTag("TilemapManager").GetComponent<TilemapManager>();
+    }
+
+    public virtual bool OnPlace(Vector3Int position)
+    {
+        return false;
+    }
+
+    public virtual bool Rotate(bool clockwise)
     {
         return false;
     }

@@ -1,22 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using DG.Tweening;
 
 public class TilePlacer : MonoBehaviour
 {
-    [SerializeField] private Tilemap _previewTilemap; // give ref to grid here instead
-    [SerializeField] private Tilemap _physicalTilemap;
-    [SerializeField] private Camera _camera;
-    [SerializeField] private Animator _animator; // get compoenent instead
+    private Transform _previewObjectTransform;
+    private Tilemap _previewTilemap;
+    private Camera _camera;
+    private Animator _animator;
+    private PlacePreviewTileManager _placePreviewTileManager;
 
-    [SerializeField] private Placeable _placeable;
+    private int _invalidPlacementAnimatorHash;
 
+    public Placeable placeable; // TODO: add [HideInInspector]
+
+    private Inputs inputManager;
+    
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        inputManager = new Inputs();
+        inputManager.Editing.Enable();
         
+        _previewObjectTransform = transform.Find("PlacePreview");
+        _previewTilemap = _previewObjectTransform.GetComponent<Tilemap>();
+        _animator = _previewObjectTransform.GetComponent<Animator>();
+        _placePreviewTileManager = _previewObjectTransform.GetComponent<PlacePreviewTileManager>();
+        _camera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+        _previewTilemap = transform.Find("PlacePreview").GetComponent<Tilemap>();
+
+        _invalidPlacementAnimatorHash = Animator.StringToHash("InvalidPlacement");
     }
 
     // Update is called once per frame
@@ -25,31 +38,65 @@ public class TilePlacer : MonoBehaviour
         _previewTilemap.ClearAllTiles();
         var position = _previewTilemap.WorldToCell(_camera.ScreenToWorldPoint(Input.mousePosition));
 
-        for (int i = 0; i < 5; i++)
-        {
-            for (int j = 0; j < 5; j++)
-            {
-                if (_placeable.tilePreview.grid.At(i, j) == -1)
-                    continue;
+        var gridExtension = placeable.tilePreview.grid.GetExtension();
 
-                var tile = _placeable.tilePreview.tiles[_placeable.tilePreview.grid.At(i, j)];
-                var pos = new Vector3Int(position.x - 2 + i, position.y - 2 + j, position.z);
+        for (int i = -(int)gridExtension; i <= gridExtension; i++)
+        {
+            for (int j = -(int)gridExtension; j <= gridExtension; j++)
+            {
+                var tileID = placeable.tilePreview.GetTile(i, j);
+                
+                if (tileID == -1)
+                    continue;
+                
+                TileBase tile;
+                if (tileID < -1)
+                {
+                    tile = _placePreviewTileManager.GetTile((-tileID) - 2);
+                }
+                else
+                {
+                    tile = placeable.tilePreview.tiles[placeable.tilePreview.GetTile(i, j)];
+                }
+
+                var pos = new Vector3Int(position.x + i, position.y + j, position.z);
 
                 _previewTilemap.SetTile(pos, tile);
             }
         }
 
+        // TODO: move this to player input manager
         if (Input.GetMouseButtonDown(0))
         {
             PlaceTile(position);
         }
+
+        if (inputManager.Editing.Rotate.WasPressedThisFrame())
+        {
+            Rotate(inputManager.Editing.Rotate.ReadValue<float>() > 0);
+        }
     }
 
-    void PlaceTile(Vector3Int position)
+    public void PlaceTile(Vector3Int position)
     {
-        if (!_placeable.OnPlace(position, _previewTilemap as GridLayout))
+        if (!placeable.OnPlace(position))
         {
-            _animator.SetTrigger("InvalidPlacement");
+            _animator.SetTrigger(_invalidPlacementAnimatorHash);
+        }
+    }
+
+    public void Rotate(bool clockwise)
+    {
+        if (!placeable.Rotate(clockwise))
+        {
+            _previewObjectTransform.DOShakePosition(.2f, .5f, 14, 90, false, true);
         }
     }
 }
+
+// Top = (j * -1, i * 1)
+// Left = (-i, -j)
+// Bottom = (j, -i)
+// Right = (i, j)
+// 
+// sac : 22

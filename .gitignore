@@ -71,8 +71,14 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
-# Aseprite Files
-*.aseprite*
+# Aseprite files
+# *.aseprite*
 
-# VSCode Files
+# VSCode files
 .vscode
+
+# Rider project files
+.idea
+
+# Crash dumps
+*.blob

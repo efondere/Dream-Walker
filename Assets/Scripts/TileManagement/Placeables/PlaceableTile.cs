@@ -1,45 +1,53 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class PlaceableTile : Placeable
 {
-    [SerializeField] public Tilemap tileset;
-
-    public override bool OnPlace(Vector3Int position, GridLayout grid)
+    public override bool OnPlace(Vector3Int position)
     {
-        for (int i = 0; i < 5; i++)
+        var gridExtension = tilePreview.grid.GetExtension();
+
+        for (int i = -(int)gridExtension; i <= gridExtension; i++)
         {
-            for (int j = 0; j < 5; j++)
+            for (int j = -(int)gridExtension; j <= gridExtension; j++)
             {
-                if (tilePreview.grid.At(i, j) == -1) // -1 is no tile, 0 is air visualization
+                if (tilePreview.GetTile(i, j) == -1)
                     continue;
 
-                var pos = new Vector3Int(position.x - 2 + i, position.y - 2 + j, position.z);
-                if (collisionManager.isColliding(pos))
+                var pos = new Vector3Int(position.x + i, position.y + j, position.z);
+                if (_tilemapManager.IsColliding(pos))
                 {
                     return false;
                 }
             }
         }
 
-        for (int i = 0; i < 5;  i++)
+        for (int i = -(int)gridExtension; i <= gridExtension; i++)
         {
-            for (int j = 0; j < 5; j++)
+            for (int j = -(int)gridExtension; j <= gridExtension; j++)
             {
-                if (tilePreview.grid.At(i, j) == -1)
+                var tileID = tilePreview.GetTile(i, j);
+                if (tileID == -1)
                     continue;
-                if (tilePreview.grid.At(i, j) == 0)
-                    continue;
-
-                var tile = tilePreview.tiles[tilePreview.grid.At(i, j)];
-                var pos = new Vector3Int(position.x - 2 + i, position.y - 2 + j, position.z);
-
-                tileset.SetTile(pos, tile);
+                
+                var pos = new Vector3Int(position.x + i, position.y + j, position.z);
+                
+                if (tileID < -1)
+                {
+                    _tilemapManager.PlacePlaceholderTile(pos, tileID);
+                }
+                else
+                {
+                    _tilemapManager.PlaceSolidTile(pos, tilePreview.tiles[tileID]);
+                }
             }
         }
 
+        return true;
+    }
+
+    public override bool Rotate(bool clockwise)
+    {
+        tilePreview.direction = TilePreview.GetNextDirection(tilePreview.direction, clockwise);
         return true;
     }
 }
