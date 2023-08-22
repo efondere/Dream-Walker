@@ -72,7 +72,7 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # Aseprite files
-# *.aseprite*
+*.aseprite
 
 # VSCode files
 .vscode
