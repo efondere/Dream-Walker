@@ -82,3 +82,6 @@ crashlytics-build.properties
 
 # Crash dumps
 *.blob
+
+# Visual studio config
+.vsconfig
