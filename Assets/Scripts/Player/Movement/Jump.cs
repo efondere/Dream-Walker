@@ -133,26 +133,3 @@ public class Jump : MonoBehaviour
         isJumping = true;
     }
 }
-
-
-public class A
-{
-    public void Main()
-    {
-        B func = new B();
-        func.send_callBack(CallBack);
-    }
-
-    private void CallBack(string text)
-    {
-         Console.WriteLine(text);
-    }
-}
-
-public class B
-{
-    public void send_callBack(Action<string> CallBack)
-    {
-        CallBack("");
-    }
-}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class EditingController : MonoBehaviour
+public class EditingControllerNew : MonoBehaviour
 {
     public EditingUIManager editingUIManager;
     public Placeable[] placeables;

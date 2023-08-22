@@ -8,7 +8,6 @@ public class PlaceablePrefab : Placeable
     // placeholderpreviewer
     [SerializeField] private bool _usePlaceholderTiles;
 
-    public override bool OnPlace(Vector3Int position)
     public delegate void onPlace(GameObject tile);
     public static event onPlace onPlaceEvent;
     // added rotation
@@ -36,7 +35,7 @@ public class PlaceablePrefab : Placeable
             for (int j = -(int)gridExtension; j <= gridExtension; j++)
             {
                 // add rotation for testing
-                var tileID = tilePreview.GetTile(i, j, rotation);
+                var tileID = tilePreview.GetTile(i, j);
                 
                 if (tileID == -1)
                     continue;
@@ -57,13 +56,8 @@ public class PlaceablePrefab : Placeable
             }
         }
 
-        // add rotation for testing
         GameObject instance = Instantiate(prefab, _tilemapManager.CellToWorld(position), Quaternion.identity);
-        instance.transform.GetChild(0).rotation = Quaternion.Euler(0, 0, rotation * -90f);
         onPlaceEvent?.Invoke(instance);
-
-
-
 
         return true;
     }

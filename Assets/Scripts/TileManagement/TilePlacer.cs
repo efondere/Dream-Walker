@@ -4,7 +4,7 @@ using DG.Tweening;
 
 public class TilePlacer : MonoBehaviour
 {
-    public EditingController editingController;
+    public EditingControllerNew editingController;
 
     private Transform _previewObjectTransform;
     private Tilemap _previewTilemap;
@@ -85,7 +85,7 @@ public class TilePlacer : MonoBehaviour
     public void PlaceTile(Vector3Int position)
     {
         // add rotation for testing
-        if (!placeable.OnPlace(position, (int)rotation))
+        if (!placeable.OnPlace(position))
         {
 
             _animator.SetTrigger(_invalidPlacementAnimatorHash);

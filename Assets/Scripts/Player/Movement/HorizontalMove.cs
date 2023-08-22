@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Windows;
 
-public class HorizontalMove : Movement
+public class HorizontalMove : MonoBehaviour
 {
     Rigidbody2D rb;
     private Jump jump;

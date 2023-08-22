@@ -7,7 +7,7 @@ public class PlaceableTile : Placeable
     public static event onPlace onPlaceEvent;
 
 
-    public override bool OnPlace(Vector3Int position, int rotation = 0)
+    public override bool OnPlace(Vector3Int position)
     {
         var gridExtension = tilePreview.grid.GetExtension();
 
