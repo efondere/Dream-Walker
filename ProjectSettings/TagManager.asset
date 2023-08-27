@@ -6,6 +6,7 @@ TagManager:
   tags:
   - TilemapManager
   - Lever
+  - Receiver
   layers:
   - Default
   - TransparentFX

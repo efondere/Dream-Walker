@@ -1,16 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class ElectricBlocksManager : MonoBehaviour
 {
+    GameObjectPool goPool;
     public TileBase electricTile;
+    public GameObject lightEffect;
+
     public class Circuit
     {
         public List<GameObject> levers = new List<GameObject>();
         public List<Vector2Int> eBlockPositions = new List<Vector2Int>();
+        public List<ElectricReceiverBhvr> receivers = new List<ElectricReceiverBhvr>();
     }
 
     List<Circuit> circuits = new List<Circuit>();
@@ -21,14 +26,33 @@ public class ElectricBlocksManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        PlaceableTile.onPlaceEvent += FindCircuits;
+        PlaceableTile.onPlaceEvent += UpdateCircuit;
+        TileRemover.OnRemove += UpdateCircuit;
+        ElectricLeverBhvr.onChangeSignalEvent += UpdateRenderer;
+        ElectricLeverBhvr.onChangeSignalEvent += UpdateReceivers;
+        GameObjectPool.CreatePool(ref goPool, lightEffect);
     }
 
-
-    void FindCircuits(Vector2Int posNotUsed)
+    void UpdateCircuit(Vector2Int posNotUsed, TilePreview tilePreviewNotUsed)
     {
-        circuits.RemoveRange(0, circuits.Count);
+        if (FindCircuits())
+        {
+            FindConnectedLevers();
+            FindConnectedReceivers();
+            UpdateRenderer();
+            UpdateReceivers();
+        }
+    }
+
+    bool FindCircuits()
+    {
+        circuits.Clear();
         var eTilePositions = RetreiveAllPositions();
+
+        if (eTilePositions.Count == 0)
+        {
+            return false;
+        }
         int initBlockCount = eTilePositions.Count;
         Circuit currCircuit;
         Circuit firstCircuit = new Circuit();
@@ -73,15 +97,8 @@ public class ElectricBlocksManager : MonoBehaviour
                 positionsInQueue.Remove(currPos);
             }
         }
+        return true;
 
-        for(int i = 0; i < circuits.Count; i++)
-        {
-
-            Debug.Log("circuit " + i + "eBlockCount " + circuits[i].eBlockPositions.Count);
-
-        }
-
-        FindConnectedLevers();
     }
 
     void FindConnectedLevers()
@@ -95,18 +112,68 @@ public class ElectricBlocksManager : MonoBehaviour
                 {
                     circuit.levers.Add(lever);
                 }
-
             }
-
         }
+    }
 
+    void FindConnectedReceivers()
+    {
+        var allReceiverPositions = GameObject.FindGameObjectsWithTag("Receiver");
+        foreach (Circuit circuit in circuits)
+        {
+            foreach (GameObject receiver in allReceiverPositions)
+            {
+                if (receiver.GetComponent<ElectricReceiverBhvr>().peripheralPositions.Intersect(circuit.eBlockPositions).Any())
+                {
+                    circuit.receivers.Add(receiver.GetComponent<ElectricReceiverBhvr>());
+                }
+            }
+        }
+    }
+
+    void UpdateRenderer()
+    {
+        goPool.ClearAll();
+        foreach (Circuit circuit in circuits)
+        {
+            if (GetSignal(circuit) == 1)
+            {
+                foreach (var pos in circuit.eBlockPositions)
+                {
+                    goPool.Instantiate(new Vector3((float)pos.x + 0.5f, (float)pos.y + 0.5f,0), Quaternion.identity);
+                }
+            }
+        }
+    }
+
+    void UpdateReceivers()
+    {
+        foreach (Circuit circuit in circuits)
+        {
+            if (GetSignal(circuit) == 1)
+            {
+                foreach (var receiver in circuit.receivers)
+                {
+                    receiver.ReceiveSignal();
+                }
+            }
+        }
+    }
+
+    int GetSignal(Circuit circuit)
+    {
+        foreach (GameObject lever in circuit.levers)
+        {
+            if (lever.GetComponent<ElectricLeverBhvr>().leverState == 1)
+                 return 1;
+        }
+        return 0;
     }
 
     List<Vector2Int> RetreiveAllPositions()
     {
-        var cellBounds = new BoundsInt(-solidTm.cellBounds.xMax, -solidTm.cellBounds.yMax,0, 2*solidTm.cellBounds.size.x, 2*solidTm.cellBounds.size.y,1);
         List<Vector2Int> positions = new List<Vector2Int>();
-        foreach (var pos in cellBounds.allPositionsWithin)
+        foreach (var pos in solidTm.cellBounds.allPositionsWithin)
         {
             if (solidTm.GetTile(pos) == electricTile)
             {
@@ -115,45 +182,4 @@ public class ElectricBlocksManager : MonoBehaviour
         }
         return positions;
     }
-
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    
-
-    List<Vector2Int> GetSurroundingLevers(Vector2Int pos)
-    {
-        List<Vector2Int> positions = new List<Vector2Int>();
-        var vector3IntPos = (Vector3Int)pos;
-        var downTile = solidTm.GetTile(vector3IntPos + Vector3Int.down);
-        var upTile = solidTm.GetTile(vector3IntPos + Vector3Int.up);
-        var leftTile = solidTm.GetTile(vector3IntPos + Vector3Int.left);
-        var rightTile = solidTm.GetTile(vector3IntPos + Vector3Int.right);
-
-        if (downTile == electricTile)
-        {
-            positions.Add(pos + Vector2Int.down);
-        }
-
-        if (upTile == electricTile)
-        {
-            positions.Add(pos + Vector2Int.up);
-        }
-        if (leftTile == electricTile)
-        {
-            positions.Add(pos + Vector2Int.left);
-        }
-        if (rightTile == electricTile)
-        {
-            positions.Add(pos + Vector2Int.right);
-        }
-        return positions;
-
-    }
-
 }

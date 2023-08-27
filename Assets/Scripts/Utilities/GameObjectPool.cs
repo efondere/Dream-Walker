@@ -5,8 +5,15 @@ using UnityEngine;
 public class GameObjectPool : MonoBehaviour
 {
     [SerializeField] private GameObject _prefab;
-    
+
     private List<GameObject> _gameObjects = new List<GameObject>();
+
+    public static void CreatePool(ref GameObjectPool pool ,GameObject prefab)
+    {
+        GameObject go = new GameObject(prefab.name);
+        pool = go.AddComponent<GameObjectPool>();
+        pool._prefab = prefab;
+    }
 
     public void Instantiate(Vector3 position, Quaternion rotation)
     {

@@ -33,5 +33,14 @@ public class BlockBehaviorManager : MonoBehaviour
     public static void StopBehavior(OnUpdate methodToStop)
     {
         onUpdate -= methodToStop;
-    }  
+    }
+
+
+    private void Update()
+    {
+        if (onUpdate != null)
+        {
+            onUpdate();
+        }
+    }
 }

@@ -12,13 +12,14 @@ public class EditingControllerNew : MonoBehaviour
     public int[] nbBlocksAvailable;
     private int[] blockUsage;
     TilePlacer tilePlacer;
-    bool canEdit = true;
+    TileRemover tileRemover;
 
     private void OnEnable()
-    {
+    { 
         _inputs = new Inputs();
         _inputs.Enable();
         tilePlacer = GetComponent<TilePlacer>();
+        tileRemover = GetComponent<TileRemover>();
     }
 
     private void Start()
@@ -40,9 +41,16 @@ public class EditingControllerNew : MonoBehaviour
     private void Update()
     {
         UpdateSelection();
-        if (nbBlocksAvailable[currentTileSelected] - blockUsage[currentTileSelected] > 0)
+        if (!Input.GetKey(KeyCode.D))
         {
-            tilePlacer.Edit();
+            if (nbBlocksAvailable[currentTileSelected] - blockUsage[currentTileSelected] > 0)
+            {
+                tilePlacer.Edit();
+            }
+        }
+        else
+        {
+            tileRemover.EditRemove();
         }
 
 
@@ -71,7 +79,11 @@ public class EditingControllerNew : MonoBehaviour
             }
 
             editingUIManager.UpdateSelector(currentTileSelected);
+            Debug.Log("Placeables Length" + placeables.Length);
+            Debug.Log("current tile " + currentTileSelected);
             tilePlacer.placeable = placeables[currentTileSelected];
+            tileRemover.placeable = placeables[currentTileSelected];
+
         }
     }
 

@@ -3,7 +3,7 @@ using UnityEngine.WSA;
 
 public class PlaceableTile : Placeable
 {
-    public delegate void onPlace(Vector2Int position);
+    public delegate void onPlace(Vector2Int position, TilePreview tilePreview);
     public static event onPlace onPlaceEvent;
 
 
@@ -46,8 +46,8 @@ public class PlaceableTile : Placeable
                 }
             }
         }
-
-        onPlaceEvent?.Invoke((Vector2Int)position);
+        
+        onPlaceEvent?.Invoke((Vector2Int)position, tilePreview);
 
         return true;
     }

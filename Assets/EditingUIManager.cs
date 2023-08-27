@@ -11,7 +11,6 @@ public class EditingUIManager : MonoBehaviour
     public GameObject[] tilesUI;
     public GameObject tileSelectorUI;
 
-
     public void SetSelectorUI(int[] nbBlocksAvailable)
     {
         for (int i = 0; i < tilesUI.Length; i++)

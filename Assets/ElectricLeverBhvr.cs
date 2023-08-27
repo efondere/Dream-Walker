@@ -17,7 +17,7 @@ public class ElectricLeverBhvr : MonoBehaviour
     private Inputs inputs;
     // 0 is off, 1 is on
     [HideInInspector] public List<ElectricBlockBehavior> electricBlocks;
-    private int leverState = 0;
+    [HideInInspector]public int leverState = 0;
     TilemapCollider2D coll;
     private Tilemap solidTm;
     public Tile electricTile;

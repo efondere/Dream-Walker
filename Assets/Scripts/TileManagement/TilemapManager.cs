@@ -43,6 +43,7 @@ public class TilemapManager : MonoBehaviour
         _placeholderTilemap.SetTile(pos.x, pos.y, -tileID);
     }
 
+
     public Vector3 CellToWorld(Vector3Int pos)
     {
         return _solidTilemap.CellToWorld(pos);
