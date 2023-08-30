@@ -139,23 +139,23 @@ public class playerController1 : MonoBehaviour
     private void Move()
     {
 
-        moveDir = new Vector2(inputs.Movement.Horizontal.ReadValue<float>(), 0);    
+        // moveDir = new Vector2(inputs.Movement.Horizontal.ReadValue<float>(), 0);    
 
         if (!isJumping && isGrounded())
         {
                 yVelocity = 0f;
         }
 
-        if (inputs.Movement.Jump.IsPressed())
-        {
-            if (isGrounded())
-            {
-                yVelocity = jumpVelocity;
-                isJumping = true;
-
-            }
-
-        }
+        // if (inputs.Movement.Jump.IsPressed())
+        // {
+        //     if (isGrounded())
+        //     {
+        //         yVelocity = jumpVelocity;
+        //         isJumping = true;
+        //
+        //     }
+        //
+        // }
 
         if (isJumping)
         {
@@ -169,13 +169,13 @@ public class playerController1 : MonoBehaviour
                     isJumping = false;
                 }
             }
-            else if (yVelocity > 0f && inputs.Movement.Jump.IsPressed())
-            {
-                ApplyGravity(gravityScale * (lowJumpMultiplier - 1f));
-
-                Debug.Log("gravityScale : " + gravityScale * (lowJumpMultiplier - 1f));
-
-            }
+            // else if (yVelocity > 0f && inputs.Movement.Jump.IsPressed())
+            // {
+            //     ApplyGravity(gravityScale * (lowJumpMultiplier - 1f));
+            //
+            //     Debug.Log("gravityScale : " + gravityScale * (lowJumpMultiplier - 1f));
+            //
+            // }
             else
             {
                 ApplyGravity(gravityScale);
@@ -216,7 +216,7 @@ public class playerController1 : MonoBehaviour
             GetComponent<SpriteRenderer>().flipX = false;
         }
 
-        animator.SetFloat("xSpeed", Mathf.Abs(inputs.Movement.Horizontal.ReadValue<float>()));
+        // animator.SetFloat("xSpeed", Mathf.Abs(inputs.Movement.Horizontal.ReadValue<float>()));
 
 
         if (yVelocity == 0f)
@@ -266,54 +266,54 @@ public class playerController1 : MonoBehaviour
 
             // Block control
 
-            mousePos = inputs.Mouse.Pointer.ReadValue<Vector2>();
+            // mousePos = inputs.Mouse.Pointer.ReadValue<Vector2>();
             if (!PauseManager.IsPaused())
             {
                 currentBlock.transform.position = cam.ScreenToWorldPoint(mousePos) + new Vector3(0f, 0f, 10f);
             }
 
-            if (inputs.Editing.Rotate.WasPressedThisFrame() && inputs.Editing.Rotate.ReadValue<float>() > 0f)
-            {
-                currentBlockAngle += 90f;
-                currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
-            }
-            else if (inputs.Editing.Rotate.WasPressedThisFrame()&&inputs.Editing.Rotate.ReadValue<float>() < 0f)
-            {
-
-                currentBlockAngle -= 90f;
-                currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
-            }
+            // if (inputs.Editing.Rotate.WasPressedThisFrame() && inputs.Editing.Rotate.ReadValue<float>() > 0f)
+            // {
+            //     currentBlockAngle += 90f;
+            //     currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
+            // }
+            // else if (inputs.Editing.Rotate.WasPressedThisFrame()&&inputs.Editing.Rotate.ReadValue<float>() < 0f)
+            // {
+            //
+            //     currentBlockAngle -= 90f;
+            //     currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
+            // }
 
 
             // Drop block
-            if (inputs.Mouse.mouseClick.WasPressedThisFrame() && !PauseManager.IsPaused())
-            {
-                //Collider2D otherCollider = currentBlockCollider.OverlapBox(currentBlock.transform.position, new Vector2(currentBlockCollider.size.x * currentBlock.transform.lossyScale.x, currentBlockCollider.size.y * currentBlock.transform.lossyScale.y), 0f);
-                if (!currentBlockCollider.IsTouchingLayers(-1))
-                {
-                    currentBlockSpriteRenderer.color = normalColor;
-                    currentBlockCollider.isTrigger = false;
-                    playerBlocksManager.blockList[currentBlockIndex].Remove(currentBlock);
-                    playerBlocksManager.useBlock(currentBlockIndex);
-
-                    if (playerBlocksManager.blockList[currentBlockIndex].Count != 0)
-                    {
-                        currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];
-                    }
-                    else
-                    {
-                        currentBlock = null;
-                    }
-                // droppedBlock = true;
-                }
-                else
-                {
-                    animateToRed = true;
-                }
-
-
-
-            }
+            // if (inputs.Mouse.mouseClick.WasPressedThisFrame() && !PauseManager.IsPaused())
+            // {
+            //     //Collider2D otherCollider = currentBlockCollider.OverlapBox(currentBlock.transform.position, new Vector2(currentBlockCollider.size.x * currentBlock.transform.lossyScale.x, currentBlockCollider.size.y * currentBlock.transform.lossyScale.y), 0f);
+            //     if (!currentBlockCollider.IsTouchingLayers(-1))
+            //     {
+            //         currentBlockSpriteRenderer.color = normalColor;
+            //         currentBlockCollider.isTrigger = false;
+            //         playerBlocksManager.blockList[currentBlockIndex].Remove(currentBlock);
+            //         playerBlocksManager.useBlock(currentBlockIndex);
+            //
+            //         if (playerBlocksManager.blockList[currentBlockIndex].Count != 0)
+            //         {
+            //             currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];
+            //         }
+            //         else
+            //         {
+            //             currentBlock = null;
+            //         }
+            //     // droppedBlock = true;
+            //     }
+            //     else
+            //     {
+            //         animateToRed = true;
+            //     }
+            //
+            //
+            //
+            // }
 
 
             // Indicating wrong spawn pos

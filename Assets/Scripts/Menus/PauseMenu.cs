@@ -1,20 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PauseMenu : Pausable
+// TODO: Disable select behaviour
+[RequireComponent(typeof(Pausable))]
+public class PauseMenu : MonoBehaviour
 {
-    public GameObject pauseMenuUI;
+    [SerializeField] private GameObject pauseMenuUI;
+    public InputManager inputManager; // use this to error when no resume callback is given
 
-    public override void OnPause()
+    public void OnPause()
     {
         pauseMenuUI.SetActive(true);
     }
 
-    public override void OnResume()
+    public void OnResume()
     {
         pauseMenuUI.SetActive(false);
+    }
+
+    public void OnResumeClick()
+    {
+        inputManager.OnTriggerResume();
     }
 
     public void LoadMainMenu()

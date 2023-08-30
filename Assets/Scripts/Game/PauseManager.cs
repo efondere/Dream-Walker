@@ -1,11 +1,11 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class PauseManager
 {
     private static List<Pausable> _pausables = new();
     private static bool _isPaused = false;
 
-    // TODO: trigger pause from InputManager
     public static bool TogglePause()
     {
         if (_isPaused)
@@ -34,8 +34,7 @@ public class PauseManager
         _isPaused = true;
         foreach (var p in _pausables)
         {
-            p.isPaused = true;
-            p.OnPause();
+            p.TriggerPause();
         }
     }
 
@@ -47,14 +46,17 @@ public class PauseManager
         _isPaused = false;
         foreach (var p in _pausables)
         {
-            p.isPaused = false;
-            p.OnResume();
+            p.TriggerResume();
         }
     }
 
     public static void Register(Pausable p)
     {
         _pausables.Add(p);
-        p.isPaused = _isPaused;
+    }
+
+    public static void Remove(Pausable p)
+    {
+        _pausables.Remove(p);
     }
 }

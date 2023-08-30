@@ -8,6 +8,13 @@ using JetBrains.Annotations;
 
 public class Jump : MonoBehaviour
 {
+    enum JumpType
+    {
+        Normal = 0,
+        Coyote = 1,
+        Wall = 2,
+    }
+    
     Rigidbody2D rb;
     CollisionDetection collisionDetection;
     HorizontalMove horizontalMove;
@@ -25,6 +32,8 @@ public class Jump : MonoBehaviour
     [HideInInspector] public bool hasWallJumped = false;
     private bool isJumping = false;
 
+    private bool _jumpKeyPressed = false;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -37,13 +46,34 @@ public class Jump : MonoBehaviour
     {
         CheckJumpConditions();
 
-        if (isJumping && rb.velocity.y < -0.01f) // applies to all objects in the same way
-        AlterDownwardMovement();
+        if (_jumpKeyPressed && availableJumpType == 0) {
+            InitiateJump(0);
+        }
 
+        if (isJumping && rb.velocity.y < -0.01f) // applies to all objects in the same way
+            AlterDownwardMovement();
+
+        // slow down jump when key is released
+        // TODO: check if we didn't want to do the opposite instead
         if (rb.velocity.y > 0.01f)
         {
-            canAlterUpwardMvt = true;
+            if (!_jumpKeyPressed)
+                AlterUpwardMovement();
         }
+    }
+
+    public void BeginJump()
+    {
+        _jumpKeyPressed = true;
+        // _jumpKeyPressed should not be true before this point
+        // so we can safely assume that jump was just initiated
+        if (availableJumpType == 1 || availableJumpType == 2)
+            InitiateJump(availableJumpType);
+    }
+
+    public void EndJump()
+    {
+        _jumpKeyPressed = false;
     }
 
     public void AlterDownwardMovement()
@@ -57,13 +87,9 @@ public class Jump : MonoBehaviour
             }
     }
 
-    [HideInInspector]public bool canAlterUpwardMvt;
-    public void AlterUpwardMovement(bool conditionMet)
+    public void AlterUpwardMovement()
     {
-        if (conditionMet)
-        {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1f) * Time.deltaTime;
-        }
+        rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1f) * Time.deltaTime;
     }
 
     public float percentOflayerHeight;
@@ -71,6 +97,7 @@ public class Jump : MonoBehaviour
     {
         if (!collisionDetection.isGrounded() && !isJumping)
         {
+            // TODO: use float _timeSinceGrounded instead
             StartCoroutine(CoyoteJump(coyoteTime));
             if (canCoyoteJump)
                 availableJumpType = 1;
@@ -117,7 +144,6 @@ public class Jump : MonoBehaviour
         }
     }
 
-
     bool canCoyoteJump;
     private IEnumerator CoyoteJump(float coyoteTime)
     {
@@ -131,28 +157,5 @@ public class Jump : MonoBehaviour
         rb.velocity = new Vector2(rb.velocity.x, 0f);
         rb.velocity += dir * jumpForce;
         isJumping = true;
-    }
-}
-
-
-public class A
-{
-    public void Main()
-    {
-        B func = new B();
-        func.send_callBack(CallBack);
-    }
-
-    private void CallBack(string text)
-    {
-         Console.WriteLine(text);
-    }
-}
-
-public class B
-{
-    public void send_callBack(Action<string> CallBack)
-    {
-        CallBack("");
     }
 }

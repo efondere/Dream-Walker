@@ -1,15 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Windows;
 
+[RequireComponent(typeof(InputManager))]
+[RequireComponent(typeof(CollisionDetection))]
 public class EditingController : MonoBehaviour
 {
     [HideInInspector] public GameObject currentBlock;
     public playerBlocksManager playerBlocksManager;
     private InputManager inputManager;
 
-    private int[,] ints = new int[2,3];
+    private int[,] ints = new int[2, 3];
     int currentBlockIndex = 0;
     public float blockMoveStep;
     [Space]
@@ -20,6 +23,8 @@ public class EditingController : MonoBehaviour
     private bool animateToRed;
     public RectTransform blockSpawnBound;
 
+    private bool _isEditing = false;
+    private CollisionDetection _collisionDetection;
 
     private void Start()
     {
@@ -28,8 +33,41 @@ public class EditingController : MonoBehaviour
 
     }
 
+    private void Update()
+    {
+        EditBlock();
+    }
+
+    public bool BeginEditing()
+    {
+        if (!_collisionDetection.isGrounded())
+            return false;
+
+        _isEditing = true;
+        playerBlocksManager.setDreaming(true);
+        return true;
+    }
+
+    public void StopEditing()
+    {
+        _isEditing = false;
+        playerBlocksManager.setDreaming(false);
+
+        if (currentBlock != null)
+            currentBlock.SetActive(false);
+    }
+
+    public bool IsEditing()
+    {
+        return _isEditing;
+    }
+
     public void EditBlock()
     {
+        if (!_isEditing)
+        {
+            return;
+        }
 
         // Change selection
         if (currentBlockIndex != playerBlocksManager.m_currentlySelectedTile)
@@ -62,60 +100,60 @@ public class EditingController : MonoBehaviour
 
             // Block control
 
-            if (!PauseManager.IsPaused())
-            {
-                currentBlock.transform.position = Camera.main.ScreenToWorldPoint(inputManager.MousePosition()) + new Vector3(0f, 0f, 10f);
-            }
-
-            if (inputManager.RotatedBlock() &&  inputManager.BlockRotationDirection() > 0f)
-            {
-                currentBlockAngle += 90f;
-                currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
-            }
-            else if (inputManager.RotatedBlock() && inputManager.BlockRotationDirection() < 0f)
-            {
-
-                currentBlockAngle -= 90f;
-                currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
-            }
-
-
-            // Drop block
-            if (inputManager.MouseClick() && !PauseManager.IsPaused())
-            {
-                //Collider2D otherCollider = currentBlockCollider.OverlapBox(currentBlock.transform.position, new Vector2(currentBlockCollider.size.x * currentBlock.transform.lossyScale.x, currentBlockCollider.size.y * currentBlock.transform.lossyScale.y), 0f);
-                if (!currentBlockCollider.IsTouchingLayers(-1))
-                {
-                    currentBlockSpriteRenderer.color = normalColor;
-                    currentBlockCollider.isTrigger = false;
-                    playerBlocksManager.blockList[currentBlockIndex].Remove(currentBlock);
-                    playerBlocksManager.useBlock(currentBlockIndex);
-
-                    if (playerBlocksManager.blockList[currentBlockIndex].Count != 0)
-                    {
-                        currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];
-                    }
-                    else
-                    {
-                        currentBlock = null;
-                    }
-                    // droppedBlock = true;
-                }
-                else
-                {
-                    animateToRed = true;
-                }
-
-
-
-            }
+            // if (!PauseManager.IsPaused())
+            // {
+            //     currentBlock.transform.position = Camera.main.ScreenToWorldPoint(inputManager.MousePosition()) + new Vector3(0f, 0f, 10f);
+            // }
+            //
+            // if (inputManager.RotatedBlock() &&  inputManager.BlockRotationDirection() > 0f)
+            // {
+            //     currentBlockAngle += 90f;
+            //     currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
+            // }
+            // else if (inputManager.RotatedBlock() && inputManager.BlockRotationDirection() < 0f)
+            // {
+            //
+            //     currentBlockAngle -= 90f;
+            //     currentBlock.transform.rotation = Quaternion.Euler(0f, 0f, currentBlockAngle);
+            // }
+            //
+            //
+            // // Drop block
+            // if (inputManager.MouseClick() && !PauseManager.IsPaused())
+            // {
+            //     //Collider2D otherCollider = currentBlockCollider.OverlapBox(currentBlock.transform.position, new Vector2(currentBlockCollider.size.x * currentBlock.transform.lossyScale.x, currentBlockCollider.size.y * currentBlock.transform.lossyScale.y), 0f);
+            //     if (!currentBlockCollider.IsTouchingLayers(-1))
+            //     {
+            //         currentBlockSpriteRenderer.color = normalColor;
+            //         currentBlockCollider.isTrigger = false;
+            //         playerBlocksManager.blockList[currentBlockIndex].Remove(currentBlock);
+            //         playerBlocksManager.useBlock(currentBlockIndex);
+            //
+            //         if (playerBlocksManager.blockList[currentBlockIndex].Count != 0)
+            //         {
+            //             currentBlock = playerBlocksManager.blockList[currentBlockIndex][0];
+            //         }
+            //         else
+            //         {
+            //             currentBlock = null;
+            //         }
+            //         // droppedBlock = true;
+            //     }
+            //     else
+            //     {
+            //         animateToRed = true;
+            //     }
+            //
+            //
+            //
+            // }
 
 
             // Indicating wrong spawn pos
-        //    if (animateToRed)
-        //    {
-        //        IndicateWrongSpawnPos();
-        //    }
+            //    if (animateToRed)
+            //    {
+            //        IndicateWrongSpawnPos();
+            //    }
 
 
             // Setting bounds for spawning

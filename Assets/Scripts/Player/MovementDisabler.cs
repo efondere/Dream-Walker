@@ -26,10 +26,10 @@ public class MovementDisabler : MonoBehaviour
         {
             horizontalMove.enabled = jump.enabled = dash.enabled = wallSlide.enabled = false;
         }
-        else if (inputManager.IsEditing())
-        {
-            horizontalMove.enabled = jump.enabled = dash.enabled = wallSlide.enabled = false;
-        }
+        // else if (editModeManager.IsEditing())
+        // {
+        //     horizontalMove.enabled = jump.enabled = dash.enabled = wallSlide.enabled = false;
+        // }
         else
         {
             horizontalMove.enabled = jump.enabled = dash.enabled = wallSlide.enabled = true;

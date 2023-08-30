@@ -66,25 +66,23 @@ public class Dash : MonoBehaviour
 
     //bool playCoroutine;
     //UnityEngine.Vector2 _dashDir;
-    public void InitiateDash(bool externalCondition, UnityEngine.Vector2 dashDir)
+    public void InitiateDash(UnityEngine.Vector2 dashDir)
     {
         if (!hasDashed && !isDashing)
         {
-            if (externalCondition) {
-                //playCoroutine = true;
-                if (dashDir != UnityEngine.Vector2.zero)
-                {
-                    //_dashDir = dashDir.normalized;
-                    StartCoroutine(_Dash(dashDir.normalized));
-                }
-                else
-                {
-                    StartCoroutine(_Dash(rb.velocity.normalized));
-                    //_dashDir = rb.velocity.normalized;
-
-                }
-                isDashing = true;
+            //playCoroutine = true;
+            if (dashDir != UnityEngine.Vector2.zero)
+            {
+                //_dashDir = dashDir.normalized;
+                StartCoroutine(_Dash(dashDir.normalized));
             }
+            else
+            {
+                StartCoroutine(_Dash(rb.velocity.normalized));
+                //_dashDir = rb.velocity.normalized;
+
+            }
+            isDashing = true;
         }
     }
 

@@ -3,7 +3,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PopUpManager : Pausable
+[RequireComponent(typeof(Pausable))]
+public class PopUpManager : MonoBehaviour
 {
     public enum PopUpPosition
     {
@@ -87,7 +88,7 @@ public class PopUpManager : Pausable
         _instantiatedPopUps.RemoveAt(instanceID);
     }
 
-    public override void OnPause()
+    public void OnPause()
     {
         foreach (var p in _instantiatedPopUps)
         {
@@ -95,7 +96,7 @@ public class PopUpManager : Pausable
         }
     }
     
-    public override void OnResume()
+    public void OnResume()
     {
         foreach (var p in _instantiatedPopUps)
         {

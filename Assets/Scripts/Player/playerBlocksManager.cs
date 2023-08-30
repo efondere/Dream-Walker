@@ -27,7 +27,7 @@ public class playerBlocksManager : MonoBehaviour
     {
 
         _inputs = new Inputs();
-        _inputs.Editing.Select.Enable();
+        // _inputs.Editing.Select.Enable();
         m_blockUsage = new int[blocks.Length];
         
         CreatePool();
@@ -81,14 +81,14 @@ public class playerBlocksManager : MonoBehaviour
             return;
         }
 
-        if (_inputs.Editing.Select.ReadValue<float>() < 0f && _inputs.Editing.Select.WasPressedThisFrame())
-        {
-            m_currentlySelectedTile--;
-        }
-        if (_inputs.Editing.Select.ReadValue<float>() > 0f && _inputs.Editing.Select.WasPressedThisFrame())
-        {
-            m_currentlySelectedTile++;
-        }
+        // if (_inputs.Editing.Select.ReadValue<float>() < 0f && _inputs.Editing.Select.WasPressedThisFrame())
+        // {
+        //     m_currentlySelectedTile--;
+        // }
+        // if (_inputs.Editing.Select.ReadValue<float>() > 0f && _inputs.Editing.Select.WasPressedThisFrame())
+        // {
+        //     m_currentlySelectedTile++;
+        // }
 
         if (m_currentlySelectedTile >= tilesUI.Length)
         {

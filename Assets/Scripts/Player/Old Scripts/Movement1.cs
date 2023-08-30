@@ -54,7 +54,7 @@ public class Movement1 : MonoBehaviour
         rb = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
         sr = this.gameObject.GetComponent<SpriteRenderer>();
         inputs = new Inputs();
-        inputs.Movement.Enable();
+        // inputs.Movement.Enable();
         rb.gravityScale = gravityScale;
         ghostTrail = this.gameObject.GetComponent<GhostTrail>();
 
@@ -65,10 +65,10 @@ public class Movement1 : MonoBehaviour
         #region Horizontal move
         if (canMove)
         {
-            moveDir = new Vector2(inputs.Movement.Horizontal.ReadValue<float>(), 0f);
+            // moveDir = new Vector2(inputs.Movement.Horizontal.ReadValue<float>(), 0f);
             Walk(moveDir);
             Debug.Log("IsWalking");
-            Debug.Log("Horizontal : " + inputs.Movement.Horizontal.ReadValue<float>());
+            // Debug.Log("Horizontal : " + inputs.Movement.Horizontal.ReadValue<float>());
         }
         #endregion
 
@@ -77,27 +77,27 @@ public class Movement1 : MonoBehaviour
         if (!isGrounded() && !isJumping)
         {
             StartCoroutine(CoyoteJump(coyoteTime));
-            if (canCoyoteJump && inputs.Movement.Jump.WasPressedThisFrame())
-                Jump(Vector2.up);
+            // if (canCoyoteJump && inputs.Movement.Jump.WasPressedThisFrame())
+                // Jump(Vector2.up);
         }
 
-        if (inputs.Movement.Jump.IsPressed() && isGrounded())
-        {
-            if ((transform.position.y - transform.lossyScale.y)> Physics2D.OverlapCircle((Vector2)transform.position + bottomOffset, collisionRadius, LayerMask.GetMask("Ground")).gameObject.transform.position.y)
-            {
-                Jump(Vector2.up);
-                jumpFromGroundWait = true;
-            }
-        }
-        else if ((pushWall() || touchWall()) && inputs.Movement.Jump.WasPressedThisFrame())
-        {
-            int side = Physics2D.OverlapCircle((Vector2)transform.position + rightOffset, collisionRadius, LayerMask.GetMask("Ground")) ? 1 : -1;
-            Jump(new Vector2(-side, 1).normalized);
-            Debug.Log(new Vector2(-side, 1).normalized);
-            hasWallJumped = true;
-            StartCoroutine(StopMovement());
-
-        }
+        // if (inputs.Movement.Jump.IsPressed() && isGrounded())
+        // {
+        //     if ((transform.position.y - transform.lossyScale.y)> Physics2D.OverlapCircle((Vector2)transform.position + bottomOffset, collisionRadius, LayerMask.GetMask("Ground")).gameObject.transform.position.y)
+        //     {
+        //         Jump(Vector2.up);
+        //         jumpFromGroundWait = true;
+        //     }
+        // }
+        // else if ((pushWall() || touchWall()) && inputs.Movement.Jump.WasPressedThisFrame())
+        // {
+        //     int side = Physics2D.OverlapCircle((Vector2)transform.position + rightOffset, collisionRadius, LayerMask.GetMask("Ground")) ? 1 : -1;
+        //     Jump(new Vector2(-side, 1).normalized);
+        //     Debug.Log(new Vector2(-side, 1).normalized);
+        //     hasWallJumped = true;
+        //     StartCoroutine(StopMovement());
+        //
+        // }
         else if (isJumping &&   rb.velocity.y < -0.01f)
         {
             rb.velocity += Vector2.up * Physics2D.gravity.y * (isFallingMultiplier - 1f) * Time.deltaTime;
@@ -108,11 +108,11 @@ public class Movement1 : MonoBehaviour
                 isJumping = false;
             }
         }
-        else if (rb.velocity.y > 0.01f && !inputs.Movement.Jump.IsPressed())
-        {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1f) * Time.deltaTime;
-            Debug.Log("wOW");
-        }
+        // else if (rb.velocity.y > 0.01f && !inputs.Movement.Jump.IsPressed())
+        // {
+        //     rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1f) * Time.deltaTime;
+        //     Debug.Log("wOW");
+        // }
 
         #endregion
 
@@ -133,21 +133,21 @@ public class Movement1 : MonoBehaviour
         #endregion
 
         #region dash
-        if (inputs.Movement.Dash.WasPressedThisFrame() && !hasDashed && !isDashing)
-        {
-            Vector2 dashDir = new Vector2(inputs.Movement.Horizontal.ReadValue<float>(), inputs.Movement.Vertical.ReadValue<float>());
-            
-            if (dashDir != Vector2.zero) {
-                StartCoroutine(Dash(dashDir.normalized));
-            }
-            else
-            {
-                StartCoroutine(Dash(rb.velocity.normalized));
-            }
-
-            isDashing = true;
-
-        }
+        // if (inputs.Movement.Dash.WasPressedThisFrame() && !hasDashed && !isDashing)
+        // {
+        //     Vector2 dashDir = new Vector2(inputs.Movement.Horizontal.ReadValue<float>(), inputs.Movement.Vertical.ReadValue<float>());
+        //     
+        //     if (dashDir != Vector2.zero) {
+        //         StartCoroutine(Dash(dashDir.normalized));
+        //     }
+        //     else
+        //     {
+        //         StartCoroutine(Dash(rb.velocity.normalized));
+        //     }
+        //
+        //     isDashing = true;
+        //
+        // }
 
         if (showGhost)
         {

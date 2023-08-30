@@ -1,19 +1,24 @@
 using UnityEngine;
 
-public abstract class Pausable: MonoBehaviour
+public class Pausable: MonoBehaviour
 {
-    [HideInInspector] public bool isPaused;
-    
-    protected Pausable()
+    private void Start()
     {
         PauseManager.Register(this);
     }
 
-    public virtual void OnPause()
+    private void OnDestroy()
     {
+        PauseManager.Remove(this);
     }
 
-    public virtual void OnResume()
+    public void TriggerPause()
     {
+        gameObject.SendMessage("OnPause");
+    }
+
+    public void TriggerResume()
+    {
+        gameObject.SendMessage("OnResume");
     }
 }
