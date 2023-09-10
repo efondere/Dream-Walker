@@ -1,29 +1,28 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Game;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    public static int CurrentLevel = 1;
-    public static int LevelCount = 2;
+    public static uint LevelCount = 1;
     
-    // Start is called before the first frame update
-    void Start()
+    public static void CompleteLevel(uint levelNumber)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public static void CompleteLevel(int levelNumber)
-    {
-        if (levelNumber >= CurrentLevel)
+        if (levelNumber >= GameData.GetLevel())
         {
-            CurrentLevel = levelNumber + 1;
+            GameData.SetLevel(levelNumber + 1);
         }
+    }
+
+    public static uint GetCurrentLevel()
+    {
+        return GameData.GetLevel();
+    }
+
+    public static void LoadLevelScene(uint level)
+    {
+        SceneManager.LoadScene("Level" + level);
     }
 }

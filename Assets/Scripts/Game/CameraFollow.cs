@@ -59,7 +59,8 @@ public class CameraFollow : MonoBehaviour
         Debug.Log("Axis Horizontal = " + Input.GetAxis("Horizontal"));
 
         // camera zooming out (if player is editing, or is moving) or in
-        if (Mathf.Abs(inputManager.HorizontalInput().x) <= 0.01f || Mathf.Abs(inputManager.JumpInput()) < 0 || (inputManager.IsEditing() && timeBeforeZoomOut <= 0.01f))
+        //if (Mathf.Abs(inputManager.HorizontalInput().x) <= 0.01f || Mathf.Abs(inputManager.JumpInput()) < 0 || (inputManager.IsEditing() && timeBeforeZoomOut <= 0.01f))
+        if (false)
         {
             cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, 7f, ref zoomVelocity, 1f);
         }

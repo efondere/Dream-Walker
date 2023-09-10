@@ -34,7 +34,7 @@ public class LevelSelectMenuManager : MonoBehaviour
     {
         for (int i = 0; i < levelButtons.Length; i++)
         {
-            levelButtons[i].interactable = i < LevelManager.CurrentLevel;
+            levelButtons[i].interactable = i < LevelManager.GetCurrentLevel();
             //levelButtons[i].enabled = i < LevelManager.CurrentLevel;
         }
     }

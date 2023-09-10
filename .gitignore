@@ -72,7 +72,7 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # Aseprite files
-# *.aseprite*
+*.aseprite
 
 # VSCode files
 .vscode
@@ -82,3 +82,6 @@ crashlytics-build.properties
 
 # Crash dumps
 *.blob
+
+# Visual studio config
+.vsconfig

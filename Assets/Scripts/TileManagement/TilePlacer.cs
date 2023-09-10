@@ -76,10 +76,10 @@ public class TilePlacer : MonoBehaviour
             PlaceTile(position);
         }
 
-        if (inputManager.Editing.Rotate.WasPressedThisFrame())
-        {
-            Rotate(inputManager.Editing.Rotate.ReadValue<float>() > 0);
-        }
+        // if (inputManager.Editing.Rotate.WasPressedThisFrame())
+        // {
+        //     Rotate(inputManager.Editing.Rotate.ReadValue<float>() > 0);
+        // }
     }
 
     public void PlaceTile(Vector3Int position)

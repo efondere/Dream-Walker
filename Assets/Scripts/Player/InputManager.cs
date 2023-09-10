@@ -1,151 +1,167 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
-using UnityEngine.Windows;
+using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(Pausable))]
+[RequireComponent(typeof(Jump))]
 public class InputManager : MonoBehaviour
 {
-    public delegate void SetFallingCondition(bool conditionMet);
+    private PlayerInput _inputs;
+    private string _prevActionMap = "Default";
 
-    private Inputs inputs;
+    private float _horizontal = 0.0f;
+    private float _vertical = 0.0f;
 
-    
-    private CollisionDetection collisionDetection;
-    public playerBlocksManager playerBlocksManager;
-    private EditingController editingController;
-    private HorizontalMove horizontalMove;
-    private Jump jump;
-    private Dash dash;
-    private WallSlide wallSlide;
+    [SerializeField] private EditingController _editingController;
+    private HorizontalMove _walkBehaviour;
+    private Jump _jumpBehaviour;
+    private Dash _dashBehaviour;
+    private WallSlide _wallSlideBehaviour;
 
-    
-
-    [HideInInspector] private bool shiftActive;
-    [HideInInspector] public bool canHorizontalMove = true;
-
-
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        inputs = new Inputs();
-        inputs.Enable();
-        
-        editingController =  GetComponent<EditingController>();
-        collisionDetection = GetComponent<CollisionDetection>();
-        horizontalMove = GetComponent<HorizontalMove>();
-        jump = GetComponent<Jump>();
-        dash = GetComponent<Dash>();
-        wallSlide = GetComponent<WallSlide>();
-
-
+        _inputs = GetComponent<PlayerInput>();
+        _jumpBehaviour = GetComponent<Jump>();
     }
 
-    private void Update()   
+    void Update()
     {
-        if (IsEditing())
+        if (!PauseManager.IsPaused() && !_editingController.IsEditing())
         {
-            editingController.EditBlock();
+            _walkBehaviour.MoveHorizontal(new Vector2(_horizontal, 0f));
+            _wallSlideBehaviour.SetHorizontalInput(_horizontal);
+        };
+    }
+
+    // Default mode
+    void OnHorizontal(InputValue value)
+    {
+        _horizontal = value.Get<float>();
+    }
+
+    void OnVertical(InputValue value)
+    {
+        _vertical = value.Get<float>();
+    }
+
+    void OnJump(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            _jumpBehaviour.BeginJump();
         }
-        else if (editingController.currentBlock != null)
+        else
         {
-            editingController.currentBlock.SetActive(false);
-        }
-
-
-            wallSlide.InitiateWithCondition(pushWall());
-
-        horizontalMove.MoveHorizontal(HorizontalInput());
-
-        if (JumpInput() >= 0)
-        {
-            if (jump.availableJumpType == 0 && JumpInput() == 1)
-            {
-                jump.InitiateJump(0);
-            }
-            else if (jump.availableJumpType == 1 && JumpInput() == 0)
-            {
-                jump.InitiateJump(1);
-            }
-            else if (jump.availableJumpType == 2 && JumpInput() == 0) {
-                jump.InitiateJump(2);
-
-            }
-        }
-
-        if (jump.canAlterUpwardMvt)
-        {
-            jump.AlterUpwardMovement(JumpInput() != 1);
-        }
-
-        if (DashPress())
-        {
-            Vector2 dashDir = new Vector2(HorizontalInput().x, VerticalInput().y);
-            dash.InitiateDash(DashPress(), dashDir);
+            _jumpBehaviour.EndJump();
         }
     }
 
-    public bool IsEditing()
+    void OnDash()
     {
-        if (!PauseMenu.isPaused && collisionDetection.isGrounded() && inputs.Editing.EditInit.WasPressedThisFrame())  
+        _dashBehaviour.InitiateDash(new Vector2(_horizontal, _vertical));
+    }
+
+    void OnSprint(InputValue value)
+    {
+        if (value.isPressed)
         {
-            shiftActive = !shiftActive;
-            playerBlocksManager.setDreaming(shiftActive);
+            Debug.Log("Starting sprint is not enabled yet!");
         }
-        return shiftActive;
-
+        else
+        {
+            Debug.Log("Stopping sprint is not enabled yet!");
+        }
     }
 
-    public Vector2 MousePosition()
+    void OnCrouch(InputValue value)
     {
-        return inputs.Mouse.Pointer.ReadValue<Vector2>();
+        if (value.isPressed)
+        {
+            Debug.Log("Starting crouch is not enabled yet!");
+        }
+        else
+        {
+            Debug.Log("Stopping crouch is not enabled yet!");
+        }
     }
 
-    public bool MouseClick()
+    void OnEnterEditMode()
     {
-        return inputs.Mouse.mouseClick.WasPressedThisFrame();
+        if (_editingController.BeginEditing())
+            _inputs.SwitchCurrentActionMap("Editing");
     }
 
-    public bool RotatedBlock()
+    // Edit mode
+    void OnSelectNext()
     {
-        return inputs.Editing.Rotate.WasPressedThisFrame();
+        Debug.Log("Selecting next is not enabled yet!");
     }
 
-    public float BlockRotationDirection()
+    void OnSelectPrev()
     {
-        return inputs.Editing.Rotate.ReadValue<float>();
+        Debug.Log("Selecting next is not enabled yet!");
     }
 
-    public Vector2 HorizontalInput()
+    void OnSelectPlaceable(InputValue value)
     {
-        return new Vector2(inputs.Movement.Horizontal.ReadValue<float>(), 0f);
+        // TODO: use a variable float with sum
+        Debug.Log("Selecting with " + value.Get<float>() + " is not enabled yet!");
     }
 
-    public Vector2 VerticalInput()
+    void OnRotateCW()
     {
-        return new Vector2(0, inputs.Movement.Vertical.ReadValue<float>());
+        Debug.Log("Rotating clockwise is not enabled yet!");
     }
-    
-    public int JumpInput()
+
+    void OnRotateCCW()
     {
-        if (inputs.Movement.Jump.WasPressedThisFrame())
-            return 0;
-        else if (inputs.Movement.Jump.IsPressed())
-            return 1;
-
-        return -1;
+        Debug.Log("Rotating counter-clockwise is not enabled yet!");
     }
 
-    public bool DashPress()
+    void OnPlace()
     {
-        return inputs.Movement.Dash.WasPressedThisFrame();
+        Debug.Log("Placing is not enabled yet!");
     }
 
-    private bool pushWall() {
-        return (Physics2D.OverlapCircle((Vector2)transform.position + collisionDetection.rightOffset, collisionDetection.collisionRadius, LayerMask.GetMask("Ground")) && (HorizontalInput().x > 0.1f))
-                 || (Physics2D.OverlapCircle((Vector2)transform.position + collisionDetection.leftOffset, collisionDetection.collisionRadius, LayerMask.GetMask("Ground")) && (HorizontalInput().x < -0.1f));
-
+    void OnErase(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            Debug.Log("Activating erase mode is not enabled yet!");
+        }
+        else
+        {
+            Debug.Log("Deactivating erase mode is not enabled yet!");
+        }
     }
 
+    void OnExitEditMode()
+    {
+        _editingController.StopEditing();
+        _inputs.SwitchCurrentActionMap("Default");
+    }
+
+    // Common to default and edit
+    void OnTriggerPause()
+    {
+        PauseManager.Pause();
+    }
+
+    // Pause menu specific
+    public void OnTriggerResume()
+    {
+        PauseManager.Resume();
+    }
+
+    // Handling pause signals
+    void OnPause()
+    {
+        _prevActionMap = _inputs.currentActionMap.name;
+        _inputs.SwitchCurrentActionMap("PauseMenu");
+    }
+
+    void OnResume()
+    {
+        _inputs.SwitchCurrentActionMap(_prevActionMap);
+    }
 }

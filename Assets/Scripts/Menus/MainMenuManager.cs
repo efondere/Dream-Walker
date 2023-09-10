@@ -1,22 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
+using Game;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Button _continueButton;
+    
+    public void Start()
     {
-        
+        _continueButton.interactable = GameData.GetLevel() > 0;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void ExitGame()
     {
         Application.Quit();
@@ -24,12 +18,12 @@ public class MainMenuManager : MonoBehaviour
 
     public void LoadCurrentLevel()
     {
-        SceneManager.LoadScene("Level" + LevelManager.CurrentLevel);
+        LevelManager.LoadLevelScene(LevelManager.GetCurrentLevel());
     }
 
     public void OpenLevelSelector()
     {
-        SceneManager.LoadScene("Level Select");
+        SceneManager.LoadScene("LevelSelect");
     }
 
     public void OpenCreditsScene()

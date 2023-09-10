@@ -15,6 +15,8 @@ public class WallSlide : MonoBehaviour
     private SpriteRenderer sr;
     private bool isWallSliding;
 
+    private float _horizontalInput = 0.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,12 +31,20 @@ public class WallSlide : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        InitiateWithCondition((Physics2D.OverlapCircle((Vector2)transform.position + collisionDetection.rightOffset, collisionDetection.collisionRadius, LayerMask.GetMask("Ground")) && (_horizontalInput > 0.1f))
+                 || (Physics2D.OverlapCircle((Vector2)transform.position + collisionDetection.leftOffset, collisionDetection.collisionRadius, LayerMask.GetMask("Ground")) && (_horizontalInput < -0.1f)));
+
         Debug.Log("Is Wall Sliding = " + isWallSliding);
         if (!isWallSliding && sr.material.color == wallSlideColor)
         {
             Debug.Log("Wall Slide Color To Change");
             sr.material.DOColor(Color.white, 0.1f);
         }
+    }
+
+    public void SetHorizontalInput(float inputValue)
+    {
+        _horizontalInput = inputValue;
     }
 
     public void InitiateWithCondition(bool externalCondition)

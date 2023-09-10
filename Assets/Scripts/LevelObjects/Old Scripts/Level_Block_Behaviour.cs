@@ -61,7 +61,7 @@ public class Level_Block_Behaviour : MonoBehaviour
 
 
         
-        if (canMove && !PauseMenu.isPaused)
+        if (canMove && !PauseManager.IsPaused())
         {
             Move();
         }
@@ -129,7 +129,7 @@ public class Level_Block_Behaviour : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!PauseMenu.isPaused)
+        if (!PauseManager.IsPaused())
         {
             if (collision.gameObject.CompareTag("Player"))
             {

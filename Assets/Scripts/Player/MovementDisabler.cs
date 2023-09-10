@@ -22,14 +22,14 @@ public class MovementDisabler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (PauseMenu.isPaused)
+        if (PauseManager.IsPaused())
         {
             horizontalMove.enabled = jump.enabled = dash.enabled = wallSlide.enabled = false;
         }
-        else if (inputManager.IsEditing())
-        {
-            horizontalMove.enabled = jump.enabled = dash.enabled = wallSlide.enabled = false;
-        }
+        // else if (editModeManager.IsEditing())
+        // {
+        //     horizontalMove.enabled = jump.enabled = dash.enabled = wallSlide.enabled = false;
+        // }
         else
         {
             horizontalMove.enabled = jump.enabled = dash.enabled = wallSlide.enabled = true;
