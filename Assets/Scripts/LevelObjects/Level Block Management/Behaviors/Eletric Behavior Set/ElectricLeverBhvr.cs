@@ -16,10 +16,7 @@ public class ElectricLeverBhvr : MonoBehaviour
 
     private Inputs inputs;
     // 0 is off, 1 is on
-    [HideInInspector] public List<ElectricBlockBehavior> electricBlocks;
     [HideInInspector]public int leverState = 0;
-    TilemapCollider2D coll;
-    private Tilemap solidTm;
     public Tile electricTile;
 
     public delegate void onChangeSignal();
@@ -27,10 +24,8 @@ public class ElectricLeverBhvr : MonoBehaviour
 
     void Start()
     {
-        electricBlocks = new List<ElectricBlockBehavior>();
         inputs = new Inputs();
         inputs.Enable();
-        solidTm = GameObject.FindWithTag("TilemapManager").transform.Find("Solid").GetComponent<Tilemap>();
     }
 
     private void OnEnable()

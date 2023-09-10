@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static UnityEditor.PlayerSettings;
 
 public class ElectricBlocksManager : MonoBehaviour
 {
@@ -22,8 +23,6 @@ public class ElectricBlocksManager : MonoBehaviour
     public Tilemap solidTm;
 
 
-
-    // Start is called before the first frame update
     void Awake()
     {
         PlaceableTile.onPlaceEvent += UpdateCircuit;
@@ -80,24 +79,21 @@ public class ElectricBlocksManager : MonoBehaviour
                 circuits.Add(currCircuit);
             }
 
-            for (int i = 0; i < eTilePositions.Count; i++)
+
+            for (int i = eTilePositions.Count - 1; i >= 0; i--)
             {
                 var pos = eTilePositions[i];
-                
-                if (Vector2Int.Distance(pos, currPos) == 1)
+                if ((Mathf.Abs(pos.y - currPos.y) == 1 && Mathf.Abs(pos.x - currPos.x) == 0) || (Mathf.Abs(pos.x - currPos.x) == 1 && Mathf.Abs(pos.y - currPos.y) == 0))
                 {
                     currCircuit.eBlockPositions.Add(pos);
-                    eTilePositions.RemoveAt(eTilePositions.IndexOf(pos));
                     positionsInQueue.Add(pos);
+                    eTilePositions.RemoveAt(i);
                 }
             }
 
-            if (positionsInQueue.Count > 0)
-            {
-                positionsInQueue.Remove(currPos);
-            }
-        }
+        }        
         return true;
+
 
     }
 
@@ -118,12 +114,12 @@ public class ElectricBlocksManager : MonoBehaviour
 
     void FindConnectedReceivers()
     {
-        var allReceiverPositions = GameObject.FindGameObjectsWithTag("Receiver");
+        var allReceivers = GameObject.FindObjectsByType(typeof(ElectricReceiverBhvr), FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (Circuit circuit in circuits)
         {
-            foreach (GameObject receiver in allReceiverPositions)
+            foreach (ElectricReceiverBhvr receiver in allReceivers)
             {
-                if (receiver.GetComponent<ElectricReceiverBhvr>().peripheralPositions.Intersect(circuit.eBlockPositions).Any())
+                if (receiver.peripheralPositions.Intersect(circuit.eBlockPositions).Any())
                 {
                     circuit.receivers.Add(receiver.GetComponent<ElectricReceiverBhvr>());
                 }
@@ -150,13 +146,12 @@ public class ElectricBlocksManager : MonoBehaviour
     {
         foreach (Circuit circuit in circuits)
         {
-            if (GetSignal(circuit) == 1)
+            int signal = GetSignal(circuit);
+            foreach (var receiver in circuit.receivers)
             {
-                foreach (var receiver in circuit.receivers)
-                {
-                    receiver.ReceiveSignal();
-                }
+                receiver.ReceiveSignal(signal);
             }
+
         }
     }
 

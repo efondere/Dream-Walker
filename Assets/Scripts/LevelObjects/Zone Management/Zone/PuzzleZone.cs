@@ -6,11 +6,11 @@ using UnityEngine;
 public class PuzzleZone : ZoneBehavior
 {
 
-
     public override void RespondToTrigger()
     {
         if (tilePosInZone.Count == zonePositions.Count)
         {
+            Debug.Log("zone completed");
             onPlaced.Invoke();
         }
     }

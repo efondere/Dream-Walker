@@ -28,6 +28,7 @@ public class EditingControllerNew : MonoBehaviour
         editingUIManager.UpdateSelector(currentTileSelected);
         editingUIManager.SetSelectorUI(nbBlocksAvailable);
         tilePlacer.placeable = placeables[currentTileSelected];
+        tileRemover.placeable = placeables[currentTileSelected];
         blockUsage = new int[nbBlocksAvailable.Length];
     }
 
@@ -79,8 +80,6 @@ public class EditingControllerNew : MonoBehaviour
             }
 
             editingUIManager.UpdateSelector(currentTileSelected);
-            Debug.Log("Placeables Length" + placeables.Length);
-            Debug.Log("current tile " + currentTileSelected);
             tilePlacer.placeable = placeables[currentTileSelected];
             tileRemover.placeable = placeables[currentTileSelected];
 

@@ -41,6 +41,7 @@ public class BlockBehaviorManager : MonoBehaviour
         if (onUpdate != null)
         {
             onUpdate();
+            Debug.Log("Update");
         }
     }
 }
