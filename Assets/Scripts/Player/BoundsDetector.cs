@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,8 +7,9 @@ public class BoundsDetector : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            // TODO: we should maybe move this to another place so we control what happens when we
+            // exit the level
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-
         }
     }
 }

@@ -1,13 +1,10 @@
-using System.Collections.Generic;
-using System.Linq;
-using Game;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
     public static uint LevelCount = 1;
-    
+
     public static void CompleteLevel(uint levelNumber)
     {
         if (levelNumber >= GameData.GetLevel())

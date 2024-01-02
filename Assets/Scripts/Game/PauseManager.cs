@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 public class PauseManager
 {
@@ -30,7 +29,7 @@ public class PauseManager
     {
         if (_isPaused)
             return;
-        
+
         _isPaused = true;
         foreach (var p in _pausables)
         {
@@ -42,7 +41,7 @@ public class PauseManager
     {
         if (!_isPaused)
             return;
-        
+
         _isPaused = false;
         foreach (var p in _pausables)
         {

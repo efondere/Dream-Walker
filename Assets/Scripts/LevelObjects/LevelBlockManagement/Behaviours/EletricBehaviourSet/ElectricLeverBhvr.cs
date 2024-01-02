@@ -1,31 +1,30 @@
 using DG.Tweening;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
-using UnityEngine.Windows;
-using UnityEngine.XR;
-using static UnityEditor.PlayerSettings;
 
 public class ElectricLeverBhvr : MonoBehaviour
 {
-    [HideInInspector]public List<Vector2Int> peripheralPositions;
+    [HideInInspector] public List<Vector2Int> peripheralPositions;
 
-    private Inputs inputs;
     // 0 is off, 1 is on
-    [HideInInspector]public int leverState = 0;
+    [HideInInspector] public int leverState = 0;
     public Tile electricTile;
 
     public delegate void onChangeSignal();
     public static event onChangeSignal onChangeSignalEvent;
 
+    private bool _wasMouseJustPressed = false;
+
     void Start()
     {
-        inputs = new Inputs();
-        inputs.Enable();
+        //TODO: remove the callback on delete
+        InputManager.objectClickEvent += OnObjectClick;
+    }
+
+    private void LateUpdate()
+    {
+        _wasMouseJustPressed = false;
     }
 
     private void OnEnable()
@@ -37,10 +36,18 @@ public class ElectricLeverBhvr : MonoBehaviour
         peripheralPositions.Add(pos + new Vector2Int(-1, -2));
     }
 
+    private void OnObjectClick(bool wasPressed)
+    {
+        if (wasPressed)
+        {
+            _wasMouseJustPressed = true;
+        }
+    }
+
     private void OnMouseOver()
     {
         transform.GetChild(leverState).gameObject.GetComponent<SpriteRenderer>().DOFade(0.5f, 0.5f);
-        if (inputs.Mouse.mouseClick.WasPressedThisFrame())
+        if (_wasMouseJustPressed)
         {
             ChangeCircuitState();
             ChangeSprite();

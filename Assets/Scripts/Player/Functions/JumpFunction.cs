@@ -1,12 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
-using UnityEngine.Windows;
-using System;
-using JetBrains.Annotations;
 
-public class Jump : MonoBehaviour
+public class JumpFunction : MonoBehaviour
 {
     enum JumpType
     {
@@ -14,10 +9,10 @@ public class Jump : MonoBehaviour
         Coyote = 1,
         Wall = 2,
     }
-    
+
     Rigidbody2D rb;
     CollisionDetection collisionDetection;
-    HorizontalMove horizontalMove;
+    HorizontalMovementFunction horizontalMove;
     public float jumpForce;
     public float jumpOffWallSpeed;
     public float isFallingMultiplier = 2.5f;
@@ -38,7 +33,7 @@ public class Jump : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         collisionDetection = GetComponent<CollisionDetection>();
-        horizontalMove = GetComponent<HorizontalMove>();
+        horizontalMove = GetComponent<HorizontalMovementFunction>();
         availableJumpType = -1;
     }
 
@@ -46,7 +41,8 @@ public class Jump : MonoBehaviour
     {
         CheckJumpConditions();
 
-        if (_jumpKeyPressed && availableJumpType == 0) {
+        if (_jumpKeyPressed && availableJumpType == 0)
+        {
             InitiateJump(0);
         }
 
@@ -78,13 +74,13 @@ public class Jump : MonoBehaviour
 
     public void AlterDownwardMovement()
     {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (isFallingMultiplier - 1f) * Time.deltaTime;
-            jumpFromGroundWait = false;
-            if (collisionDetection.isGrounded())
-            {
-                hasWallJumped = false;
-                isJumping = false;
-            }
+        rb.velocity += Vector2.up * Physics2D.gravity.y * (isFallingMultiplier - 1f) * Time.deltaTime;
+        jumpFromGroundWait = false;
+        if (collisionDetection.isGrounded())
+        {
+            hasWallJumped = false;
+            isJumping = false;
+        }
     }
 
     public void AlterUpwardMovement()
@@ -106,7 +102,7 @@ public class Jump : MonoBehaviour
         {
             if ((transform.position.y - percentOflayerHeight * transform.lossyScale.y) > Physics2D.OverlapCircle((Vector2)transform.position + collisionDetection.bottomOffset, collisionDetection.collisionRadius, LayerMask.GetMask("Ground")).gameObject.transform.position.y)
             {
-                availableJumpType = 0;          
+                availableJumpType = 0;
             }
             Debug.Log("Is Grounded");
         }

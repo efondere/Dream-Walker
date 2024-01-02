@@ -4,7 +4,7 @@ using DG.Tweening;
 
 public class TilePlacer : MonoBehaviour
 {
-    public EditingControllerNew editingController;
+    public EditingController editingController;
 
     private Transform _previewObjectTransform;
     private Tilemap _previewTilemap;
@@ -17,16 +17,16 @@ public class TilePlacer : MonoBehaviour
 
 
     // added HideInInspector
-    [HideInInspector]public Placeable placeable; // TODO: add [HideInInspector]
+    [HideInInspector] public Placeable placeable; // TODO: add [HideInInspector]
 
     private Inputs inputManager;
-    
+
     // Start is called before the first frame update
     void Awake()
     {
         inputManager = new Inputs();
         inputManager.Editing.Enable();
-        
+
         _previewObjectTransform = transform.Find("PlacePreview");
         _previewTilemap = _previewObjectTransform.GetComponent<Tilemap>();
         _animator = _previewObjectTransform.GetComponent<Animator>();
@@ -50,10 +50,10 @@ public class TilePlacer : MonoBehaviour
             for (int j = -(int)gridExtension; j <= gridExtension; j++)
             {
                 var tileID = placeable.tilePreview.GetTile(i, j);
-                
+
                 if (tileID == -1)
                     continue;
-                
+
                 TileBase tile;
                 if (tileID < -1)
                 {

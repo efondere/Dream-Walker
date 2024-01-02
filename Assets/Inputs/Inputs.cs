@@ -98,6 +98,15 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ObjectClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""7d98c534-40de-477f-8782-9dad4458501f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -307,6 +316,17 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""TriggerPause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""71c3946a-d56e-4b23-b3ff-c86acf2d84ad"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ObjectClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1585,6 +1605,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         m_Default_Crouch = m_Default.FindAction("Crouch", throwIfNotFound: true);
         m_Default_EnterEditMode = m_Default.FindAction("EnterEditMode", throwIfNotFound: true);
         m_Default_TriggerPause = m_Default.FindAction("TriggerPause", throwIfNotFound: true);
+        m_Default_ObjectClick = m_Default.FindAction("ObjectClick", throwIfNotFound: true);
         // Editing
         m_Editing = asset.FindActionMap("Editing", throwIfNotFound: true);
         m_Editing_SelectNext = m_Editing.FindAction("SelectNext", throwIfNotFound: true);
@@ -1691,6 +1712,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_Crouch;
     private readonly InputAction m_Default_EnterEditMode;
     private readonly InputAction m_Default_TriggerPause;
+    private readonly InputAction m_Default_ObjectClick;
     public struct DefaultActions
     {
         private @Inputs m_Wrapper;
@@ -1703,6 +1725,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         public InputAction @Crouch => m_Wrapper.m_Default_Crouch;
         public InputAction @EnterEditMode => m_Wrapper.m_Default_EnterEditMode;
         public InputAction @TriggerPause => m_Wrapper.m_Default_TriggerPause;
+        public InputAction @ObjectClick => m_Wrapper.m_Default_ObjectClick;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1736,6 +1759,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @TriggerPause.started += instance.OnTriggerPause;
             @TriggerPause.performed += instance.OnTriggerPause;
             @TriggerPause.canceled += instance.OnTriggerPause;
+            @ObjectClick.started += instance.OnObjectClick;
+            @ObjectClick.performed += instance.OnObjectClick;
+            @ObjectClick.canceled += instance.OnObjectClick;
         }
 
         private void UnregisterCallbacks(IDefaultActions instance)
@@ -1764,6 +1790,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @TriggerPause.started -= instance.OnTriggerPause;
             @TriggerPause.performed -= instance.OnTriggerPause;
             @TriggerPause.canceled -= instance.OnTriggerPause;
+            @ObjectClick.started -= instance.OnObjectClick;
+            @ObjectClick.performed -= instance.OnObjectClick;
+            @ObjectClick.canceled -= instance.OnObjectClick;
         }
 
         public void RemoveCallbacks(IDefaultActions instance)
@@ -2153,6 +2182,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         void OnCrouch(InputAction.CallbackContext context);
         void OnEnterEditMode(InputAction.CallbackContext context);
         void OnTriggerPause(InputAction.CallbackContext context);
+        void OnObjectClick(InputAction.CallbackContext context);
     }
     public interface IEditingActions
     {

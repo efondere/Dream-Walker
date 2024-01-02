@@ -3,7 +3,8 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(Pausable))]
-[RequireComponent(typeof(Jump))]
+[RequireComponent(typeof(JumpFunction))]
+[RequireComponent(typeof(HorizontalMovementFunction))]
 public class InputManager : MonoBehaviour
 {
     private PlayerInput _inputs;
@@ -12,21 +13,29 @@ public class InputManager : MonoBehaviour
     private float _horizontal = 0.0f;
     private float _vertical = 0.0f;
 
-    [SerializeField] private EditingController _editingController;
-    private HorizontalMove _walkBehaviour;
-    private Jump _jumpBehaviour;
-    private Dash _dashBehaviour;
-    private WallSlide _wallSlideBehaviour;
+    private EditingController _editingController;
+    private HorizontalMovementFunction _walkBehaviour;
+    private JumpFunction _jumpBehaviour;
+    private DashFunction _dashFunction;
+    private WallSlideFunction _wallSlideBehaviour;
+
+    public delegate void OnObjectClickCallback(bool wasPressed);
+    public static event OnObjectClickCallback objectClickEvent;
+
+    public bool editingEnabled = true;
 
     void Awake()
     {
         _inputs = GetComponent<PlayerInput>();
-        _jumpBehaviour = GetComponent<Jump>();
+        _jumpBehaviour = GetComponent<JumpFunction>();
+        _walkBehaviour = GetComponent<HorizontalMovementFunction>();
+
+        if (editingEnabled) _editingController = GetComponent<EditingController>();
     }
 
     void Update()
     {
-        if (!PauseManager.IsPaused() && !_editingController.IsEditing())
+        if (!PauseManager.IsPaused() && (editingEnabled && !_editingController.IsEditing()))
         {
             _walkBehaviour.MoveHorizontal(new Vector2(_horizontal, 0f));
             _wallSlideBehaviour.SetHorizontalInput(_horizontal);
@@ -58,7 +67,7 @@ public class InputManager : MonoBehaviour
 
     void OnDash()
     {
-        _dashBehaviour.InitiateDash(new Vector2(_horizontal, _vertical));
+        _dashFunction.InitiateDash(new Vector2(_horizontal, _vertical));
     }
 
     void OnSprint(InputValue value)
@@ -85,21 +94,30 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    void OnObjectClick(InputValue value)
+    {
+        // TODO: add as input event
+        objectClickEvent(value.isPressed);
+    }
+
     void OnEnterEditMode()
     {
-        if (_editingController.BeginEditing())
+        if (editingEnabled)
+        {
+            _editingController.BeginEditing();
             _inputs.SwitchCurrentActionMap("Editing");
+        }
     }
 
     // Edit mode
     void OnSelectNext()
     {
-        Debug.Log("Selecting next is not enabled yet!");
+        _editingController.SelectNext();
     }
 
     void OnSelectPrev()
     {
-        Debug.Log("Selecting next is not enabled yet!");
+        _editingController.SelectPrev();
     }
 
     void OnSelectPlaceable(InputValue value)

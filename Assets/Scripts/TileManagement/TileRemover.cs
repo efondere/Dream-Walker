@@ -1,39 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
 
 public class TileRemover : MonoBehaviour
 {
     private Tilemap removerTm;
-    Inputs inputs;
     public TileBase removeTile;
     private Tilemap solidTm;
     public delegate void Remove(Vector2Int pos, TilePreview tilePreview);
     public static event Remove OnRemove;
     [HideInInspector] public Placeable placeable;
 
-   //public class Block
-   //{
-   //    public TilePreview tilePreview;
-   //    public Vector2Int pos;
-   //    public List<Vector2Int> positions = new();
-   //}
-   //
-   //List<Block> blocks = new List<Block>();
+    //public class Block
+    //{
+    //    public TilePreview tilePreview;
+    //    public Vector2Int pos;
+    //    public List<Vector2Int> positions = new();
+    //}
+    //
+    //List<Block> blocks = new List<Block>();
 
     private void Awake()
     {
         removerTm = transform.Find("RemovePreview").GetComponent<Tilemap>();
         solidTm = transform.Find("Solid").GetComponent<Tilemap>();
         //PlaceableTile.onPlaceEvent += SaveChanges;
-        inputs = new Inputs();
-        inputs.Mouse.Enable();
     }
 
-    
+
 
     public void EditRemove()
     {
@@ -78,6 +71,7 @@ public class TileRemover : MonoBehaviour
     }
 
     ////    void SaveChanges(Vector2Int pos, TilePreview tilePreview)
+    ///
     //  {
     //      blocks.Add(new());
     //      blocks[blocks.Count - 1].tilePreview = tilePreview;

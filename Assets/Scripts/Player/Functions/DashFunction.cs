@@ -7,21 +7,20 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Windows;
 
-public class Dash : MonoBehaviour
+public class DashFunction : MonoBehaviour
 {
 
     CollisionDetection collisionDetection;
     SpriteRenderer sr;
-    GhostTrail ghostTrail;
     [HideInInspector] public Rigidbody2D rb;
-    HorizontalMove horizontalMove;
+    HorizontalMovementFunction horizontalMove;
     public float dashSpeed;
     public float dashWait;
     private bool showGhost;
     [HideInInspector] public bool hasDashed;
-    [HideInInspector]public bool isDashing;
+    [HideInInspector] public bool isDashing;
     public Color dashColor;
-    private int dashType = -1;
+    GhostTrail ghostTrail;
 
     private void Start()
     {
@@ -29,7 +28,7 @@ public class Dash : MonoBehaviour
         collisionDetection = GetComponent<CollisionDetection>();
         ghostTrail = GetComponent<GhostTrail>();
         sr = GetComponent<SpriteRenderer>();
-        horizontalMove = GetComponent<HorizontalMove>();
+        horizontalMove = GetComponent<HorizontalMovementFunction>();
     }
     private void Update()
     {
@@ -53,16 +52,16 @@ public class Dash : MonoBehaviour
 
         Debug.Log("Has Dashed = " + hasDashed);
 
-   //    if (playCoroutine)
-   //    {
-   //        PlayCoroutine(_dashDir);
-   //    }
+        //    if (playCoroutine)
+        //    {
+        //        PlayCoroutine(_dashDir);
+        //    }
     }
 
-  //  public void PlayCoroutine(UnityEngine.Vector2 dashDir)
-  //  {
-  //      StartCoroutine(_Dash(dashDir));
-  //  }
+    //  public void PlayCoroutine(UnityEngine.Vector2 dashDir)
+    //  {
+    //      StartCoroutine(_Dash(dashDir));
+    //  }
 
     //bool playCoroutine;
     //UnityEngine.Vector2 _dashDir;

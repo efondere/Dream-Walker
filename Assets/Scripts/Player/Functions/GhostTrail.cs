@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class GhostTrail2 : MonoBehaviour
+public class GhostTrail : MonoBehaviour
 {
-    private Dash dash;
+    private DashFunction dash;
     private SpriteRenderer sr;
     public Transform ghostsParent;
     public Color trailColor;
@@ -15,7 +13,7 @@ public class GhostTrail2 : MonoBehaviour
 
     private void Start()
     {
-        dash = FindObjectOfType<Dash>();
+        dash = FindObjectOfType<DashFunction>();
         sr = this.gameObject.GetComponent<SpriteRenderer>();
     }
 

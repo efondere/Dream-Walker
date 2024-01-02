@@ -1,62 +1,59 @@
 using System.IO;
 using UnityEngine;
 
-namespace Game
+public class GameData
 {
-    public class GameData
+    // Saved data
+    private uint _level;
+
+    // Singleton pattern :)
+    private static GameData _instance;
+
+    public static bool LoadData()
     {
-        // Saved data
-        public uint level;
+        var fullPath = Path.Combine(Application.persistentDataPath, "game_data.json");
 
-        // Singleton pattern :)
-        private static GameData _instance;
-
-        public static bool LoadData()
+        try
         {
-            var fullPath = Path.Combine(Application.persistentDataPath, "game_data.json");
-
-            try
-            {
-                string result = File.ReadAllText(fullPath);
-                _instance = JsonUtility.FromJson<GameData>(result);
-                return true;
-            }
-            catch
-            {
-                Debug.Log("No save file found. Creating a new one on next save.");
-                _instance = new GameData();
-                return false;
-            }
+            string result = File.ReadAllText(fullPath);
+            _instance = JsonUtility.FromJson<GameData>(result);
+            return true;
         }
-
-        public static void SaveData()
+        catch
         {
-            var fullPath = Path.Combine(Application.persistentDataPath, "game_data.json");
-            var json = JsonUtility.ToJson(_instance);
-
-            try
-            {
-                File.WriteAllText(fullPath, json);
-            }
-            catch
-            {
-                // ugly, ugly, ugly
-                Debug.Log("I guess we couldn't save your data... sucks to be you :)");
-            }
+            Debug.Log("No save file found. Creating a new one on next save.");
+            _instance = new GameData();
+            return false;
         }
+    }
 
-        public static uint GetLevel()
+    public static void SaveData()
+    {
+        var fullPath = Path.Combine(Application.persistentDataPath, "game_data.json");
+        var json = JsonUtility.ToJson(_instance);
+
+        try
         {
-            if (_instance == null)
-                LoadData();
-            
-            return _instance.level;
+            File.WriteAllText(fullPath, json);
         }
-
-        public static void SetLevel(uint level)
+        catch
         {
-            _instance.level = level;
-            SaveData(); // Always save when completing a level
+            // ugly, ugly, ugly
+            Debug.Log("I guess we couldn't save your data... sucks to be you :)");
         }
+    }
+
+    public static uint GetLevel()
+    {
+        if (_instance == null)
+            LoadData();
+
+        return _instance._level;
+    }
+
+    public static void SetLevel(uint level)
+    {
+        _instance._level = level;
+        SaveData(); // Always save when completing a level
     }
 }

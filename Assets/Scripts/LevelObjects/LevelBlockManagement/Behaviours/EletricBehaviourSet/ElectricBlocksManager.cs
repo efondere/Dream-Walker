@@ -1,25 +1,21 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using static UnityEditor.PlayerSettings;
 
 public class ElectricBlocksManager : MonoBehaviour
 {
-    GameObjectPool goPool;
-    public TileBase electricTile;
-    public GameObject lightEffect;
-
     public class Circuit
     {
-        public List<GameObject> levers = new List<GameObject>();
-        public List<Vector2Int> eBlockPositions = new List<Vector2Int>();
-        public List<ElectricReceiverBhvr> receivers = new List<ElectricReceiverBhvr>();
+        public List<GameObject> levers = new();
+        public List<Vector2Int> eBlockPositions = new();
+        public List<ElectricReceiverBhvr> receivers = new();
     }
 
-    List<Circuit> circuits = new List<Circuit>();
+    private GameObjectPool _lightObjectPool; // NOTE: what objects does this contain?
+    public TileBase electricTile;
+    public GameObject lightEffect;
+    private List<Circuit> _circuits = new();
     public Tilemap solidTm;
 
 
@@ -29,7 +25,7 @@ public class ElectricBlocksManager : MonoBehaviour
         TileRemover.OnRemove += UpdateCircuit;
         ElectricLeverBhvr.onChangeSignalEvent += UpdateRenderer;
         ElectricLeverBhvr.onChangeSignalEvent += UpdateReceivers;
-        GameObjectPool.CreatePool(ref goPool, lightEffect);
+        _lightObjectPool = GameObjectPool.CreatePool(lightEffect);
     }
 
     void UpdateCircuit(Vector2Int posNotUsed, TilePreview tilePreviewNotUsed)
@@ -45,7 +41,7 @@ public class ElectricBlocksManager : MonoBehaviour
 
     bool FindCircuits()
     {
-        circuits.Clear();
+        _circuits.Clear();
         var eTilePositions = RetreiveAllPositions();
 
         if (eTilePositions.Count == 0)
@@ -76,7 +72,7 @@ public class ElectricBlocksManager : MonoBehaviour
                     currCircuit.eBlockPositions.Add(currPos);
                 }
                 eTilePositions.RemoveAt(0);
-                circuits.Add(currCircuit);
+                _circuits.Add(currCircuit);
             }
 
 
@@ -91,7 +87,7 @@ public class ElectricBlocksManager : MonoBehaviour
                 }
             }
 
-        }        
+        }
         return true;
 
 
@@ -100,7 +96,7 @@ public class ElectricBlocksManager : MonoBehaviour
     void FindConnectedLevers()
     {
         var allLeverPosition = GameObject.FindGameObjectsWithTag("Lever");
-        foreach (Circuit circuit in circuits) 
+        foreach (Circuit circuit in _circuits)
         {
             foreach (GameObject lever in allLeverPosition)
             {
@@ -115,7 +111,7 @@ public class ElectricBlocksManager : MonoBehaviour
     void FindConnectedReceivers()
     {
         var allReceivers = GameObject.FindObjectsByType(typeof(ElectricReceiverBhvr), FindObjectsInactive.Include, FindObjectsSortMode.None);
-        foreach (Circuit circuit in circuits)
+        foreach (Circuit circuit in _circuits)
         {
             foreach (ElectricReceiverBhvr receiver in allReceivers)
             {
@@ -129,14 +125,14 @@ public class ElectricBlocksManager : MonoBehaviour
 
     void UpdateRenderer()
     {
-        goPool.ClearAll();
-        foreach (Circuit circuit in circuits)
+        _lightObjectPool.ClearAll();
+        foreach (Circuit circuit in _circuits)
         {
             if (GetSignal(circuit) == 1)
             {
                 foreach (var pos in circuit.eBlockPositions)
                 {
-                    goPool.Instantiate(new Vector3((float)pos.x + 0.5f, (float)pos.y + 0.5f,0), Quaternion.identity);
+                    _lightObjectPool.Instantiate(new Vector3((float)pos.x + 0.5f, (float)pos.y + 0.5f, 0), Quaternion.identity);
                 }
             }
         }
@@ -144,7 +140,7 @@ public class ElectricBlocksManager : MonoBehaviour
 
     void UpdateReceivers()
     {
-        foreach (Circuit circuit in circuits)
+        foreach (Circuit circuit in _circuits)
         {
             int signal = GetSignal(circuit);
             foreach (var receiver in circuit.receivers)
@@ -160,7 +156,7 @@ public class ElectricBlocksManager : MonoBehaviour
         foreach (GameObject lever in circuit.levers)
         {
             if (lever.GetComponent<ElectricLeverBhvr>().leverState == 1)
-                 return 1;
+                return 1;
         }
         return 0;
     }

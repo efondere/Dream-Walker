@@ -1,14 +1,13 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
 
-public class WallSlide : MonoBehaviour
+public class WallSlideFunction : MonoBehaviour
 {
     Rigidbody2D rb;
-    private Jump jump;
-    private Dash dash;
+    private JumpFunction jump;
+    private DashFunction dash;
     private CollisionDetection collisionDetection;
     public float slideSpeed;
     public Color wallSlideColor;
@@ -22,8 +21,8 @@ public class WallSlide : MonoBehaviour
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         sr = this.gameObject.GetComponent<SpriteRenderer>();
-        jump = gameObject.GetComponent<Jump>();
-        dash = gameObject.GetComponent<Dash>();
+        jump = gameObject.GetComponent<JumpFunction>();
+        dash = gameObject.GetComponent<DashFunction>();
         collisionDetection = gameObject.GetComponent<CollisionDetection>();
         Debug.Log("dash " + dash == null);
     }

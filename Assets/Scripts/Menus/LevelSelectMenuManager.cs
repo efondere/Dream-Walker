@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LevelSelectMenuManager : MonoBehaviour
 {
-    public Button[] levelButtons = {};
+    public Button[] levelButtons = { };
 
     // Start is called before the first frame update
     void Start()
@@ -17,7 +15,7 @@ public class LevelSelectMenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void ToMainMenu()

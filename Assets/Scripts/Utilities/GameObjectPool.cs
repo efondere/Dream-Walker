@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,44 +7,58 @@ public class GameObjectPool : MonoBehaviour
 
     private List<GameObject> _gameObjects = new List<GameObject>();
 
-    public static void CreatePool(ref GameObjectPool pool ,GameObject prefab)
+    public static GameObjectPool CreatePool(GameObject prefab)
     {
         GameObject go = new GameObject(prefab.name);
-        pool = go.AddComponent<GameObjectPool>();
+        GameObjectPool pool = go.AddComponent<GameObjectPool>();
         pool._prefab = prefab;
+
+        return pool;
     }
 
-    public void Instantiate(Vector3 position, Quaternion rotation)
+    public GameObject Instantiate(Vector3 position, Quaternion rotation)
     {
-        for (int i = 0; i < _gameObjects.Count; i++)
+        foreach (var gameObject in _gameObjects)
         {
-            if (_gameObjects[i].activeInHierarchy)
+            if (gameObject.activeInHierarchy)
             {
                 continue;
             }
             else
             {
-                _gameObjects[i].transform.position = position;
-                _gameObjects[i].transform.rotation = rotation;
-                _gameObjects[i].SetActive(true);
+                gameObject.transform.position = position;
+                gameObject.transform.rotation = rotation;
+                gameObject.SetActive(true);
 
-                return;
+                return gameObject;
             }
         }
-        
+
         // not enough game objects.
         var obj = Instantiate(_prefab, transform); // create as child of GameObjectPool
         obj.transform.position = position;
         obj.transform.rotation = rotation;
-        
+
         _gameObjects.Add(obj);
+        return _gameObjects[_gameObjects.Count - 1];
     }
 
     public void ClearAll()
     {
-        for (int i = 0; i < _gameObjects.Count; i++)
+        foreach (var gameObject in _gameObjects)
         {
-            _gameObjects[i].SetActive(false);
+            gameObject.SetActive(false);
         }
+    }
+
+    public void DestroyAll()
+    {
+        // TODO: needs testing (will it destroy destroyed objects?)
+        foreach (var gameObject in _gameObjects)
+        {
+            Destroy(gameObject);
+        }
+
+        _gameObjects.Clear();
     }
 }

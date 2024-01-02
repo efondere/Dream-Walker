@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AlarmReceiver : MonoBehaviour
@@ -8,7 +6,7 @@ public class AlarmReceiver : MonoBehaviour
     {
         if (signal == 1)
         {
-            Debug.Log("Death");
+            // TODO: kill player here
         }
     }
 }

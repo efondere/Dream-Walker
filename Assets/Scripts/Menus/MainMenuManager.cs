@@ -1,4 +1,3 @@
-using Game;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -6,7 +5,7 @@ using UnityEngine.UI;
 public class MainMenuManager : MonoBehaviour
 {
     [SerializeField] private Button _continueButton;
-    
+
     public void Start()
     {
         _continueButton.interactable = GameData.GetLevel() > 0;

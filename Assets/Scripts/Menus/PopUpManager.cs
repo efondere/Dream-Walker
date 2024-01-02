@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(Pausable))]
 public class PopUpManager : MonoBehaviour
@@ -18,7 +17,7 @@ public class PopUpManager : MonoBehaviour
         public PopUpPosition popUpPosition;
         public Vector2 worldPosition;
     }
-    
+
     private static Canvas _canvas;
     private static Camera _camera;
     private static List<InstantiatedPopUp> _instantiatedPopUps = new List<InstantiatedPopUp>();
@@ -95,7 +94,7 @@ public class PopUpManager : MonoBehaviour
             p.gameObject.SetActive(false);
         }
     }
-    
+
     public void OnResume()
     {
         foreach (var p in _instantiatedPopUps)
@@ -109,7 +108,7 @@ public class PopUpManager : MonoBehaviour
         var canvasRect = _canvas.GetComponent<RectTransform>().rect;
         return new Vector2(canvasRect.width * percentages.x / 2.0f, canvasRect.height * percentages.y / 2.0f);
     }
-    
+
     private static Vector2 WorldToCanvas(Vector2 worldPosition)
     {
         return _camera.WorldToScreenPoint(worldPosition);
