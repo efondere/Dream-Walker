@@ -17,13 +17,11 @@ public class ResizableTilemapEditor : PropertyDrawer
         
         var arrayProperty = property.FindPropertyRelative("_tiles");
         
-        if (_showGrid)
-        {
+        if (_showGrid) {
             position.y += EditorGUIUtility.singleLineHeight;
             EditorGUI.indentLevel++;
             EditorGUI.PropertyField(position, property.FindPropertyRelative("_extension"));
-            if (property.FindPropertyRelative("_extension").uintValue > 10)
-            {
+            if (property.FindPropertyRelative("_extension").uintValue > 10) {
                 // seems like there is not need to check for this value being < 0 as it's a uint.
                 property.FindPropertyRelative("_extension").uintValue = 10; // prevent crash!
             }
@@ -33,10 +31,8 @@ public class ResizableTilemapEditor : PropertyDrawer
             var boxPosition = position;
             boxPosition.width /= sideLength;
             
-            for (int y = 0; y < sideLength; y++)
-            {
-                for (int x = 0; x < sideLength; x++)
-                {
+            for (int y = 0; y < sideLength; y++) {
+                for (int x = 0; x < sideLength; x++) {
                     // Unity defines +y as up and we'll store the data in a similar way (hence the sideLength - 1 - y).
                     EditorGUI.PropertyField(boxPosition, arrayProperty.GetArrayElementAtIndex(
                         x + sideLength * (sideLength - 1 - y)), GUIContent.none); // GUIContent.none => don't show name label
@@ -55,24 +51,19 @@ public class ResizableTilemapEditor : PropertyDrawer
         //update array after so property height is changed before re-drawing the grid (hopefully) -> check if this is actually ok
         var newExtension = (int)property.FindPropertyRelative("_extension").uintValue;
         var newSize = 2 * newExtension + 1;
-        if (arrayProperty.arraySize != newSize * newSize)
-        {
+        if (arrayProperty.arraySize != newSize * newSize) {
             int tempExtension;
             
             // 1. copy data into _tempData, saving all changes made to the array.
-            if (_tempData.Length <= arrayProperty.arraySize)
-            {
+            if (_tempData.Length <= arrayProperty.arraySize) {
                 // old data was smaller or of equal size, just resize it and override its data.
                 _tempData = new int[arrayProperty.arraySize];
-                for (var i = 0; i < _tempData.Length; i++)
-                {
+                for (var i = 0; i < _tempData.Length; i++) {
                     _tempData[i] = arrayProperty.GetArrayElementAtIndex(i).intValue;
                 }
 
                 tempExtension = (Mathf.RoundToInt(Mathf.Sqrt(_tempData.Length)) - 1) / 2;
-            }
-            else
-            {
+            } else {
                 // old data was of bigger size. Don't change the size, but update the contents of the overlapping region
                 var oldSize = Mathf.RoundToInt(Mathf.Sqrt(arrayProperty.arraySize));
                 var oldExtension = (oldSize - 1) / 2;
@@ -80,10 +71,8 @@ public class ResizableTilemapEditor : PropertyDrawer
                 var tempSize = Mathf.RoundToInt(Mathf.Sqrt(_tempData.Length));
                 tempExtension = (tempSize - 1) / 2;
                 
-                for (var y = -oldExtension; y <= oldExtension; y++)
-                {
-                    for (var x = -oldExtension; x <= oldExtension; x++)
-                    {
+                for (var y = -oldExtension; y <= oldExtension; y++) {
+                    for (var x = -oldExtension; x <= oldExtension; x++) {
                         _tempData[(x + tempExtension) + tempSize * (y + tempExtension)] =
                             arrayProperty.GetArrayElementAtIndex((x + oldExtension) + oldSize * (y + oldExtension))
                                 .intValue;
@@ -93,10 +82,8 @@ public class ResizableTilemapEditor : PropertyDrawer
 
             arrayProperty.arraySize = (int)(newSize * newSize);
 
-            for (var y = -newExtension; y <= newExtension; y++)
-            {
-                for (var x = -newExtension; x <= newExtension; x++)
-                {
+            for (var y = -newExtension; y <= newExtension; y++) {
+                for (var x = -newExtension; x <= newExtension; x++) {
                     if (Mathf.Abs(y) > tempExtension || Mathf.Abs(x) > tempExtension)
                     {
                         arrayProperty.GetArrayElementAtIndex(
@@ -118,13 +105,10 @@ public class ResizableTilemapEditor : PropertyDrawer
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
-        if (_showGrid)
-        {
+        if (_showGrid) {
             // 3: property name, _extension property editor, and center row
             return EditorGUIUtility.singleLineHeight * (3 + 2 * property.FindPropertyRelative("_extension").uintValue);
-        }
-        else
-        {
+        } else {
             // only show property name (foldout group)
             return EditorGUIUtility.singleLineHeight;
         }
