@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 146677779}
   - component: {fileID: 146677778}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: Credits text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -194,9 +194,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.4
-  m_Text: "A game by\nVlad and Estra Studios\nSofian Martinais: programming and design
+  m_Text: "A game by\nVlad & Estra Studios\nSofian Martinais: programming and design
     \nEliot Fondere: programming and art\n\n~ With the Help of ~\nPaolo Scaini: sound
-    design\n\nFont by: Yuji Oshimoto. https://www.dafont.com/04b-30.font"
+    design and music\n\nFont by Yuji Oshimoto: https://www.dafont.com/04b-30.font"
 --- !u!222 &146677779
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -307,7 +307,6 @@ GameObject:
   m_Component:
   - component: {fileID: 255765727}
   - component: {fileID: 255765726}
-  - component: {fileID: 255765725}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -315,26 +314,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &255765725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 255765724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
 --- !u!114 &255765726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -573,7 +552,7 @@ GameObject:
   - component: {fileID: 1782496296}
   - component: {fileID: 1782496295}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: Page name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -846,7 +825,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Main Menu
+  m_Text: Back
 --- !u!222 &2069880246
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -931,8 +910,8 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_VertexColorAlwaysGammaSpace: 1
+  m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0

@@ -347,7 +347,6 @@ GameObject:
   m_Component:
   - component: {fileID: 293347606}
   - component: {fileID: 293347605}
-  - component: {fileID: 293347607}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -385,36 +384,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &293347607
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 293347603}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_MoveRepeatDelay: 0.5
-  m_MoveRepeatRate: 0.1
-  m_XRTrackingOrigin: {fileID: 0}
-  m_ActionsAsset: {fileID: -944628639613478452, guid: 4fc65e758091af74f938255d4eb40cd8, type: 3}
-  m_PointAction: {fileID: -347515750477683281, guid: 4fc65e758091af74f938255d4eb40cd8, type: 3}
-  m_MoveAction: {fileID: 1593162185116102721, guid: 4fc65e758091af74f938255d4eb40cd8, type: 3}
-  m_SubmitAction: {fileID: 8527796295311893950, guid: 4fc65e758091af74f938255d4eb40cd8, type: 3}
-  m_CancelAction: {fileID: -2364341613064550288, guid: 4fc65e758091af74f938255d4eb40cd8, type: 3}
-  m_LeftClickAction: {fileID: 78387777932704686, guid: 4fc65e758091af74f938255d4eb40cd8, type: 3}
-  m_MiddleClickAction: {fileID: -7139674982023188268, guid: 4fc65e758091af74f938255d4eb40cd8, type: 3}
-  m_RightClickAction: {fileID: 5273065703156964868, guid: 4fc65e758091af74f938255d4eb40cd8, type: 3}
-  m_ScrollWheelAction: {fileID: 2681791058785790928, guid: 4fc65e758091af74f938255d4eb40cd8, type: 3}
-  m_TrackedDevicePositionAction: {fileID: 7649993776716049905, guid: 4fc65e758091af74f938255d4eb40cd8, type: 3}
-  m_TrackedDeviceOrientationAction: {fileID: 1046272565870662352, guid: 4fc65e758091af74f938255d4eb40cd8, type: 3}
-  m_DeselectOnBackgroundClick: 1
-  m_PointerBehavior: 0
-  m_CursorLockBehavior: 0
 --- !u!1 &481115690
 GameObject:
   m_ObjectHideFlags: 0
@@ -1039,7 +1008,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 4fc65e758091af74f938255d4eb40cd8, type: 3}
   m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 293347607}
+  m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -4068,7 +4037,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
