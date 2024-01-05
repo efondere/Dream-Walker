@@ -1,0 +1,4 @@
+Entities: scripts going on anything that is in the game (tiles, player, traps, etc.)
+Game: scripts that are general to the game and do not apply to a particular game object
+Menu: scripts that are used in menus
+TileManagement: scripts related to tile placement or removal
